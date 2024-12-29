@@ -6,7 +6,7 @@ import {
   UpdatePrice,
 } from "./prices.routes";
 import { type Context } from "hono";
-import {  PrismaClient } from "@repo/db/types";
+import { PrismaClient } from "@repo/db/types";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import * as HttpsStatusPhrases from "~/lib/http-status-phrases";
 
@@ -34,12 +34,17 @@ export const list: APPRouteHandler<ListPrices> = async (c: Context) => {
       name: true,
       trial_period: true,
       custom_data: true,
-      billing_cycle: true,
       status: true,
       unit_price: {
         select: {
           amount: true,
           currency_code: true,
+        },
+      },
+      billing_cycle: {
+        select: {
+          interval: true,
+          frequency: true,
         },
       },
       quantity: true,
@@ -81,7 +86,7 @@ export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
     // Create the price
     const price = await db.prices.create({
       data: {
-        id: input.id,
+        id: `pri_${crypto.randomUUID()}`,
         product_id: input.product_id,
         projectId: project_id?.id!,
         name: input.name,
@@ -117,6 +122,12 @@ export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
         type: true,
         status: true,
         name: true,
+        billing_cycle: {
+          select: {
+            interval: true,
+            frequency: true,
+          },
+        },
         description: true,
         trial_period: true,
         custom_data: true,
@@ -149,7 +160,12 @@ export const get_price: APPRouteHandler<GetPrice> = async (c: Context) => {
       name: true,
       trial_period: true,
       custom_data: true,
-      billing_cycle: true,
+      billing_cycle: {
+        select: {
+          interval: true,
+          frequency: true,
+        },
+      },
       unit_price: {
         select: {
           amount: true,

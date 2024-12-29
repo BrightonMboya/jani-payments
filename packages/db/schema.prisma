@@ -12,6 +12,27 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+generator zod {
+  provider = "zod-prisma"
+  output   = "src/zod" // (default) the directory where generated zod schemas will be saved
+
+  relationModel = true // (default) Create and export both plain and related models.
+  // relationModel         = "default" // Do not export model without relations.
+  // relationModel         = false // Do not generate related model
+
+  modelCase = "PascalCase" // (default) Output models using pascal case (ex. UserModel, PostModel)
+  // modelCase             = "camelCase" // Output models using camel case (ex. userModel, postModel)
+
+  modelSuffix = "Model" // (default) Suffix to apply to your prisma models when naming Zod schemas
+
+  // useDecimalJs          = false // (default) represent the prisma Decimal type using as a JS number
+  useDecimalJs = false // represent the prisma Decimal type using Decimal.js (as Prisma does)
+
+  // https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-by-null-values
+  prismaJsonNullability = true // (default) uses prisma's scheme for JSON field nullability
+  // prismaJsonNullability = false // allows null assignment to optional JSON fields
+}
+
 // thimk of this as workspaces under organization
 model Project {
   id                String          @id @default(cuid())
@@ -29,6 +50,7 @@ model Project {
   sentEmails        SentEmail[]
   products          Products[]
   prices            Prices[]
+  discounts         Discounts[]
 
   @@index(usageLastChecked(sort: Asc))
 }
@@ -221,27 +243,48 @@ model Prices {
   product_id      String
   Project         Project              @relation(fields: [projectId], references: [id])
   projectId       String
+  Discount_Prices Discount_Prices[]
 
   @@index([product_id])
 }
 
-generator zod {
-  provider = "zod-prisma"
-  output   = "src/zod" // (default) the directory where generated zod schemas will be saved
+enum Discount_Status {
+  active
+  archived
+}
 
-  relationModel = true // (default) Create and export both plain and related models.
-  // relationModel         = "default" // Do not export model without relations.
-  // relationModel         = false // Do not generate related model
+enum Discount_type {
+  flat
+  percentage
+  flat_per_seat
+}
 
-  modelCase = "PascalCase" // (default) Output models using pascal case (ex. UserModel, PostModel)
-  // modelCase             = "camelCase" // Output models using camel case (ex. userModel, postModel)
+model Discounts {
+  id                     String            @id
+  status                 Discount_Status?  @default(active)
+  description            String?
+  enabled_for_checkout   Boolean?
+  amount                 Decimal
+  currency_code          String
+  type                   Discount_type
+  recur                  Boolean?
+  max_recuring_intervals Decimal?
+  usage_limit            Int
+  expires_at             DateTime?
+  custom_data            Json?
+  discount_prices        Discount_Prices[]
+  times_used             Int?              @default(0)
+  created_at             DateTime
+  updated_at             DateTime
+  Project                Project?          @relation(fields: [projectId], references: [id])
+  projectId              String?
+}
 
-  modelSuffix = "Model" // (default) Suffix to apply to your prisma models when naming Zod schemas
+model Discount_Prices {
+  discount    Discounts? @relation(fields: [discount_Id], references: [id])
+  discount_Id String
+  price_id    String
+  price       Prices     @relation(fields: [price_id], references: [id])
 
-  // useDecimalJs          = false // (default) represent the prisma Decimal type using as a JS number
-  useDecimalJs = false // represent the prisma Decimal type using Decimal.js (as Prisma does)
-
-  // https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-by-null-values
-  prismaJsonNullability = true // (default) uses prisma's scheme for JSON field nullability
-  // prismaJsonNullability = false // allows null assignment to optional JSON fields
+  @@id([discount_Id, price_id])
 }
