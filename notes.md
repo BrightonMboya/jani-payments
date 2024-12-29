@@ -1,0 +1,1 @@
+1. Figure out how to store assets, check the image thumbnail in constructMetadata.ts file

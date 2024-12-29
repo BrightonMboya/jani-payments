@@ -1,0 +1,44 @@
+{
+  "name": "@repo/db",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types.ts",
+    "./zod/*": "./src/zod/*"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./src/index.ts"
+      ],
+      "types": [
+        "./src/types.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.1.0",
+    "@prisma/extension-accelerate": "^1.2.1",
+    "zod": "^3.24.1",
+    "zod-prisma": "^0.5.4"
+  },
+  "devDependencies": {
+    "@prisma/adapter-pg": "^6.1.0",
+    "@types/node": "^20.4.2",
+    "@types/pg": "^8.11.10",
+    "dotenv-cli": "^7.2.1",
+    "pg": "^8.13.1",
+    "prisma": "^5.22.0",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  },
+  "prisma": {}
+}

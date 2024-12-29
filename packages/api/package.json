@@ -1,0 +1,26 @@
+{
+  "name": "@repo/api",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify"
+  },
+  "dependencies": {
+    "@hono/zod-openapi": "^0.18.3",
+    "@repo/db": "workspace:*",
+    "@scalar/hono-api-reference": "^0.5.165",
+    "hono": "^4.6.14",
+    "hono-pino": "^0.7.0",
+    "nanoid": "^5.0.9",
+    "next-auth": "5.0.0-beta.25",
+    "pino": "^9.6.0",
+    "pino-logger": "^1.0.0",
+    "pino-pretty": "^13.0.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241218.0",
+    "wrangler": "^3.96.0"
+  }
+}

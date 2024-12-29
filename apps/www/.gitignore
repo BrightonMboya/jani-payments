@@ -1,0 +1,20 @@
+.next
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+
+# production
+/build
+
+# local env files
+# do not commit any .env files to git, except for the .env.example file. https://create.t3.gg/en/usage/env-variables#using-environment-variables
+.env
+.env*.local

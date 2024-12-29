@@ -1,0 +1,247 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// thimk of this as workspaces under organization
+model Project {
+  id                String          @id @default(cuid())
+  name              String
+  slug              String          @unique
+  logo              String?
+  plan              String          @default("free")
+  billingCycleStart Int // day of the month when the billing cycle starts
+  inviteCode        String?         @unique
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  usageLastChecked  DateTime        @default(now())
+  users             ProjectUsers[]
+  invites           ProjectInvite[]
+  sentEmails        SentEmail[]
+  products          Products[]
+  prices            Prices[]
+
+  @@index(usageLastChecked(sort: Asc))
+}
+
+// this table is for members of org working on a certain project
+model ProjectUsers {
+  id        String   @id @default(cuid())
+  role      Role     @default(member)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+
+  @@unique([userId, projectId])
+  @@index([projectId])
+}
+
+enum Role {
+  owner
+  member
+}
+
+model ProjectInvite {
+  email     String
+  expires   DateTime
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  createdAt DateTime @default(now())
+
+  @@unique([email, projectId])
+  @@index([projectId])
+}
+
+model SentEmail {
+  id        String   @id @default(cuid())
+  type      String
+  createdAt DateTime @default(now())
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String?
+
+  @@index([projectId])
+}
+
+model User {
+  id               String         @id @default(cuid())
+  name             String?
+  email            String?        @unique
+  emailVerified    DateTime?
+  image            String?
+  accounts         Account[]
+  source           String?
+  defaultWorkspace String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  ProjectUsers     ProjectUsers[]
+  sessions         Session[]
+  api_keys         Api_keys[]
+
+  @@index(source)
+  @@index(defaultWorkspace)
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Products {
+  id          String         @unique @default(uuid())
+  name        String
+  description String
+  status      product_status @default(active)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime
+  custom_data Json?
+  Project     Project        @relation(fields: [project_id], references: [id])
+  project_id  String
+  prices      Prices[]
+}
+
+enum product_status {
+  active
+  archived
+}
+
+model Api_keys {
+  id          String   @unique @default(uuid())
+  prefix      String
+  description String
+  name        String
+  createdAt   DateTime @default(now())
+  key         String   @unique
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+enum PriceType {
+  standard //considered part of the catalog and can be reused across transaction
+  custom // just a one time price, ideally created for a specific transaction
+}
+
+enum PriceStatus {
+  active
+  inactive
+}
+
+enum BillingInterval {
+  day
+  week
+  month
+  year
+}
+
+model BillingCycle {
+  id        String          @id @default(cuid())
+  interval  BillingInterval
+  frequency Int
+  Price     Prices[] // Relation to Price model
+}
+
+model QuantityConstraints {
+  id      String  @id @default(cuid())
+  minimum Int
+  maximum Int
+  Price   Prices? @relation(fields: [priceId], references: [id])
+  priceId String? @unique
+}
+
+model UnitPrice {
+  id            String  @id @default(cuid())
+  amount        Decimal
+  currency_code String
+  Price         Prices? @relation(fields: [priceId], references: [id])
+  priceId       String?
+}
+
+// Main Price model
+model Prices {
+  id              String               @id
+  type            PriceType            @default(standard)
+  description     String?
+  name            String
+  billing_cycle   BillingCycle?        @relation(fields: [billingCycle_id], references: [id])
+  billingCycle_id String?
+  trial_period    Json? // Using Json type for flexible trial period structure
+  // tax_mode            TaxMode
+  unit_price      UnitPrice[]
+  custom_data     Json? // Flexible custom data storage
+  status          PriceStatus
+  quantity        QuantityConstraints?
+  created_at      DateTime
+  updated_at      DateTime             @updatedAt
+  Products        Products?            @relation(fields: [product_id], references: [id])
+  product_id      String
+  Project         Project              @relation(fields: [projectId], references: [id])
+  projectId       String
+
+  @@index([product_id])
+}
+
+generator zod {
+  provider = "zod-prisma"
+  output   = "src/zod" // (default) the directory where generated zod schemas will be saved
+
+  relationModel = true // (default) Create and export both plain and related models.
+  // relationModel         = "default" // Do not export model without relations.
+  // relationModel         = false // Do not generate related model
+
+  modelCase = "PascalCase" // (default) Output models using pascal case (ex. UserModel, PostModel)
+  // modelCase             = "camelCase" // Output models using camel case (ex. userModel, postModel)
+
+  modelSuffix = "Model" // (default) Suffix to apply to your prisma models when naming Zod schemas
+
+  // useDecimalJs          = false // (default) represent the prisma Decimal type using as a JS number
+  useDecimalJs = false // represent the prisma Decimal type using Decimal.js (as Prisma does)
+
+  // https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-by-null-values
+  prismaJsonNullability = true // (default) uses prisma's scheme for JSON field nullability
+  // prismaJsonNullability = false // allows null assignment to optional JSON fields
+}
