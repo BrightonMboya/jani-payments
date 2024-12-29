@@ -1,8 +1,39 @@
 import { APPRouteHandler } from "~/lib/types";
-import { type ListDiscounts, CreateDiscount } from "./discounts.routes";
+import {
+  type ListDiscounts,
+  CreateDiscount,
+  GetDiscount,
+  UpdateDiscount,
+} from "./discounts.routes";
 import { type Context } from "hono";
 import { PrismaClient } from "@repo/db/types";
 import * as HttpStatusCodes from "~/lib/http-status-code";
+import { z } from "zod";
+import { DiscountResponseSchema } from "./discounts.routes";
+import { Json } from "~/lib/utils/zod-helpers";
+
+const selectDiscountFields = {
+  id: true,
+  status: true,
+  description: true,
+  enabled_for_checkout: true,
+  amount: true,
+  currency_code: true,
+  type: true,
+  discount_prices: {
+    select: {
+      price_id: true,
+    },
+  },
+  recur: true,
+  max_recuring_intervals: true,
+  usage_limit: true,
+  times_used: true,
+  expires_at: true,
+  custom_data: true,
+  created_at: true,
+  updated_at: true,
+};
 
 export const list: APPRouteHandler<ListDiscounts> = async (c: Context) => {
   const user = c.get("user");
@@ -66,7 +97,7 @@ export const list: APPRouteHandler<ListDiscounts> = async (c: Context) => {
     updated_at: d.updated_at,
   }));
 
-  return c.json(formattedDiscounts);
+  return c.json(formattedDiscounts, HttpStatusCodes.OK);
 };
 
 export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
@@ -109,23 +140,7 @@ export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
         },
       }),
     },
-    select: {
-      id: true,
-      status: true,
-      description: true,
-      enabled_for_checkout: true,
-      amount: true,
-      currency_code: true,
-      type: true,
-      recur: true,
-      max_recuring_intervals: true,
-      usage_limit: true,
-      times_used: true,
-      expires_at: true,
-      custom_data: true,
-      created_at: true,
-      updated_at: true,
-    },
+    select: selectDiscountFields,
   });
 
   const transformedDiscount = {
@@ -137,4 +152,96 @@ export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
   };
 
   return c.json([transformedDiscount], HttpStatusCodes.OK);
+};
+
+export const get_discount: APPRouteHandler<GetDiscount> = async (
+  c: Context
+) => {
+  const db: PrismaClient = c.get("db");
+  const { discount_id } = c.req.param();
+  const discount = await db.discounts.findUnique({
+    where: {
+      id: discount_id,
+    },
+    select: selectDiscountFields,
+  });
+
+  if (!discount) {
+    return c.json(
+      { error: "Discount not found", message: "BAD REQUEST" },
+      HttpStatusCodes.NOT_FOUND
+    );
+  }
+
+  const formattedDiscount = {
+    id: discount.id,
+    status: discount.status,
+    description: discount.description,
+    enabled_for_checkout: discount.enabled_for_checkout,
+    amount: Number(discount.amount),
+    currency_code: discount.currency_code,
+    type: discount.type,
+    restricted_to: discount.discount_prices.map((dp) => dp.price_id),
+    recur: discount.recur,
+    max_recuring_intervals: discount.max_recuring_intervals
+      ? Number(discount.max_recuring_intervals)
+      : null,
+    usage_limit: discount.usage_limit,
+    times_used: discount.times_used,
+    expires_at: discount.expires_at,
+    custom_data: discount.custom_data as Json,
+    created_at: discount.created_at,
+    updated_at: discount.updated_at,
+  } satisfies z.infer<typeof DiscountResponseSchema>;
+
+  return c.json(formattedDiscount, HttpStatusCodes.OK);
+};
+
+export const update_discount: APPRouteHandler<UpdateDiscount> = async (
+  c: Context
+) => {
+  const db: PrismaClient = c.get("db");
+  // const { discount_id } = c.req.valid("param");
+  const discount_id = c.req.param("discount_id");
+  const input = await c.req.json();
+  const discount = await db.discounts.update({
+    where: {
+      id: discount_id,
+    },
+    data: {
+      ...input,
+      updated_at: new Date(),
+    },
+    select: selectDiscountFields,
+  });
+
+  if (!discount) {
+    return c.json(
+      { error: "Discount not found", message: "BAD REQUEST" },
+      HttpStatusCodes.NOT_FOUND
+    );
+  }
+
+  const formattedDiscount = {
+    id: discount.id,
+    status: discount.status,
+    description: discount.description,
+    enabled_for_checkout: discount.enabled_for_checkout,
+    amount: Number(discount.amount),
+    currency_code: discount.currency_code,
+    type: discount.type,
+    restricted_to: discount.discount_prices.map((dp) => dp.price_id),
+    recur: discount.recur,
+    max_recuring_intervals: discount.max_recuring_intervals
+      ? Number(discount.max_recuring_intervals)
+      : null,
+    usage_limit: discount.usage_limit,
+    times_used: discount.times_used,
+    expires_at: discount.expires_at,
+    custom_data: discount.custom_data as Json,
+    created_at: discount.created_at,
+    updated_at: discount.updated_at,
+  } satisfies z.infer<typeof DiscountResponseSchema>;
+
+  return c.json(formattedDiscount, HttpStatusCodes.OK);
 };

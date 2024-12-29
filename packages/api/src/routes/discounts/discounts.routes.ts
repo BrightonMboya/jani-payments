@@ -8,7 +8,7 @@ import { jsonSchema } from "~/lib/utils/zod-helpers";
 
 const tags = ["discounts"];
 
-const DiscountResponseSchema = DiscountsModel.extend({
+export const DiscountResponseSchema = DiscountsModel.extend({
   custom_data: jsonSchema,
 })
   .omit({
@@ -71,6 +71,31 @@ export const get_discount = createRoute({
   },
 });
 
+export const update_discount = createRoute({
+  path: "/discounts/{discount_id}",
+  method: "patch",
+  tags,
+  responses: {
+    [HttpStatusCodes.OK]: jsonContent(
+      DiscountsModel.extend({
+        custom_data: jsonSchema,
+      }).omit({
+        projectId: true,
+      }),
+      "Updates a Discount by ID"
+    ),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(
+      z.object({ error: z.string(), message: z.string() }),
+      "Discount not found"
+    ),
+    // [HttpStatusCodes.BAD_REQUEST]: jsonContent(
+    //   z.object({ error: z.string(), message: z.string() }),
+    //   "Failed to update discount"
+    // ),
+  },
+});
+
 export type ListDiscounts = typeof list_discounts;
 export type CreateDiscount = typeof create_discount;
 export type GetDiscount = typeof get_discount;
+export type UpdateDiscount = typeof update_discount;
