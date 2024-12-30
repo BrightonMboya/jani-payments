@@ -11,6 +11,7 @@ const jsonContent = <T extends ZodSchema>(schema: T, description: string) => {
       },
     },
     description,
+    
   };
 };
 

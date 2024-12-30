@@ -1,6 +1,5 @@
 import { z, createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "~/lib/http-status-code";
-import * as HttpsStatusPhrases from "~/lib/http-status-phrases";
 import jsonContent from "~/lib/json-content";
 import { PriceModel } from "@repo/db/zod/price.ts";
 import { jsonSchema } from "~/lib/utils/zod-helpers";

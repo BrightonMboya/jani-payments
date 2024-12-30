@@ -51,6 +51,7 @@ model Project {
   products          Products[]
   prices            Prices[]
   discounts         Discounts[]
+  customers         Customers[]
 
   @@index(usageLastChecked(sort: Asc))
 }
@@ -248,6 +249,11 @@ model Prices {
   @@index([product_id])
 }
 
+enum Entity_Status {
+  active
+  archived
+}
+
 enum Discount_Status {
   active
   archived
@@ -287,4 +293,17 @@ model Discount_Prices {
   price       Prices     @relation(fields: [price_id], references: [id])
 
   @@id([discount_Id, price_id])
+}
+
+model Customers {
+  id          String        @id
+  email       String
+  name        String
+  status      Entity_Status? @default(active)
+  description String?
+  custom_data Json?
+  created_at  DateTime
+  updated_at  DateTime      @updatedAt
+  Project     Project?      @relation(fields: [projectId], references: [id])
+  projectId   String?
 }
