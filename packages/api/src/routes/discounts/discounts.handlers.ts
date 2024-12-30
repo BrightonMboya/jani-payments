@@ -10,7 +10,7 @@ import { PrismaClient } from "@repo/db/types";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import { z } from "zod";
 import { DiscountResponseSchema } from "./discounts.routes";
-import { Json } from "~/lib/utils/zod-helpers";
+import { Json, ErrorSchema } from "~/lib/utils/zod-helpers";
 
 const selectDiscountFields = {
   id: true,
@@ -52,52 +52,35 @@ export const list: APPRouteHandler<ListDiscounts> = async (c: Context) => {
     where: {
       projectId: project_id?.id,
     },
-    select: {
-      id: true,
-      status: true,
-      description: true,
-      enabled_for_checkout: true,
-      amount: true,
-      currency_code: true,
-      type: true,
-      discount_prices: {
-        select: {
-          price: true,
-        },
-      },
-      recur: true,
-      max_recuring_intervals: true,
-      usage_limit: true,
-      times_used: true,
-      expires_at: true,
-      custom_data: true,
-      created_at: true,
-      updated_at: true,
-    },
+    select: selectDiscountFields,
   });
 
-  const formattedDiscounts = discounts.map((d) => ({
-    id: d.id,
-    status: d.status,
-    description: d.description,
-    enabled_for_checkout: d.enabled_for_checkout,
-    amount: Number(d.amount),
-    currency_code: d.currency_code,
-    type: d.type,
-    restricted_to: d.discount_prices.map((dp) => dp.price.id),
-    recur: d.recur,
-    max_recuring_intervals: d.max_recuring_intervals
-      ? Number(d.max_recuring_intervals)
-      : null,
-    usage_limit: d.usage_limit,
-    times_used: d.times_used,
-    expires_at: d.expires_at,
-    custom_data: d.custom_data,
-    created_at: d.created_at,
-    updated_at: d.updated_at,
-  }));
+  const formattedDiscounts: z.infer<typeof DiscountResponseSchema>[] =
+    discounts.map((d) => ({
+      id: d.id,
+      status: d.status,
+      description: d.description,
+      enabled_for_checkout: d.enabled_for_checkout,
+      amount: Number(d.amount),
+      currency_code: d.currency_code,
+      type: d.type,
+      restricted_to: d.discount_prices.map((dp) => dp.price_id),
+      recur: d.recur,
+      max_recuring_intervals: d.max_recuring_intervals
+        ? Number(d.max_recuring_intervals)
+        : null,
+      usage_limit: d.usage_limit,
+      times_used: d.times_used,
+      expires_at: d.expires_at,
+      custom_data: d.custom_data as Json,
+      created_at: d.created_at,
+      updated_at: d.updated_at,
+    }));
 
-  return c.json(formattedDiscounts, HttpStatusCodes.OK);
+  return c.json(
+    formattedDiscounts as z.infer<typeof DiscountResponseSchema>[],
+    HttpStatusCodes.OK
+  );
 };
 
 export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
@@ -143,15 +126,28 @@ export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
     select: selectDiscountFields,
   });
 
-  const transformedDiscount = {
-    ...discount,
+  const transformedDiscount: z.infer<typeof DiscountResponseSchema> = {
+    id: discount.id,
+    status: discount.status,
+    description: discount.description,
+    enabled_for_checkout: discount.enabled_for_checkout,
     amount: Number(discount.amount),
+    currency_code: discount.currency_code,
+    type: discount.type,
+    restricted_to: discount.discount_prices.map((dp) => dp.price_id),
+    recur: discount.recur,
     max_recuring_intervals: discount.max_recuring_intervals
       ? Number(discount.max_recuring_intervals)
       : null,
+    usage_limit: discount.usage_limit,
+    times_used: discount.times_used,
+    expires_at: discount.expires_at,
+    custom_data: discount.custom_data as Json,
+    created_at: discount.created_at,
+    updated_at: discount.updated_at,
   };
 
-  return c.json([transformedDiscount], HttpStatusCodes.OK);
+  return c.json(transformedDiscount, HttpStatusCodes.OK);
 };
 
 export const get_discount: APPRouteHandler<GetDiscount> = async (
@@ -164,15 +160,15 @@ export const get_discount: APPRouteHandler<GetDiscount> = async (
       id: discount_id,
     },
     select: selectDiscountFields,
-  });
+  })!!;
 
   if (!discount) {
-    return c.json(
-      { error: "Discount not found", message: "BAD REQUEST" },
-      HttpStatusCodes.NOT_FOUND
-    );
+    const errorResponse: z.infer<typeof ErrorSchema> = {
+      error: "Discount not found",
+      message: "BAD REQUEST",
+    };
+    return c.json(errorResponse, HttpStatusCodes.NOT_FOUND);
   }
-
   const formattedDiscount = {
     id: discount.id,
     status: discount.status,

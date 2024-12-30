@@ -3,7 +3,7 @@ import * as HttpStatusCodes from "~/lib/http-status-code";
 import * as HttpsStatusPhrases from "~/lib/http-status-phrases";
 import jsonContent from "~/lib/json-content";
 import { DiscountsModel } from "@repo/db/zod/discounts.ts";
-
+import { ErrorSchema } from "~/lib/utils/zod-helpers";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
 
 const tags = ["discounts"];
@@ -17,6 +17,8 @@ export const DiscountResponseSchema = DiscountsModel.extend({
   .extend({
     restricted_to: z.array(z.string()),
   });
+
+
 
 export const list_discounts = createRoute({
   path: "/discounts",
@@ -36,11 +38,7 @@ export const create_discount = createRoute({
   tags,
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      z.array(
-        DiscountsModel.extend({
-          custom_data: jsonSchema,
-        })
-      ),
+      DiscountResponseSchema,
       "Creates a new Discount"
     ),
     [HttpStatusCodes.BAD_REQUEST]: jsonContent(
@@ -65,7 +63,7 @@ export const get_discount = createRoute({
       "Returns a Discount by ID"
     ),
     [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      z.object({ error: z.string(), message: z.string() }),
+      ErrorSchema,
       "Discount not found"
     ),
   },
