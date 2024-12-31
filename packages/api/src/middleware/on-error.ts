@@ -35,6 +35,18 @@ const onError: ErrorHandler = (err, c) => {
       HttpStatusCodes.BAD_REQUEST
     );
   }
+
+  if (err.name === "ZodError") {
+    return c.json(
+      {
+        meesage: "Bad Request",
+        // message: err.message,
+        // @ts-expect-error
+        errors: err?.errors!,
+      },
+      HttpStatusCodes.BAD_REQUEST
+    );
+  }
   return c.json(
     {
       message: err.message,

@@ -17,7 +17,7 @@ export const AddressesModel = z.object({
   status: z.nativeEnum(Entity_Status).nullish(),
   created_at: z.date(),
   updated_at: z.date(),
-  customers_id: z.string().nullish(),
+  customer_id: z.string().nullish(),
 })
 
 export interface CompleteAddresses extends z.infer<typeof AddressesModel> {

@@ -318,6 +318,6 @@ model Addresses {
   status       Entity_Status? @default(active)
   created_at   DateTime       @default(now())
   updated_at   DateTime
-  Customers    Customers?     @relation(fields: [customers_id], references: [id])
-  customers_id String?
+  Customers    Customers?     @relation(fields: [customer_id], references: [id])
+  customer_id String?
 }
