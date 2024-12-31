@@ -83,7 +83,7 @@ export const update_discount = createRoute({
       "Updates a Discount by ID"
     ),
     [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      z.object({ error: z.string(), message: z.string() }),
+      ErrorSchema,
       "Discount not found"
     ),
     // [HttpStatusCodes.BAD_REQUEST]: jsonContent(

@@ -188,9 +188,12 @@ export const get_discount: APPRouteHandler<GetDiscount> = async (
     custom_data: discount.custom_data as Json,
     created_at: discount.created_at,
     updated_at: discount.updated_at,
-  } satisfies z.infer<typeof DiscountResponseSchema>;
+  };
 
-  return c.json(formattedDiscount, HttpStatusCodes.OK);
+  return c.json(
+    formattedDiscount as z.infer<typeof DiscountResponseSchema>,
+    HttpStatusCodes.OK
+  );
 };
 
 export const update_discount: APPRouteHandler<UpdateDiscount> = async (
@@ -212,10 +215,11 @@ export const update_discount: APPRouteHandler<UpdateDiscount> = async (
   });
 
   if (!discount) {
-    return c.json(
-      { error: "Discount not found", message: "BAD REQUEST" },
-      HttpStatusCodes.NOT_FOUND
-    );
+    const errorResponse: z.infer<typeof ErrorSchema> = {
+      error: "Discount not found",
+      message: "BAD REQUEST",
+    };
+    return c.json(errorResponse, HttpStatusCodes.NOT_FOUND);
   }
 
   const formattedDiscount = {
@@ -237,7 +241,10 @@ export const update_discount: APPRouteHandler<UpdateDiscount> = async (
     custom_data: discount.custom_data as Json,
     created_at: discount.created_at,
     updated_at: discount.updated_at,
-  } satisfies z.infer<typeof DiscountResponseSchema>;
+  };
 
-  return c.json(formattedDiscount, HttpStatusCodes.OK);
+  return c.json(
+    formattedDiscount as z.infer<typeof DiscountResponseSchema>,
+    HttpStatusCodes.OK
+  );
 };

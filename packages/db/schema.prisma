@@ -296,14 +296,28 @@ model Discount_Prices {
 }
 
 model Customers {
-  id          String        @id
-  email       String
+  id          String         @id
+  email       String         @unique
   name        String
   status      Entity_Status? @default(active)
   description String?
   custom_data Json?
   created_at  DateTime
-  updated_at  DateTime      @updatedAt
-  Project     Project?      @relation(fields: [projectId], references: [id])
+  updated_at  DateTime       @updatedAt
+  Project     Project?       @relation(fields: [projectId], references: [id])
   projectId   String?
+  Addresses   Addresses[]
+}
+
+model Addresses {
+  id           String         @id
+  description  String?
+  first_line   String?
+  custom_data  Json?
+  city         String?
+  status       Entity_Status? @default(active)
+  created_at   DateTime       @default(now())
+  updated_at   DateTime
+  Customers    Customers?     @relation(fields: [customers_id], references: [id])
+  customers_id String?
 }
