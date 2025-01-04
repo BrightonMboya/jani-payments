@@ -39,7 +39,7 @@ const withAuth = async (c: Context, next: Next) => {
 
     await next();
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return c.json({ error: "Authentication failed" }, 401);
   }
 };

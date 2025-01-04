@@ -26,7 +26,7 @@ const selectDiscountFields = {
     },
   },
   recur: true,
-  max_recuring_intervals: true,
+  max_recurring_intervals: true,
   usage_limit: true,
   times_used: true,
   expires_at: true,
@@ -66,8 +66,8 @@ export const list: APPRouteHandler<ListDiscounts> = async (c: Context) => {
       type: d.type,
       restricted_to: d.discount_prices.map((dp) => dp.price_id),
       recur: d.recur,
-      max_recuring_intervals: d.max_recuring_intervals
-        ? Number(d.max_recuring_intervals)
+      max_recurring_intervals: d.max_recurring_intervals
+        ? Number(d.max_recurring_intervals)
         : null,
       usage_limit: d.usage_limit,
       times_used: d.times_used,
@@ -108,7 +108,7 @@ export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
       currency_code: input.currency_code,
       type: input.type,
       recur: input.recur,
-      max_recuring_intervals: input.max_recuring_intervals,
+      max_recurring_intervals: input.max_recurring_intervals,
       usage_limit: input.usage_limit,
       expires_at: input.expires_at,
       created_at: new Date(),
@@ -136,8 +136,8 @@ export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
     type: discount.type,
     restricted_to: discount.discount_prices.map((dp) => dp.price_id),
     recur: discount.recur,
-    max_recuring_intervals: discount.max_recuring_intervals
-      ? Number(discount.max_recuring_intervals)
+    max_recurring_intervals: discount.max_recurring_intervals
+      ? Number(discount.max_recurring_intervals)
       : null,
     usage_limit: discount.usage_limit,
     times_used: discount.times_used,
@@ -179,8 +179,8 @@ export const get_discount: APPRouteHandler<GetDiscount> = async (
     type: discount.type,
     restricted_to: discount.discount_prices.map((dp) => dp.price_id),
     recur: discount.recur,
-    max_recuring_intervals: discount.max_recuring_intervals
-      ? Number(discount.max_recuring_intervals)
+    max_recuring_intervals: discount.max_recurring_intervals
+      ? Number(discount.max_recurring_intervals)
       : null,
     usage_limit: discount.usage_limit,
     times_used: discount.times_used,
@@ -232,8 +232,8 @@ export const update_discount: APPRouteHandler<UpdateDiscount> = async (
     type: discount.type,
     restricted_to: discount.discount_prices.map((dp) => dp.price_id),
     recur: discount.recur,
-    max_recuring_intervals: discount.max_recuring_intervals
-      ? Number(discount.max_recuring_intervals)
+    max_recurring_intervals: discount.max_recurring_intervals
+      ? Number(discount.max_recurring_intervals)
       : null,
     usage_limit: discount.usage_limit,
     times_used: discount.times_used,
@@ -241,7 +241,7 @@ export const update_discount: APPRouteHandler<UpdateDiscount> = async (
     custom_data: discount.custom_data as Json,
     created_at: discount.created_at,
     updated_at: discount.updated_at,
-  };
+  } 
 
   return c.json(
     formattedDiscount as z.infer<typeof DiscountResponseSchema>,

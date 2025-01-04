@@ -30,7 +30,7 @@ const onError: ErrorHandler = (err, c) => {
       {
         error: "Bad Request",
         // @ts-expect-error
-        message: err.meta.cause,
+        message: err.meta.cause || "One or more fields in the request body are invalid",
       },
       HttpStatusCodes.BAD_REQUEST
     );

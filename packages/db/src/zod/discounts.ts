@@ -1,6 +1,6 @@
 import * as z from "zod"
 import { Discount_Status, Discount_type } from "@prisma/client"
-import { CompleteDiscount_Prices, RelatedDiscount_PricesModel, CompleteProject, RelatedProjectModel } from "./index"
+import { CompleteDiscount_Prices, RelatedDiscount_PricesModel, CompleteProject, RelatedProjectModel, CompleteSubscriptions, RelatedSubscriptionsModel } from "./index"
 
 // Helper schema for JSON fields
 type Literal = boolean | number | string
@@ -17,7 +17,7 @@ export const DiscountsModel = z.object({
   currency_code: z.string(),
   type: z.nativeEnum(Discount_type),
   recur: z.boolean().nullish(),
-  max_recuring_intervals: z.number().nullish(),
+  max_recurring_intervals: z.number().nullish(),
   usage_limit: z.number().int(),
   expires_at: z.date().nullish(),
   custom_data: jsonSchema,
@@ -30,6 +30,7 @@ export const DiscountsModel = z.object({
 export interface CompleteDiscounts extends z.infer<typeof DiscountsModel> {
   discount_prices: CompleteDiscount_Prices[]
   Project?: CompleteProject | null
+  Subscriptions: CompleteSubscriptions[]
 }
 
 /**
@@ -40,4 +41,5 @@ export interface CompleteDiscounts extends z.infer<typeof DiscountsModel> {
 export const RelatedDiscountsModel: z.ZodSchema<CompleteDiscounts> = z.lazy(() => DiscountsModel.extend({
   discount_prices: RelatedDiscount_PricesModel.array(),
   Project: RelatedProjectModel.nullish(),
+  Subscriptions: RelatedSubscriptionsModel.array(),
 }))

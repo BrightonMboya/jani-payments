@@ -52,6 +52,7 @@ model Project {
   prices            Prices[]
   discounts         Discounts[]
   customers         Customers[]
+  Subscriptions     Subscriptions[]
 
   @@index(usageLastChecked(sort: Asc))
 }
@@ -226,25 +227,26 @@ model UnitPrice {
 
 // Main Price model
 model Prices {
-  id              String               @id
-  type            PriceType            @default(standard)
-  description     String?
-  name            String
-  billing_cycle   BillingCycle?        @relation(fields: [billingCycle_id], references: [id])
-  billingCycle_id String?
-  trial_period    Json? // Using Json type for flexible trial period structure
+  id                 String               @id
+  type               PriceType            @default(standard)
+  description        String?
+  name               String
+  billing_cycle      BillingCycle?        @relation(fields: [billingCycle_id], references: [id])
+  billingCycle_id    String?
+  trial_period       Json? // Using Json type for flexible trial period structure
   // tax_mode            TaxMode
-  unit_price      UnitPrice[]
-  custom_data     Json? // Flexible custom data storage
-  status          PriceStatus
-  quantity        QuantityConstraints?
-  created_at      DateTime
-  updated_at      DateTime             @updatedAt
-  Products        Products?            @relation(fields: [product_id], references: [id])
-  product_id      String
-  Project         Project              @relation(fields: [projectId], references: [id])
-  projectId       String
-  Discount_Prices Discount_Prices[]
+  unit_price         UnitPrice[]
+  custom_data        Json? // Flexible custom data storage
+  status             PriceStatus
+  quantity           QuantityConstraints?
+  created_at         DateTime
+  updated_at         DateTime             @updatedAt
+  Products           Products?            @relation(fields: [product_id], references: [id])
+  product_id         String
+  Project            Project              @relation(fields: [projectId], references: [id])
+  projectId          String
+  Discount_Prices    Discount_Prices[]
+  Subscription_Items SubscriptionItems[]
 
   @@index([product_id])
 }
@@ -274,7 +276,7 @@ model Discounts {
   currency_code          String
   type                   Discount_type
   recur                  Boolean?
-  max_recuring_intervals Decimal?
+  max_recurring_intervals Decimal?
   usage_limit            Int
   expires_at             DateTime?
   custom_data            Json?
@@ -284,6 +286,7 @@ model Discounts {
   updated_at             DateTime
   Project                Project?          @relation(fields: [projectId], references: [id])
   projectId              String?
+  Subscriptions          Subscriptions[]
 }
 
 model Discount_Prices {
@@ -296,28 +299,150 @@ model Discount_Prices {
 }
 
 model Customers {
-  id          String         @id
-  email       String         @unique
-  name        String
-  status      Entity_Status? @default(active)
-  description String?
-  custom_data Json?
-  created_at  DateTime
-  updated_at  DateTime       @updatedAt
-  Project     Project?       @relation(fields: [projectId], references: [id])
-  projectId   String?
-  Addresses   Addresses[]
+  id            String          @id
+  email         String          @unique
+  name          String
+  status        Entity_Status?  @default(active)
+  description   String?
+  custom_data   Json?
+  created_at    DateTime
+  updated_at    DateTime        @updatedAt
+  Project       Project?        @relation(fields: [projectId], references: [id])
+  projectId     String?
+  Addresses     Addresses[]
+  Subscriptions Subscriptions[]
 }
 
 model Addresses {
-  id           String         @id
-  description  String?
-  first_line   String?
-  custom_data  Json?
-  city         String?
-  status       Entity_Status? @default(active)
-  created_at   DateTime       @default(now())
-  updated_at   DateTime
-  Customers    Customers?     @relation(fields: [customer_id], references: [id])
-  customer_id String?
+  id            String          @id
+  description   String?
+  first_line    String?
+  custom_data   Json?
+  city          String?
+  status        Entity_Status?  @default(active)
+  created_at    DateTime        @default(now())
+  updated_at    DateTime
+  Customers     Customers?      @relation(fields: [customer_id], references: [id])
+  customer_id   String?
+  Subscriptions Subscriptions[]
+}
+
+enum SubscriptionsStatus {
+  active
+  cancelled
+  past_due
+  paused
+  trial
+}
+
+enum CollectionMode {
+  automatic
+  manual
+}
+
+enum SubscriptionItemsStatus {
+  active
+  inactive
+  trialing
+}
+
+model SubscriptionItems {
+  id              String        @id
+  subscription    Subscriptions @relation(fields: [subscription_id], references: [id])
+  subscription_id String
+  price           Prices        @relation(fields: [price_id], references: [id])
+  price_id        String
+
+  quantity             Int
+  status               SubscriptionItemsStatus
+  recurring            Boolean
+  created_at           DateTime                  @default(now())
+  updated_at           DateTime                  @updatedAt
+  // billing dates
+  previously_billed_at DateTime?
+  next_billed_at       DateTime?
+  // trial dates
+  trial_started_at     DateTime?
+  trial_ended_at       DateTime?
+  custom_data          Json?
+}
+
+enum ScheduledChangeAction {
+  pause
+  resume
+  cancel
+}
+
+model Subscription_Scheduled_Changes {
+  id              String                @id @default(cuid())
+  subscription    Subscriptions         @relation(fields: [subscription_id], references: [id])
+  subscription_id String
+  action          ScheduledChangeAction
+  effective_at    DateTime
+  resumes_at      DateTime?
+
+  @@index([subscription_id])
+  @@index([effective_at])
+}
+
+model BillingDetails {
+  id                     String          @id @default(cuid())
+  subscription           Subscriptions   @relation(fields: [subscription_id], references: [id])
+  subscription_id        String          @unique // one billing detail per subscription
+  payment_interval       BillingInterval
+  payment_frequency      Int
+  enable_checkout        Boolean         @default(false)
+  purchase_order_number  String?
+  additional_information String?
+  created_at             DateTime        @default(now())
+  updated_at             DateTime        @updatedAt
+}
+
+model Subscriptions {
+  id            String               @id
+  status        SubscriptionsStatus
+  currency_code String
+
+  // Temporal Data
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  started_at      DateTime?
+  first_billed_at DateTime?
+  next_billed_at  DateTime?
+  paused_at       DateTime?
+  canceled_at     DateTime?
+
+  // current_billing_period
+  current_period_starts DateTime?
+  current_period_ends   DateTime?
+
+  // billing_cycle info
+  billing_cycle_interval  BillingInterval
+  billing_cycle_frequency Int
+
+  // management_urls
+  update_payment_method_url String?
+  cancel_url                String?
+
+  // relations
+  customer    Customers @relation(fields: [customer_id], references: [id])
+  customer_id String
+  address     Addresses @relation(fields: [address_id], references: [id])
+  address_id  String
+  project     Project   @relation(fields: [project_id], references: [id])
+  project_id  String
+
+  // Active Discount
+  discount    Discounts? @relation(fields: [discount_id], references: [id])
+  discount_id String?
+
+  collection_mode CollectionMode
+
+  Subscription_Items             SubscriptionItems[]
+  Subscription_Scheduled_Changes Subscription_Scheduled_Changes[]
+  BillingDetails                 BillingDetails?
+
+  @@index([customer_id])
+  @@index([project_id])
+  @@index([next_billed_at])
 }
