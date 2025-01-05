@@ -19,14 +19,14 @@ const routes = [
   subscriptions,
 ] as const;
 
+routes.forEach((route) => {
+  app.route("/", route);
+});
 
 app.get("/", (c) => {
   return c.text("Hello Hono!");
 });
 
-routes.forEach((route) => {
-  app.route("/", route);
-});
 
 export type AppType = (typeof routes)[number];
 export default app;

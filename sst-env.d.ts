@@ -6,5 +6,9 @@ import "sst"
 export {}
 declare module "sst" {
   export interface Resource {
+    "Hono": {
+      "type": "sst.cloudflare.Worker"
+      "url": string
+    }
   }
 }

@@ -3,7 +3,7 @@
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  previewFeatures = ["driverAdapters", "omitApi"]
 }
 
 datasource db {
@@ -268,25 +268,25 @@ enum Discount_type {
 }
 
 model Discounts {
-  id                     String            @id
-  status                 Discount_Status?  @default(active)
-  description            String?
-  enabled_for_checkout   Boolean?
-  amount                 Decimal
-  currency_code          String
-  type                   Discount_type
-  recur                  Boolean?
+  id                      String            @id
+  status                  Discount_Status?  @default(active)
+  description             String?
+  enabled_for_checkout    Boolean?
+  amount                  Decimal
+  currency_code           String
+  type                    Discount_type
+  recur                   Boolean?
   max_recurring_intervals Decimal?
-  usage_limit            Int
-  expires_at             DateTime?
-  custom_data            Json?
-  discount_prices        Discount_Prices[]
-  times_used             Int?              @default(0)
-  created_at             DateTime
-  updated_at             DateTime
-  Project                Project?          @relation(fields: [projectId], references: [id])
-  projectId              String?
-  Subscriptions          Subscriptions[]
+  usage_limit             Int
+  expires_at              DateTime?
+  custom_data             Json?
+  discount_prices         Discount_Prices[]
+  times_used              Int?              @default(0)
+  created_at              DateTime
+  updated_at              DateTime
+  Project                 Project?          @relation(fields: [projectId], references: [id])
+  projectId               String?
+  Subscriptions           Subscriptions[]
 }
 
 model Discount_Prices {
@@ -356,8 +356,8 @@ model SubscriptionItems {
   quantity             Int
   status               SubscriptionItemsStatus
   recurring            Boolean
-  created_at           DateTime                  @default(now())
-  updated_at           DateTime                  @updatedAt
+  created_at           DateTime                @default(now())
+  updated_at           DateTime                @updatedAt
   // billing dates
   previously_billed_at DateTime?
   next_billed_at       DateTime?
@@ -399,7 +399,7 @@ model BillingDetails {
 }
 
 model Subscriptions {
-  id            String               @id
+  id            String              @id
   status        SubscriptionsStatus
   currency_code String
 

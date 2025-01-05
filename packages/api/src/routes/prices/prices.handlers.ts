@@ -10,6 +10,32 @@ import { PrismaClient } from "@repo/db/types";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import * as HttpsStatusPhrases from "~/lib/http-status-phrases";
 
+export const PricesDefaultSelect = {
+  id: true,
+  type: true,
+  description: true,
+  name: true,
+  trial_period: true,
+  custom_data: true,
+  status: true,
+  unit_price: {
+    select: {
+      amount: true,
+      currency_code: true,
+    },
+  },
+  billing_cycle: {
+    select: {
+      interval: true,
+      frequency: true,
+    },
+  },
+  quantity: true,
+  created_at: true,
+  updated_at: true,
+  product_id: true,
+};
+
 export const list: APPRouteHandler<ListPrices> = async (c: Context) => {
   const user = c.get("user");
   const db: PrismaClient = c.get("db");
@@ -27,31 +53,7 @@ export const list: APPRouteHandler<ListPrices> = async (c: Context) => {
     where: {
       projectId: project_id?.id,
     },
-    select: {
-      id: true,
-      type: true,
-      description: true,
-      name: true,
-      trial_period: true,
-      custom_data: true,
-      status: true,
-      unit_price: {
-        select: {
-          amount: true,
-          currency_code: true,
-        },
-      },
-      billing_cycle: {
-        select: {
-          interval: true,
-          frequency: true,
-        },
-      },
-      quantity: true,
-      created_at: true,
-      updated_at: true,
-      product_id: true,
-    },
+    select: PricesDefaultSelect,
   });
 
   return c.json(prices);

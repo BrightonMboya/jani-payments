@@ -1,39 +1,16 @@
-import { type CreateSubscription } from "./subscription.routes";
+import {
+  type CreateSubscription,
+  GetSubscription,
+  ListSubscription,
+} from "./subscription.routes";
 import { type APPRouteHandler } from "~/lib/types";
 import { type Context } from "hono";
 import { PrismaClient } from "@repo/db/types";
+import { type SubscriptionItemsStatus } from "@repo/db/types";
+import { createSubscriptionSchema, transformSubscription } from "./helpers";
+import { ErrorSchema } from "~/lib/utils/zod-helpers";
 import { z } from "zod";
-import { type BillingInterval, SubscriptionItemsStatus } from "@repo/db/types";
-
-const createSubscriptionSchema = z.object({
-  customer_id: z.string(),
-  address_id: z.string(),
-  //   project_id: z.string(),
-  currency_code: z.string(),
-  collection_mode: z.enum(["automatic", "manual"]),
-  billing_cycle: z.object({
-    interval: z.enum(["day", "week", "month", "year"]),
-    frequency: z.number().int().positive(),
-  }),
-  items: z
-    .array(
-      z.object({
-        price_id: z.string(),
-        quantity: z.number().int().positive(),
-      })
-    )
-    .min(1),
-  discount_id: z.string().optional(),
-  billing_details: z
-    .object({
-      payment_interval: z.enum(["day", "week", "month", "year"]),
-      payment_frequency: z.number().int().positive(),
-      enable_checkout: z.boolean().optional(),
-      purchase_order_number: z.string().optional(),
-      additional_information: z.string().optional(),
-    })
-    .optional(),
-});
+import * as HttpStatusCodes from "~/lib/http-status-code";
 
 export const create_subscription: APPRouteHandler<CreateSubscription> = async (
   c: Context
@@ -66,9 +43,14 @@ export const create_subscription: APPRouteHandler<CreateSubscription> = async (
     });
 
     if (prices.length !== input.items.length) {
-      throw new Error(
-        "One or more prices not found or do not belong to project"
-      );
+      const errorResponse: z.infer<typeof ErrorSchema> = {
+        error: "One or more prices not found or do not belong to projec",
+        message: "BAD REQUEST",
+      };
+      return c.json(errorResponse, HttpStatusCodes.BAD_REQUEST);
+      // throw new Error(
+      //   "One or more prices not found or do not belong to project"
+      // );
     }
 
     // 2. If discount provided, verify it exists and is valid
@@ -84,7 +66,12 @@ export const create_subscription: APPRouteHandler<CreateSubscription> = async (
       });
 
       if (!discount) {
-        throw new Error("Discount not found or is invalid");
+        const errorResponse: z.infer<typeof ErrorSchema> = {
+          error: "One or more prices not found or do not belong to projec",
+          message: "BAD REQUEST",
+        };
+        return c.json(errorResponse, HttpStatusCodes.BAD_REQUEST);
+        // throw new Error("Discount not found or is invalid");
       }
     }
 
@@ -137,5 +124,105 @@ export const create_subscription: APPRouteHandler<CreateSubscription> = async (
 
     return subscription;
   });
-  return c.json(subscription, 200);
+
+  const transformedSubscription = transformSubscription(subscription);
+  return c.json(transformedSubscription, 200);
+};
+
+export const list_subscriptions: APPRouteHandler<ListSubscription> = async (
+  c: Context
+) => {
+  const db: PrismaClient = c.get("db");
+  const user = c.get("user");
+  const project_id = await db.project.findUnique({
+    where: {
+      slug: user?.user.defaultWorkspace,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  const subscriptions = await db.subscriptions.findMany({
+    where: {
+      project_id: project_id?.id!,
+    },
+    include: {
+      Subscription_Items: {
+        include: {
+          price: {
+            omit: {
+              projectId: true,
+            },
+            include: {
+              Products: {
+                omit: {
+                  project_id: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const transformedSubscriptions = subscriptions.map((x) =>
+    transformSubscription(x)
+  );
+
+  return c.json(transformedSubscriptions, 200);
+};
+
+export const get_subscription: APPRouteHandler<GetSubscription> = async (
+  c: Context
+) => {
+  const db: PrismaClient = c.get("db");
+  const user = c.get("user");
+  const subscription_id = c.req.param("subscription_id");
+  const project_id = await db.project.findUnique({
+    where: {
+      slug: user?.user.defaultWorkspace,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  const subscription = await db.subscriptions.findUnique({
+    where: {
+      id: subscription_id,
+      project_id: project_id?.id!,
+    },
+    include: {
+      Subscription_Items: {
+        include: {
+          price: {
+            omit: {
+              projectId: true,
+            },
+            include: {
+              Products: {
+                omit: {
+                  project_id: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!subscription) {
+    const errorResponse: z.infer<typeof ErrorSchema> = {
+      error: "Subscription not found",
+      message: "BAD REQUEST",
+    };
+    return c.json(errorResponse, HttpStatusCodes.NOT_FOUND);
+  }
+
+  const transformedSubscription = transformSubscription(subscription);
+
+  return c.json(transformedSubscription, 200);
 };
