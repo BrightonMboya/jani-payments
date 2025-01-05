@@ -12,7 +12,7 @@ export default $config({
   async run() {
     const hono = new sst.cloudflare.Worker("Hono", {
       url: true,
-      handler: "index.ts"
+      handler: "packages/api/src/index.ts"
     });
     return {
       api: hono.url
