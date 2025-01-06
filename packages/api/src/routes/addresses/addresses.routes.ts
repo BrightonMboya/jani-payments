@@ -4,6 +4,7 @@ import jsonContent from "~/lib/json-content";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
 import { AddressesModel } from "@repo/db/zod/addresses.ts";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
+import { CreateAddressSchema, UpdateAddressSchema } from "./helpers";
 
 export const AddressResponseSchema = AddressesModel.extend({
   custom_data: jsonSchema,
@@ -36,6 +37,13 @@ export const create = createRoute({
     params: z.object({
       customer_id: z.string(),
     }),
+    body: {
+      content: {
+        "application/json": {
+          schema: CreateAddressSchema,
+        },
+      },
+    },
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
@@ -73,6 +81,13 @@ export const update_address = createRoute({
       customer_id: z.string(),
       address_id: z.string(),
     }),
+    body: {
+      content: {
+        "application/json": {
+          schema: UpdateAddressSchema,
+        },
+      },
+    },
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(

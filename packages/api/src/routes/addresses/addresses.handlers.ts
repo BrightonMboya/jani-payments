@@ -11,6 +11,7 @@ import * as HttpStatusCodes from "~/lib/http-status-code";
 import { z } from "zod";
 import { AddressResponseSchema } from "./addresses.routes";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
+import { CreateAddressSchema, UpdateAddressSchema } from "./helpers";
 
 export const list: APPRouteHandler<ListAddresses> = async (c: Context) => {
   const db: PrismaClient = c.get("db");
@@ -28,10 +29,12 @@ export const list: APPRouteHandler<ListAddresses> = async (c: Context) => {
 export const create: APPRouteHandler<CreateAddresses> = async (c: Context) => {
   const db: PrismaClient = c.get("db");
   const customer_id = c.req.param("customer_id");
-  const input = await c.req.json();
+  const raw_input = await c.req.json();
+  const input = CreateAddressSchema.parse(raw_input);
   const address = await db.addresses.create({
     data: {
       ...input,
+      custom_data: input.custom_data as any,
       id: `add-${crypto.randomUUID()}`,
       customer_id: customer_id,
       updated_at: new Date(),
@@ -67,7 +70,8 @@ export const update_address: APPRouteHandler<UpdateAddress> = async (
   const db: PrismaClient = c.get("db");
   const address_id = c.req.param("address_id");
   const customer_id = c.req.param("customer_id");
-  const input = await c.req.json();
+  const raw_input = await c.req.json();
+  const input = UpdateAddressSchema.parse(raw_input);
   const address = await db.addresses.update({
     where: {
       id: address_id,
@@ -75,6 +79,7 @@ export const update_address: APPRouteHandler<UpdateAddress> = async (
     },
     data: {
       ...input,
+      custom_data: input.custom_data as any,
       updated_at: new Date(),
     },
   });
