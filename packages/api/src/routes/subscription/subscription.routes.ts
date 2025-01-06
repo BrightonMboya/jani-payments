@@ -2,7 +2,10 @@ import { createRoute, z } from "@hono/zod-openapi";
 import * as HttpsStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
 import { SubscriptionsModel } from "@repo/db/zod/subscriptions.ts";
-import { transformedSubscriptionSchema } from "./helpers";
+import {
+  createSubscriptionSchema,
+  transformedSubscriptionSchema,
+} from "./helpers";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
 
 const tags = ["subscription"];
@@ -11,6 +14,15 @@ export const create_subscription = createRoute({
   path: "/subscription",
   method: "post",
   tags,
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: createSubscriptionSchema,
+        },
+      },
+    },
+  },
   responses: {
     [HttpsStatusCodes.CREATED]: jsonContent(
       transformedSubscriptionSchema,

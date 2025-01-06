@@ -1,41 +1,24 @@
 import { z } from "zod";
-import {
-  type SubscriptionItems,
-  SubscriptionItemsStatus,
-  Prices,
-  Subscriptions,
-} from "@repo/db/types";
-
-import { PricesModel } from "@repo/db/zod/prices.ts";
+import { SubscriptionItemsStatus, type Prisma } from "@repo/db/types";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
+import { DiscountResponseSchema } from "../discounts/discounts.routes";
+import { PricesSchema } from "../prices/prices.routes";
 
-// interface Subscriptions {
-//   id: string;
-//   status: string;
-//   customer_id: string;
-//   address_id: string;
-//   currency_code: string;
-//   created_at: Date;
-//   updated_at: Date;
-//   started_at?: Date;
-//   first_billed_at?: Date;
-//   next_billed_at?: Date;
-//   paused_at?: Date;
-//   canceled_at?: Date;
-//   collection_mode: string;
-//   current_period_starts?: Date;
-//   current_period_ends?: Date;
-//   billing_cycle_frequency: number;
-//   billing_cycle_interval: string;
-//   Subscription_Items: SubscriptionItems[];
-//   update_payment_method_url: string | null;
-//   cancel_url: string | null;
-// }
+type Subscriptions = Prisma.SubscriptionsGetPayload<{
+  include: {
+    Subscription_Items: {
+      include: {
+        price: true;
+      };
+    };
+    discount: true;
+  };
+}>;
 
 export const createSubscriptionSchema = z.object({
   customer_id: z.string(),
   address_id: z.string(),
-  //   project_id: z.string(),
+    // project_id: z.string(),
   currency_code: z.string(),
   collection_mode: z.enum(["automatic", "manual"]),
   billing_cycle: z.object({
@@ -103,10 +86,7 @@ export const transformedSubscriptionSchema = z.object({
         trial_started_at: z.date().nullable(),
         trial_ended_at: z.date().nullable(),
         custom_data: z.any(),
-        price: z.object({
-          PricesModel,
-          // Define the structure of the price object here
-        }),
+        price: PricesSchema,
       })
     ),
     custom_data: jsonSchema,
@@ -114,7 +94,7 @@ export const transformedSubscriptionSchema = z.object({
       update_payment_method: z.string().nullable(),
       cancel: z.string().nullable(),
     }),
-    discount: z.null(),
+    discount: DiscountResponseSchema,
   }),
 });
 
@@ -159,7 +139,6 @@ export function transformSubscription(
       },
       scheduled_change: null,
       //   items: input.Subscription_Items,\
-      //@ts-expect-error
       items: input.Subscription_Items.map((item) => ({
         status: item.status as SubscriptionItemsStatus,
         price_id: item.price_id,
@@ -191,7 +170,7 @@ export function transformSubscription(
         update_payment_method: input.update_payment_method_url,
         cancel: input.cancel_url,
       },
-      discount: null,
+      discount: input.discount || null,
     },
   };
 }

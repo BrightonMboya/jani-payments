@@ -7,7 +7,7 @@ import { ErrorSchema } from "~/lib/utils/zod-helpers";
 
 const tags = ["prices"];
 
-const PricesSchema = PriceModel.extend({
+export const PricesSchema = PriceModel.extend({
   trial_period: jsonSchema,
   custom_data: jsonSchema,
 }).omit({

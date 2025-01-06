@@ -195,6 +195,11 @@ export const get_subscription: APPRouteHandler<GetSubscription> = async (
       project_id: project_id?.id!,
     },
     include: {
+      discount: {
+        omit: {
+          projectId: true,
+        },
+      },
       Subscription_Items: {
         include: {
           price: {

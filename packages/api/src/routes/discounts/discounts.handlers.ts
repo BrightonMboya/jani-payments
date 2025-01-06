@@ -8,32 +8,15 @@ import {
 import { type Context } from "hono";
 import { PrismaClient } from "@repo/db/types";
 import * as HttpStatusCodes from "~/lib/http-status-code";
+import * as HttpStatusPhrases from "~/lib/http-status-phrases";
 import { z } from "zod";
 import { DiscountResponseSchema } from "./discounts.routes";
-import { Json, ErrorSchema } from "~/lib/utils/zod-helpers";
-
-const selectDiscountFields = {
-  id: true,
-  status: true,
-  description: true,
-  enabled_for_checkout: true,
-  amount: true,
-  currency_code: true,
-  type: true,
-  discount_prices: {
-    select: {
-      price_id: true,
-    },
-  },
-  recur: true,
-  max_recurring_intervals: true,
-  usage_limit: true,
-  times_used: true,
-  expires_at: true,
-  custom_data: true,
-  created_at: true,
-  updated_at: true,
-};
+import { ErrorSchema } from "~/lib/utils/zod-helpers";
+import {
+  CreateDiscountSchema,
+  transformDiscount,
+  UpdateDiscountSchema,
+} from "./helpers";
 
 export const list: APPRouteHandler<ListDiscounts> = async (c: Context) => {
   const user = c.get("user");
@@ -52,30 +35,20 @@ export const list: APPRouteHandler<ListDiscounts> = async (c: Context) => {
     where: {
       projectId: project_id?.id,
     },
-    select: selectDiscountFields,
+    omit: {
+      projectId: true,
+    },
+    include: {
+      discount_prices: {
+        select: {
+          price_id: true,
+        },
+      },
+    },
   });
-
-  const formattedDiscounts: z.infer<typeof DiscountResponseSchema>[] =
-    discounts.map((d) => ({
-      id: d.id,
-      status: d.status,
-      description: d.description,
-      enabled_for_checkout: d.enabled_for_checkout,
-      amount: Number(d.amount),
-      currency_code: d.currency_code,
-      type: d.type,
-      restricted_to: d.discount_prices.map((dp) => dp.price_id),
-      recur: d.recur,
-      max_recurring_intervals: d.max_recurring_intervals
-        ? Number(d.max_recurring_intervals)
-        : null,
-      usage_limit: d.usage_limit,
-      times_used: d.times_used,
-      expires_at: d.expires_at,
-      custom_data: d.custom_data as Json,
-      created_at: d.created_at,
-      updated_at: d.updated_at,
-    }));
+  const formattedDiscounts = discounts.map((discount) =>
+    transformDiscount(discount)
+  );
 
   return c.json(
     formattedDiscounts as z.infer<typeof DiscountResponseSchema>[],
@@ -86,7 +59,8 @@ export const list: APPRouteHandler<ListDiscounts> = async (c: Context) => {
 export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
   const user = c.get("user");
   const db: PrismaClient = c.get("db");
-  const input = await c.req.json();
+  const raw_input = await c.req.json();
+  const input = CreateDiscountSchema.parse(raw_input);
 
   const project_id = await db.project.findUnique({
     where: {
@@ -113,7 +87,7 @@ export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
       expires_at: input.expires_at,
       created_at: new Date(),
       updated_at: new Date(),
-      custom_data: input.custom_data,
+      custom_data: input.custom_data!,
       // If input has price_ids, create discount_prices relations
       ...(input.price_ids && {
         discount_prices: {
@@ -123,29 +97,19 @@ export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
         },
       }),
     },
-    select: selectDiscountFields,
+    include: {
+      discount_prices: {
+        select: {
+          price_id: true,
+        },
+      },
+    },
+    omit: {
+      projectId: true,
+    },
   });
 
-  const transformedDiscount: z.infer<typeof DiscountResponseSchema> = {
-    id: discount.id,
-    status: discount.status,
-    description: discount.description,
-    enabled_for_checkout: discount.enabled_for_checkout,
-    amount: Number(discount.amount),
-    currency_code: discount.currency_code,
-    type: discount.type,
-    restricted_to: discount.discount_prices.map((dp) => dp.price_id),
-    recur: discount.recur,
-    max_recurring_intervals: discount.max_recurring_intervals
-      ? Number(discount.max_recurring_intervals)
-      : null,
-    usage_limit: discount.usage_limit,
-    times_used: discount.times_used,
-    expires_at: discount.expires_at,
-    custom_data: discount.custom_data as Json,
-    created_at: discount.created_at,
-    updated_at: discount.updated_at,
-  };
+  const transformedDiscount = transformDiscount(discount);
 
   return c.json(transformedDiscount, HttpStatusCodes.OK);
 };
@@ -159,8 +123,17 @@ export const get_discount: APPRouteHandler<GetDiscount> = async (
     where: {
       id: discount_id,
     },
-    select: selectDiscountFields,
-  })!!;
+    include: {
+      discount_prices: {
+        select: {
+          price_id: true,
+        },
+      },
+    },
+    omit: {
+      projectId: true,
+    },
+  });
 
   if (!discount) {
     const errorResponse: z.infer<typeof ErrorSchema> = {
@@ -169,26 +142,8 @@ export const get_discount: APPRouteHandler<GetDiscount> = async (
     };
     return c.json(errorResponse, HttpStatusCodes.NOT_FOUND);
   }
-  const formattedDiscount = {
-    id: discount.id,
-    status: discount.status,
-    description: discount.description,
-    enabled_for_checkout: discount.enabled_for_checkout,
-    amount: Number(discount.amount),
-    currency_code: discount.currency_code,
-    type: discount.type,
-    restricted_to: discount.discount_prices.map((dp) => dp.price_id),
-    recur: discount.recur,
-    max_recuring_intervals: discount.max_recurring_intervals
-      ? Number(discount.max_recurring_intervals)
-      : null,
-    usage_limit: discount.usage_limit,
-    times_used: discount.times_used,
-    expires_at: discount.expires_at,
-    custom_data: discount.custom_data as Json,
-    created_at: discount.created_at,
-    updated_at: discount.updated_at,
-  };
+
+  const formattedDiscount = transformDiscount(discount);
 
   return c.json(
     formattedDiscount as z.infer<typeof DiscountResponseSchema>,
@@ -200,18 +155,28 @@ export const update_discount: APPRouteHandler<UpdateDiscount> = async (
   c: Context
 ) => {
   const db: PrismaClient = c.get("db");
-  // const { discount_id } = c.req.valid("param");
   const discount_id = c.req.param("discount_id");
-  const input = await c.req.json();
+  const raw_input = await c.req.json();
+  const input = UpdateDiscountSchema.parse(raw_input);
   const discount = await db.discounts.update({
     where: {
       id: discount_id,
     },
     data: {
       ...input,
+      custom_data: input.custom_data as any,
       updated_at: new Date(),
     },
-    select: selectDiscountFields,
+    include: {
+      discount_prices: {
+        select: {
+          price_id: true,
+        },
+      },
+    },
+    omit: {
+      projectId: true,
+    },
   });
 
   if (!discount) {
@@ -221,27 +186,7 @@ export const update_discount: APPRouteHandler<UpdateDiscount> = async (
     };
     return c.json(errorResponse, HttpStatusCodes.NOT_FOUND);
   }
-
-  const formattedDiscount = {
-    id: discount.id,
-    status: discount.status,
-    description: discount.description,
-    enabled_for_checkout: discount.enabled_for_checkout,
-    amount: Number(discount.amount),
-    currency_code: discount.currency_code,
-    type: discount.type,
-    restricted_to: discount.discount_prices.map((dp) => dp.price_id),
-    recur: discount.recur,
-    max_recurring_intervals: discount.max_recurring_intervals
-      ? Number(discount.max_recurring_intervals)
-      : null,
-    usage_limit: discount.usage_limit,
-    times_used: discount.times_used,
-    expires_at: discount.expires_at,
-    custom_data: discount.custom_data as Json,
-    created_at: discount.created_at,
-    updated_at: discount.updated_at,
-  } 
+  const formattedDiscount = transformDiscount(discount);
 
   return c.json(
     formattedDiscount as z.infer<typeof DiscountResponseSchema>,
