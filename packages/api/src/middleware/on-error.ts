@@ -39,7 +39,7 @@ const onError: ErrorHandler = (err, c) => {
   if (err.name === "ZodError") {
     return c.json(
       {
-        meesage: "Bad Request",
+        message: "Bad Request",
         // message: err.message,
         // @ts-expect-error
         errors: err?.errors!,

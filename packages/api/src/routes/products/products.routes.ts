@@ -3,7 +3,13 @@ import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
 import { ProductsModel } from "@repo/db/zod/products.ts";
 import {
+  CreateProductsSchema,
+  ProductsResponseSchema,
+  UpdateProductsSchema,
+} from "./helpers";
+import {
   createErrorSchema,
+  ErrorSchema,
   jsonSchema,
   notFoundSchema,
 } from "~/lib/utils/zod-helpers";
@@ -16,14 +22,7 @@ export const list = createRoute({
   tags,
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      z.array(
-        ProductsModel.extend({
-          custom_data: jsonSchema,
-        })
-        .omit({
-            project_id: true
-        })
-      ),
+      z.array(ProductsResponseSchema),
       "Lists all Products belonging to a specific merchant"
     ),
   },
@@ -37,25 +36,14 @@ export const create = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: ProductsModel.omit({
-            project_id: true,
-            id: true,
-            createdAt: true,
-            updatedAt: true,
-          }).extend({
-            custom_data: jsonSchema.optional(),
-          }),
+          schema: CreateProductsSchema,
         },
       },
     },
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      z.array(
-        ProductsModel.extend({
-          custom_data: jsonSchema,
-        })
-      ),
+      ProductsResponseSchema,
       "Creating Product endpoint"
     ),
   },
@@ -72,15 +60,10 @@ export const get_product = createRoute({
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      ProductsModel.extend({
-        custom_data: jsonSchema,
-      }).omit({ project_id: true }),
+      ProductsResponseSchema,
       "Returns a Product using its id"
     ),
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      z.object({ message: z.string() }),
-      "Product not found"
-    ),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(ErrorSchema, "Product not found"),
   },
 });
 
@@ -92,20 +75,22 @@ export const update_product = createRoute({
     params: z.object({
       product_id: z.string(),
     }),
+    body: {
+      content: {
+        "application/json": {
+          schema: UpdateProductsSchema,
+        },
+      },
+    },
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      ProductsModel.extend({
-        custom_data: jsonSchema,
-      }).omit({ project_id: true }),
+      ProductsResponseSchema,
       "Returns the updated Product"
     ),
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      notFoundSchema,
-      "Invalid Product Id"
-    ),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(ErrorSchema, "Invalid Product Id"),
     [HttpStatusCodes.BAD_REQUEST]: jsonContent(
-      { message: "Invalid field in update data" },
+      ErrorSchema,
       "Invalid Product Id"
     ),
   },

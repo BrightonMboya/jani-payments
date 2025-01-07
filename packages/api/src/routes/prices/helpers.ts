@@ -1,7 +1,6 @@
-import { PricesModel } from "@repo/db/zod/prices.ts";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
-// import { z } from "zod";
 import { z } from "@hono/zod-openapi";
+import { PricesModel } from "@repo/db/zod/prices.ts";
 import { BillingInterval, Entity_Status, PriceType } from "@repo/db/types";
 
 export const CreatePricesSchema = z.object({
@@ -32,25 +31,25 @@ export const PricesResponseSchema = CreatePricesSchema.extend({
   updated_at: z.date(),
 });
 
-export const UpdatePricesSchema = PricesResponseSchema.partial();
+export const UpdatePricesSchema = PricesResponseSchema.partial().strict();
 
-export const transformPrices = (price: z.infer<typeof UpdatePricesSchema>) => ({
+export const transformPrices = (price: z.infer<typeof PricesModel>) => ({
   id: price.id,
   product_id: price.product_id,
   description: price.description,
   type: price.type,
   name: price.name,
   billing_cycle: {
-    interval: price.billing_cycle?.interval,
-    frequency: price.billing_cycle?.frequency,
+    interval: price.billing_cycle_interval,
+    frequency: price.billing_cycle_frequency,
   },
   trial_period: {
-    interval: price.trial_period?.interval,
-    frequency: price.trial_period?.frequency,
+    interval: price.trial_period_interval,
+    frequency: price.trial_period_frequency,
   },
   unit_price: {
-    amount: price.unit_price?.amount,
-    currency_code: price.unit_price?.currency_code,
+    amount: price.amount,
+    currency_code: price.currency_code,
   },
   status: price.status,
   custom_data: price.custom_data,

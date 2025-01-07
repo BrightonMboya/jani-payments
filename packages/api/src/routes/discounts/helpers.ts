@@ -52,7 +52,7 @@ const BaseDiscountSchema = DiscountsModel.omit({
   price_ids: z.array(z.string()).optional(),
   custom_data: jsonSchema.optional().nullable(),
 });
-export const CreateDiscountSchema = BaseDiscountSchema.refine(
+export const CreateDiscountSchema = BaseDiscountSchema.strict().refine(
   (data) => !(data.type === "percentage" && data.amount > 100),
   {
     message: "Percentage discount cannot exceed 100%",
@@ -60,10 +60,12 @@ export const CreateDiscountSchema = BaseDiscountSchema.refine(
   }
 );
 
-export const UpdateDiscountSchema = BaseDiscountSchema.partial().refine(
-  (data) => !(data.type === "percentage" && data.amount && data.amount > 100),
-  {
-    message: "Percentage discount cannot exceed 100%",
-    path: ["amount"],
-  }
-);
+export const UpdateDiscountSchema = BaseDiscountSchema.partial()
+  .strict()
+  .refine(
+    (data) => !(data.type === "percentage" && data.amount && data.amount > 100),
+    {
+      message: "Percentage discount cannot exceed 100%",
+      path: ["amount"],
+    }
+  );

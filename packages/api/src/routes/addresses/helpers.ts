@@ -5,9 +5,10 @@ export const CreateAddressSchema = AddressesModel.omit({
   id: true,
   created_at: true,
   updated_at: true,
-}).extend({
-  custom_data: jsonSchema.optional(),
-});
+})
+  .extend({
+    custom_data: jsonSchema.optional(),
+  })
+  .strict();
 
-
-export const UpdateAddressSchema = CreateAddressSchema.partial()
+export const UpdateAddressSchema = CreateAddressSchema.partial().strict();

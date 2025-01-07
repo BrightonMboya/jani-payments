@@ -36,12 +36,14 @@ export const list: APPRouteHandler<ListPrices> = async (c: Context) => {
     where: {
       projectId: project_id?.id,
     },
-    omit: {
-      projectId: true,
-    },
+    // omit: {
+    //   projectId: true,
+    // },
   });
   const transformedPrices = prices.map((price) =>
-    transformPrices({ ...price, custom_data: price.custom_data as any })
+    transformPrices({
+      ...(price as any),
+    })
   );
 
   return c.json(
@@ -88,8 +90,7 @@ export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
     });
 
     const formattedPrice = transformPrices({
-      ...price,
-      custom_data: price.custom_data as any,
+      ...(price as any),
     }) as z.infer<typeof PricesResponseSchema>;
 
     return c.json(formattedPrice, HttpStatusCodes.OK);
@@ -128,8 +129,7 @@ export const get_price: APPRouteHandler<GetPrice> = async (c: Context) => {
   }
 
   const formattedPrice = transformPrices({
-    ...price,
-    custom_data: price.custom_data as any,
+    ...(price as any),
   }) as z.infer<typeof PricesResponseSchema>;
 
   return c.json(formattedPrice, HttpStatusCodes.OK);
@@ -141,8 +141,8 @@ export const update_price: APPRouteHandler<UpdatePrice> = async (
   const db: PrismaClient = c.get("db");
   // @ts-expect-error
   const { price_id } = c.req.valid("param");
-  const raw_input = await c.req.json();
-  const input = UpdatePricesSchema.parse(raw_input);
+  // const raw_input = await c.req.json();
+  const input = UpdatePricesSchema.parse(await c.req.json());
   const price = await db.prices.update({
     where: {
       id: price_id,
@@ -165,8 +165,7 @@ export const update_price: APPRouteHandler<UpdatePrice> = async (
   }
 
   const formattedPrice = transformPrices({
-    ...price,
-    custom_data: price.custom_data as any,
+    ...(price as any),
   }) as z.infer<typeof PricesResponseSchema>;
   return c.json(formattedPrice, HttpStatusCodes.OK);
 };

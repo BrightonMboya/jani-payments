@@ -41,4 +41,4 @@ export const CreateCustomerSchema = CustomersModel.omit({
   custom_data: jsonSchema.nullish(),
 });
 
-export const UpdateCustomerSchema = CreateCustomerSchema.partial();
+export const UpdateCustomerSchema = CreateCustomerSchema.partial().strict();

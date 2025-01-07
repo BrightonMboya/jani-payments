@@ -9,6 +9,13 @@ import type {
 } from "./products.routes";
 import * as HttpsStatusPhrases from "~/lib/http-status-phrases";
 import * as HttpStatusCodes from "~/lib/http-status-code";
+import {
+  CreateProductsSchema,
+  ProductsResponseSchema,
+  UpdateProductsSchema,
+} from "./helpers";
+import { z } from "zod";
+import { ErrorSchema } from "~/lib/utils/zod-helpers";
 
 export const list: APPRouteHandler<ListRoute> = async (c: Context) => {
   const user = c.get("user");
@@ -24,7 +31,7 @@ export const list: APPRouteHandler<ListRoute> = async (c: Context) => {
     },
   });
 
-  const products = await db.products.findMany({
+  const products = (await db.products.findMany({
     where: {
       project_id: project_id?.id,
     },
@@ -37,7 +44,7 @@ export const list: APPRouteHandler<ListRoute> = async (c: Context) => {
       updatedAt: true,
       custom_data: true,
     },
-  });
+  })) as z.infer<typeof ProductsResponseSchema>[];
   return c.json(products, HttpStatusCodes.OK);
 };
 
@@ -54,85 +61,85 @@ export const create: APPRouteHandler<CreateRoute> = async (c: Context) => {
     },
   });
 
-  const input = await c.req.json();
-  // const input = addProductSchema.parse(input_body);
-  const products = await db.products.create({
+  const raw_input = await c.req.json();
+  const input = CreateProductsSchema.parse(raw_input);
+  const products = (await db.products.create({
     data: {
+      id: `pro_${crypto.randomUUID()}`,
       description: input.description,
       name: input.name,
       project_id: project_id?.id!,
-      custom_data: input.custom_data,
+      custom_data: input.custom_data as any,
       updatedAt: new Date(),
       createdAt: new Date(),
     },
-  });
-  return c.json([products]);
+    omit: {
+      project_id: true,
+    },
+  })) as z.infer<typeof ProductsResponseSchema>;
+  return c.json(products, HttpStatusCodes.OK);
 };
 
 export const get_product: APPRouteHandler<GetProductRoute> = async (
   c: Context
 ) => {
   const db: PrismaClient = c.get("db");
+  // @ts-expect-error
   const { product_id } = c.req.valid("param");
   const product = await db.products.findUnique({
     where: {
       id: product_id,
     },
-    select: {
-      id: true,
-      name: true,
-      description: true,
-      status: true,
-      custom_data: true,
-      createdAt: true,
-      updatedAt: true,
+    omit: {
+      project_id: true,
     },
   });
 
   if (!product) {
     return c.json(
-      { message: HttpsStatusPhrases.NOT_FOUND },
+      {
+        error: HttpsStatusPhrases.NOT_FOUND,
+        message: "No Product was found with the specified id",
+      } satisfies z.infer<typeof ErrorSchema>,
       HttpStatusCodes.NOT_FOUND
     );
   }
-  return c.json(product), HttpStatusCodes.OK;
+  return c.json(
+    product as z.infer<typeof ProductsResponseSchema>,
+    HttpStatusCodes.OK
+  );
 };
 
 export const update_product: APPRouteHandler<UpdateProductRoute> = async (
   c: Context
 ) => {
-  try {
-    const db: PrismaClient = c.get("db");
-    const { product_id } = c.req.valid("param");
-    const input = await c.req.json();
+  const db: PrismaClient = c.get("db");
+  // @ts-ignore
+  const { product_id } = c.req.valid("param");
+  const raw_input = await c.req.json();
+  const input = UpdateProductsSchema.parse(raw_input);
 
-    const product = await db.products.update({
-      where: { id: product_id },
-      data: { ...input, updatedAt: new Date() },
-    });
+  const product = await db.products.update({
+    where: { id: product_id },
+    data: {
+      ...input,
+      updatedAt: new Date(),
+      custom_data: input.custom_data as any,
+    },
+  });
 
-    if (!product) {
-      return c.json(
-        { message: "Invalid Product Id" },
-        HttpStatusCodes.NOT_FOUND
-      );
-    }
-
-    return c.json(product);
-  } catch (error) {
-    if (error?.constructor?.name === "PrismaClientValidationError") {
-      return c.json(
-        {
-          message: "Invalid field in update data",
-        },
-        400
-      );
-    }
-
-    if (error?.constructor?.name === "PrismaClientKnownRequestError") {
-      return c.json({ message: "Product not found" }, 404);
-    }
-
-    return c.json({ error: "Internal server error" }, 500);
+  if (!product) {
+    return c.json(
+      {
+        error: "Invalid Id",
+        message: "Invalid Product Id",
+      } satisfies z.infer<typeof ErrorSchema>,
+      HttpStatusCodes.NOT_FOUND
+    );
   }
+
+  return c.json(
+    product as z.infer<typeof ProductsResponseSchema>,
+    HttpStatusCodes.OK
+  );
 };
