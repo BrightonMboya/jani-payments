@@ -3,38 +3,21 @@ import {
   type ListPrices,
   CreatePrices,
   GetPrice,
+  PricesSchema,
   UpdatePrice,
 } from "./prices.routes";
 import { type Context } from "hono";
 import { PrismaClient } from "@repo/db/types";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import * as HttpsStatusPhrases from "~/lib/http-status-phrases";
-
-export const PricesDefaultSelect = {
-  id: true,
-  type: true,
-  description: true,
-  name: true,
-  trial_period: true,
-  custom_data: true,
-  status: true,
-  unit_price: {
-    select: {
-      amount: true,
-      currency_code: true,
-    },
-  },
-  billing_cycle: {
-    select: {
-      interval: true,
-      frequency: true,
-    },
-  },
-  quantity: true,
-  created_at: true,
-  updated_at: true,
-  product_id: true,
-};
+import { z } from "zod";
+import {
+  CreatePricesSchema,
+  transformPrices,
+  PricesResponseSchema,
+  UpdatePricesSchema,
+} from "./helpers";
+import { ErrorSchema } from "~/lib/utils/zod-helpers";
 
 export const list: APPRouteHandler<ListPrices> = async (c: Context) => {
   const user = c.get("user");
@@ -53,10 +36,18 @@ export const list: APPRouteHandler<ListPrices> = async (c: Context) => {
     where: {
       projectId: project_id?.id,
     },
-    select: PricesDefaultSelect,
+    omit: {
+      projectId: true,
+    },
   });
+  const transformedPrices = prices.map((price) =>
+    transformPrices({ ...price, custom_data: price.custom_data as any })
+  );
 
-  return c.json(prices);
+  return c.json(
+    transformedPrices as z.infer<typeof PricesResponseSchema>[],
+    HttpStatusCodes.OK
+  );
 };
 
 export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
@@ -71,77 +62,43 @@ export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
         id: true,
       },
     });
-    const input = await c.req.json();
-
-    // Create the billing cycle if provided
-    let billingCycleId = null;
-    if (input.billing_cycle) {
-      const billingCycle = await db.billingCycle.create({
-        data: {
-          interval: input.billing_cycle.interval,
-          frequency: input.billing_cycle.frequency,
-        },
-      });
-      billingCycleId = billingCycle.id;
-    }
+    const raw_input = await c.req.json();
+    const input = CreatePricesSchema.parse(raw_input);
 
     // Create the price
     const price = await db.prices.create({
       data: {
         id: `pri_${crypto.randomUUID()}`,
+        type: input.type || "standard",
+        description: input.description,
+        name: input.name,
+        billing_cycle_frequency: input.billing_cycle.frequency,
+        billing_cycle_interval: input.billing_cycle.interval,
+        trial_period_frequency: input.trial_period.frequency,
+        trial_period_interval: input.trial_period.interval,
+        amount: input.unit_price.amount,
+        currency_code: input.unit_price.currency_code,
+        custom_data: input.custom_data as any,
+        status: input.status || "active",
+        created_at: new Date(),
+        updated_at: new Date(),
         product_id: input.product_id,
         projectId: project_id?.id!,
-        name: input.name,
-        description: input.description,
-        type: input.type || "standard",
-        status: input.status || "active",
-        trial_period: input.trial_period,
-        custom_data: input.custom_data,
-        created_at: new Date(),
-        billingCycle_id: billingCycleId,
-        // Create unit price if provided
-        unit_price: input.unit_price
-          ? {
-              create: {
-                amount: input.unit_price.amount,
-                currency_code: input.unit_price.currency_code,
-              },
-            }
-          : undefined,
-        // Create quantity constraints if provided
-        quantity: input.quantity
-          ? {
-              create: {
-                minimum: input.quantity.minimum,
-                maximum: input.quantity.maximum,
-              },
-            }
-          : undefined,
-      },
-      select: {
-        id: true,
-        product_id: true,
-        type: true,
-        status: true,
-        name: true,
-        billing_cycle: {
-          select: {
-            interval: true,
-            frequency: true,
-          },
-        },
-        description: true,
-        trial_period: true,
-        custom_data: true,
-        created_at: true,
-        updated_at: true,
       },
     });
 
-    return c.json([price], HttpStatusCodes.OK);
+    const formattedPrice = transformPrices({
+      ...price,
+      custom_data: price.custom_data as any,
+    }) as z.infer<typeof PricesResponseSchema>;
+
+    return c.json(formattedPrice, HttpStatusCodes.OK);
   } catch (error) {
     return c.json(
-      { error: "Failed to create price", message: "BAD REQUEST" },
+      {
+        error: "Failed to create price",
+        message: "BAD REQUEST",
+      } satisfies z.infer<typeof ErrorSchema>,
       HttpStatusCodes.BAD_REQUEST
     );
   }
@@ -155,39 +112,27 @@ export const get_price: APPRouteHandler<GetPrice> = async (c: Context) => {
     where: {
       id: price_id,
     },
-    select: {
-      id: true,
-      type: true,
-      description: true,
-      name: true,
-      trial_period: true,
-      custom_data: true,
-      billing_cycle: {
-        select: {
-          interval: true,
-          frequency: true,
-        },
-      },
-      unit_price: {
-        select: {
-          amount: true,
-          currency_code: true,
-        },
-      },
-      status: true,
-      created_at: true,
-      updated_at: true,
-      product_id: true,
+    omit: {
+      projectId: true,
     },
   });
 
   if (!price) {
     return c.json(
-      { message: HttpsStatusPhrases.NOT_FOUND },
+      {
+        error: "Not Found",
+        message: "Price not found with the specified id",
+      } satisfies z.infer<typeof ErrorSchema>,
       HttpStatusCodes.NOT_FOUND
     );
   }
-  return c.json(price, HttpStatusCodes.OK);
+
+  const formattedPrice = transformPrices({
+    ...price,
+    custom_data: price.custom_data as any,
+  }) as z.infer<typeof PricesResponseSchema>;
+
+  return c.json(formattedPrice, HttpStatusCodes.OK);
 };
 
 export const update_price: APPRouteHandler<UpdatePrice> = async (
@@ -196,13 +141,15 @@ export const update_price: APPRouteHandler<UpdatePrice> = async (
   const db: PrismaClient = c.get("db");
   // @ts-expect-error
   const { price_id } = c.req.valid("param");
-  const input = await c.req.json();
+  const raw_input = await c.req.json();
+  const input = UpdatePricesSchema.parse(raw_input);
   const price = await db.prices.update({
     where: {
       id: price_id,
     },
     data: {
       ...input,
+      custom_data: input.custom_data as any,
       updated_at: new Date(),
     },
   });
@@ -212,9 +159,14 @@ export const update_price: APPRouteHandler<UpdatePrice> = async (
       {
         error: "Bad Request",
         message: "Invalid Price Id",
-      },
+      } satisfies z.infer<typeof ErrorSchema>,
       HttpStatusCodes.BAD_REQUEST
     );
   }
-  return c.json(price, HttpStatusCodes.OK);
+
+  const formattedPrice = transformPrices({
+    ...price,
+    custom_data: price.custom_data as any,
+  }) as z.infer<typeof PricesResponseSchema>;
+  return c.json(formattedPrice, HttpStatusCodes.OK);
 };

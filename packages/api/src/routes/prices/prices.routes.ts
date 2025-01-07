@@ -1,18 +1,22 @@
 import { z, createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
-import { PriceModel } from "@repo/db/zod/price.ts";
+import { PricesModel } from "@repo/db/zod/prices.ts";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
+import {
+  CreatePricesSchema,
+  PricesResponseSchema,
+  UpdatePricesSchema,
+} from "./helpers";
 
 const tags = ["prices"];
 
-export const PricesSchema = PriceModel.extend({
+export const PricesSchema = PricesModel.extend({
   trial_period: jsonSchema,
   custom_data: jsonSchema,
 }).omit({
   projectId: true,
-  billingCycle_id: true,
 });
 
 export const list = createRoute({
@@ -21,7 +25,7 @@ export const list = createRoute({
   tags,
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      z.array(PricesSchema),
+      z.array(PricesResponseSchema),
       "Lists all Prices belonging to a specific merchant"
     ),
   },
@@ -31,13 +35,22 @@ export const create_prices = createRoute({
   path: "/prices",
   method: "post",
   tags,
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: CreatePricesSchema,
+        },
+      },
+    },
+  },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      z.array(PricesSchema),
+      PricesResponseSchema,
       "Creates a new Price"
     ),
     [HttpStatusCodes.BAD_REQUEST]: jsonContent(
-      z.object({ error: z.string(), message: z.string() }),
+      ErrorSchema,
       "Failed to create price"
     ),
   },
@@ -54,19 +67,10 @@ export const get_price = createRoute({
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      PriceModel.extend({
-        trial_period: jsonSchema,
-        custom_data: jsonSchema,
-      }).omit({
-        projectId: true,
-        billingCycle_id: true,
-      }),
+      PricesResponseSchema,
       "Returns a Price by its Id"
     ),
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      z.object({ message: z.string() }),
-      "Price not found"
-    ),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(ErrorSchema, "Price not found"),
   },
 });
 
@@ -77,11 +81,18 @@ export const update_price = createRoute({
     params: z.object({
       price_id: z.string(),
     }),
+    body: {
+      content: {
+        "application/json": {
+          schema: UpdatePricesSchema,
+        },
+      },
+    },
   },
   tags,
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      PricesSchema,
+      PricesResponseSchema,
       "Returns the updated Price"
     ),
     [HttpStatusCodes.BAD_REQUEST]: jsonContent(ErrorSchema, "Invalid Price Id"),

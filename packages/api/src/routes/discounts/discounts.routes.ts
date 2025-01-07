@@ -78,10 +78,13 @@ export const update_discount = createRoute({
   method: "patch",
   tags,
   request: {
+    params: z.object({
+      discount_id: z.string(),
+    }),
     body: {
       content: {
         "application/json": {
-          schema: UpdateDiscountSchema
+          schema: UpdateDiscountSchema,
         },
       },
     },

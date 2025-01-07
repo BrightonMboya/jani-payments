@@ -3,6 +3,7 @@ import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
 import { CustomersModel } from "@repo/db/zod/customers.ts";
 import { jsonSchema, ErrorSchema } from "~/lib/utils/zod-helpers";
+import { CreateCustomerSchema, UpdateCustomerSchema } from "./helpers";
 
 export const CustomersResponseSchema = CustomersModel.extend({
   custom_data: jsonSchema,
@@ -33,6 +34,15 @@ export const create = createRoute({
   path: "/customers",
   method: "post",
   tags,
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: CreateCustomerSchema,
+        },
+      },
+    },
+  },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       CustomersResponseSchema,
@@ -71,6 +81,13 @@ export const update_customer = createRoute({
     params: z.object({
       customer_id: z.string(),
     }),
+    body: {
+      content: {
+        "application/json": {
+          schema: UpdateCustomerSchema,
+        },
+      },
+    },
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(

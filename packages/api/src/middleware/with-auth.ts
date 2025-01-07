@@ -22,7 +22,7 @@ const withAuth = async (c: Context, next: Next) => {
       req: c.req.raw,
       secret: c.env.NEXTAUTH_SECRET,
     });
-
+    console.log(token);
     if (!token) {
       return c.json(
         { error: "Invalid session", code: "AUTH_SESSION_INVALID" },

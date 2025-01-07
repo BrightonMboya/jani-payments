@@ -1,6 +1,6 @@
 import * as z from "zod"
-import { PriceType, PriceStatus } from "@prisma/client"
-import { CompleteBillingCycle, RelatedBillingCycleModel, CompleteUnitPrice, RelatedUnitPriceModel, CompleteQuantityConstraints, RelatedQuantityConstraintsModel, CompleteProducts, RelatedProductsModel, CompleteProject, RelatedProjectModel, CompleteDiscount_Prices, RelatedDiscount_PricesModel, CompleteSubscriptionItems, RelatedSubscriptionItemsModel } from "./index"
+import { PriceType, BillingInterval,  Entity_Status } from "@prisma/client"
+import { CompleteProducts, RelatedProductsModel, CompleteProject, RelatedProjectModel, CompleteDiscount_Prices, RelatedDiscount_PricesModel, CompleteSubscriptionItems, RelatedSubscriptionItemsModel } from "./index"
 
 // Helper schema for JSON fields
 type Literal = boolean | number | string
@@ -13,10 +13,14 @@ export const PricesModel = z.object({
   type: z.nativeEnum(PriceType),
   description: z.string().nullish(),
   name: z.string(),
-  billingCycle_id: z.string().nullish(),
-  trial_period: jsonSchema,
+  billing_cycle_frequency: z.number().int(),
+  billing_cycle_interval: z.nativeEnum(BillingInterval),
+  trial_period_frequency: z.number().int(),
+  trial_period_interval: z.nativeEnum(BillingInterval),
+  amount: z.number(),
+  currency_code: z.string(),
   custom_data: jsonSchema,
-  status: z.nativeEnum(PriceStatus),
+  status: z.nativeEnum(Entity_Status),
   created_at: z.date(),
   updated_at: z.date(),
   product_id: z.string(),
@@ -24,9 +28,6 @@ export const PricesModel = z.object({
 })
 
 export interface CompletePrices extends z.infer<typeof PricesModel> {
-  billing_cycle?: CompleteBillingCycle | null
-  unit_price: CompleteUnitPrice[]
-  quantity?: CompleteQuantityConstraints | null
   Products?: CompleteProducts | null
   Project: CompleteProject
   Discount_Prices: CompleteDiscount_Prices[]
@@ -39,9 +40,6 @@ export interface CompletePrices extends z.infer<typeof PricesModel> {
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
 export const RelatedPricesModel: z.ZodSchema<CompletePrices> = z.lazy(() => PricesModel.extend({
-  billing_cycle: RelatedBillingCycleModel.nullish(),
-  unit_price: RelatedUnitPriceModel.array(),
-  quantity: RelatedQuantityConstraintsModel.nullish(),
   Products: RelatedProductsModel.nullish(),
   Project: RelatedProjectModel,
   Discount_Prices: RelatedDiscount_PricesModel.array(),

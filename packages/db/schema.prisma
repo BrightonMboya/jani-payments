@@ -185,15 +185,16 @@ model Api_keys {
   userId      String?
 }
 
+enum Entity_Status {
+  active
+  archived
+}
+
 enum PriceType {
   standard //considered part of the catalog and can be reused across transaction
   custom // just a one time price, ideally created for a specific transaction
 }
 
-enum PriceStatus {
-  active
-  inactive
-}
 
 enum BillingInterval {
   day
@@ -202,64 +203,43 @@ enum BillingInterval {
   year
 }
 
-model BillingCycle {
-  id        String          @id @default(cuid())
-  interval  BillingInterval
-  frequency Int
-  Price     Prices[] // Relation to Price model
-}
-
-model QuantityConstraints {
-  id      String  @id @default(cuid())
-  minimum Int
-  maximum Int
-  Price   Prices? @relation(fields: [priceId], references: [id])
-  priceId String? @unique
-}
-
-model UnitPrice {
-  id            String  @id @default(cuid())
-  amount        Decimal
-  currency_code String
-  Price         Prices? @relation(fields: [priceId], references: [id])
-  priceId       String?
-}
+// model QuantityConstraints {
+//   id      String  @id @default(cuid())
+//   minimum Int
+//   maximum Int
+//   Price   Prices? @relation(fields: [priceId], references: [id])
+//   priceId String? @unique
+// }
 
 // Main Price model
 model Prices {
-  id                 String               @id
-  type               PriceType            @default(standard)
-  description        String?
-  name               String
-  billing_cycle      BillingCycle?        @relation(fields: [billingCycle_id], references: [id])
-  billingCycle_id    String?
-  trial_period       Json? // Using Json type for flexible trial period structure
+  id                      String               @id
+  type                    PriceType            @default(standard)
+  description             String?
+  name                    String
+  billing_cycle_frequency Int
+  billing_cycle_interval  BillingInterval
+  trial_period_frequency  Int
+  trial_period_interval   BillingInterval
   // tax_mode            TaxMode
-  unit_price         UnitPrice[]
-  custom_data        Json? // Flexible custom data storage
-  status             PriceStatus
-  quantity           QuantityConstraints?
-  created_at         DateTime
-  updated_at         DateTime             @updatedAt
-  Products           Products?            @relation(fields: [product_id], references: [id])
-  product_id         String
-  Project            Project              @relation(fields: [projectId], references: [id])
-  projectId          String
-  Discount_Prices    Discount_Prices[]
-  Subscription_Items SubscriptionItems[]
+  amount                  Decimal
+  currency_code           String
+  custom_data             Json? // Flexible custom data storage
+  status                  Entity_Status
+  // quantity                QuantityConstraints?
+  created_at              DateTime
+  updated_at              DateTime             @updatedAt
+  Products                Products?            @relation(fields: [product_id], references: [id])
+  product_id              String
+  Project                 Project              @relation(fields: [projectId], references: [id])
+  projectId               String
+  Discount_Prices         Discount_Prices[]
+  Subscription_Items      SubscriptionItems[]
 
-  @@index([product_id])
+  @@index([product_id, projectId])
 }
 
-enum Entity_Status {
-  active
-  archived
-}
 
-enum Discount_Status {
-  active
-  archived
-}
 
 enum Discount_type {
   flat
@@ -269,7 +249,7 @@ enum Discount_type {
 
 model Discounts {
   id                      String            @id
-  status                  Discount_Status?  @default(active)
+  status                  Entity_Status?  @default(active)
   description             String?
   enabled_for_checkout    Boolean?
   amount                  Decimal
@@ -277,7 +257,7 @@ model Discounts {
   type                    Discount_type
   recur                   Boolean?
   max_recurring_intervals Decimal?
-  usage_limit             Int
+  usage_limit             Int?
   expires_at              DateTime?
   custom_data             Json?
   discount_prices         Discount_Prices[]

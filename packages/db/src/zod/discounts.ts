@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { Discount_Status, Discount_type } from "@prisma/client"
+import { Entity_Status, Discount_type } from "@prisma/client"
 import { CompleteDiscount_Prices, RelatedDiscount_PricesModel, CompleteProject, RelatedProjectModel, CompleteSubscriptions, RelatedSubscriptionsModel } from "./index"
 
 // Helper schema for JSON fields
@@ -10,7 +10,7 @@ const jsonSchema: z.ZodSchema<Json> = z.lazy(() => z.union([literalSchema, z.arr
 
 export const DiscountsModel = z.object({
   id: z.string(),
-  status: z.nativeEnum(Discount_Status).nullish(),
+  status: z.nativeEnum(Entity_Status).nullish(),
   description: z.string().nullish(),
   enabled_for_checkout: z.boolean().nullish(),
   amount: z.number(),
@@ -18,7 +18,7 @@ export const DiscountsModel = z.object({
   type: z.nativeEnum(Discount_type),
   recur: z.boolean().nullish(),
   max_recurring_intervals: z.number().nullish(),
-  usage_limit: z.number().int(),
+  usage_limit: z.number().int().nullish(),
   expires_at: z.date().nullish(),
   custom_data: jsonSchema,
   times_used: z.number().int().nullish(),
