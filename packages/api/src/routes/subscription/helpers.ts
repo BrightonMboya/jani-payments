@@ -1,5 +1,6 @@
 import { z } from "@hono/zod-openapi";
 import {
+  BillingInterval,
   Prisma,
   SubscriptionItemsStatus,
   SubscriptionsStatus,
@@ -36,6 +37,14 @@ export const createSubscriptionSchema = z.object({
       quantity: z.string(),
     })
   ),
+  billingDetails: z
+    .object({
+      payment_interval: z.nativeEnum(BillingInterval),
+      payment_frequency: z.number(),
+      enable_checkout: z.boolean(),
+      additional_information: z.string().nullish(),
+    })
+    .nullish(),
 });
 
 export const transformedSubscriptionSchema = z.object({
@@ -79,7 +88,7 @@ export const transformedSubscriptionSchema = z.object({
         trial_started_at: z.date().nullable(),
         trial_ended_at: z.date().nullable(),
         custom_data: z.any(),
-        price: PricesResponseSchema
+        price: PricesResponseSchema,
       })
     ),
     custom_data: jsonSchema,
@@ -98,7 +107,7 @@ export type TransformedSubscription = z.infer<
 export function transformSubscription(
   input: Subscriptions
 ): TransformedSubscription {
-    console.log(input)
+  console.log(input);
   return {
     data: {
       id: input.id,

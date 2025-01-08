@@ -1,64 +1,77 @@
-import { BillingInterval } from "@repo/db/types";
 import { DateTime } from "luxon";
+import {
+  BillingInterval,
+  SubscriptionsStatus,
+  SubscriptionItemsStatus,
+} from "@repo/db/types";
 
+interface Price {
+  trial_period_interval: BillingInterval;
+  trial_period_frequency: number;
+  billing_cycle_interval: BillingInterval;
+  billing_cycle_frequency: number;
+}
 
-export function calculateSubscriptionDates(
-  prices: Array<{
-    trial_period_interval: BillingInterval;
-    trial_period_frequency: number;
-    billing_cycle_interval: BillingInterval;
-    billing_cycle_frequency: number;
-  }>
-) {
-  // Always start from now
+export function calculateSubscriptionDates(prices: Price[]) {
   const start = DateTime.now();
+  const hasTrialPeriod = prices.some(
+    (price) => price.trial_period_frequency > 0
+  );
 
-  // Calculate trial end dates for each price
+  if (!hasTrialPeriod) {
+    // No trial - subscription starts active
+    const { billing_cycle_interval, billing_cycle_frequency } = prices[0];
+    const periodEnd = start.plus({
+      [billing_cycle_interval + "s"]: billing_cycle_frequency,
+    });
+
+    return {
+      started_at: start.toJSDate(),
+      trial_ends_at: null,
+      first_billed_at: null, // Will be set after first payment succeeds
+      next_billed_at: start.toJSDate(), // Set to now since we'll attempt payment immediately
+      current_period_starts: start.toJSDate(),
+      current_period_ends: periodEnd.toJSDate(),
+      trial_end_dates: prices.map(() => null),
+      has_trial: false,
+    };
+  }
+
+  // Has trial period - calculate trial end dates
   const trialEndDates = prices.map((price) => {
-    const { trial_period_interval, trial_period_frequency } = price;
-
-    switch (trial_period_interval) {
-      case "day":
-        return start.plus({ days: trial_period_frequency });
-      case "week":
-        return start.plus({ weeks: trial_period_frequency });
-      case "month":
-        return start.plus({ months: trial_period_frequency });
-      case "year":
-        return start.plus({ years: trial_period_frequency });
-      default:
-        throw new Error(`Invalid trial interval: ${trial_period_interval}`);
+    if (price.trial_period_frequency === 0) {
+      return start;
     }
+    return start.plus({
+      [price.trial_period_interval + "s"]: price.trial_period_frequency,
+    });
   });
 
   // Get the latest trial end date
   const trialEndsAt = DateTime.max(...trialEndDates);
 
-  // Calculate next billing date based on billing cycle
-  const nextBillingDate = (() => {
-    const { billing_cycle_interval, billing_cycle_frequency } = prices[0];
-
-    switch (billing_cycle_interval) {
-      case "day":
-        return trialEndsAt.plus({ days: billing_cycle_frequency });
-      case "week":
-        return trialEndsAt.plus({ weeks: billing_cycle_frequency });
-      case "month":
-        return trialEndsAt.plus({ months: billing_cycle_frequency });
-      case "year":
-        return trialEndsAt.plus({ years: billing_cycle_frequency });
-      default:
-        throw new Error(`Invalid billing interval: ${billing_cycle_interval}`);
-    }
-  })();
-
   return {
     started_at: start.toJSDate(),
     trial_ends_at: trialEndsAt.toJSDate(),
-    first_billed_at: trialEndsAt.toJSDate(),
-    next_billed_at: nextBillingDate.toJSDate(),
+    first_billed_at: null, // Will be set after trial ends and payment succeeds
+    next_billed_at: trialEndsAt.toJSDate(), // First payment attempt will be at trial end
     current_period_starts: start.toJSDate(),
     current_period_ends: trialEndsAt.toJSDate(),
-    trial_end_dates: trialEndDates.map((date) => date.toJSDate()), // Individual trial end dates for each price
+    trial_end_dates: trialEndDates.map((date) => date.toJSDate()),
+    has_trial: true,
+  };
+}
+
+export function getSubscriptionStatus(prices: Price[]): {
+  subscriptionStatus: SubscriptionsStatus;
+  itemStatus: SubscriptionItemsStatus;
+} {
+  const hasTrialPeriod = prices.some(
+    (price) => price.trial_period_frequency > 0
+  );
+
+  return {
+    subscriptionStatus: hasTrialPeriod ? "trial" : "active",
+    itemStatus: hasTrialPeriod ? "trialing" : "active",
   };
 }

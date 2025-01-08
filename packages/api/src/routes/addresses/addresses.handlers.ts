@@ -35,7 +35,7 @@ export const create: APPRouteHandler<CreateAddresses> = async (c: Context) => {
     data: {
       ...input,
       custom_data: input.custom_data as any,
-      id: `add-${crypto.randomUUID()}`,
+      id: `add_${crypto.randomUUID()}`,
       customer_id: customer_id,
       updated_at: new Date(),
     },

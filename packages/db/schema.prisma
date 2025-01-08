@@ -369,6 +369,7 @@ model BillingDetails {
   id                     String          @id @default(cuid())
   subscription           Subscriptions   @relation(fields: [subscription_id], references: [id])
   subscription_id        String          @unique // one billing detail per subscription
+  // the 2 below means how long has the customer have to pay for this invoice
   payment_interval       BillingInterval
   payment_frequency      Int
   enable_checkout        Boolean         @default(false)

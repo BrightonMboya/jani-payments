@@ -4,7 +4,7 @@ import { APPRouteHandler } from "~/lib/types";
 import { CreateSubscription } from "./subscription.routes";
 import { PrismaClient } from "@repo/db/types";
 import { createSubscriptionSchema, transformSubscription } from "./helpers";
-import { calculateSubscriptionDates } from "./fns";
+import { calculateSubscriptionDates, getSubscriptionStatus } from "./fns";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 
 export const create_subscription: APPRouteHandler<CreateSubscription> = async (
@@ -13,7 +13,8 @@ export const create_subscription: APPRouteHandler<CreateSubscription> = async (
   const db: PrismaClient = c.get("db");
   const user = c.get("user");
   const input = createSubscriptionSchema.parse(await c.req.json());
-  // 1. Fetch all prices to get trial periods and billing cycles
+
+  // 1. Fetch project and prices
   const [project_id, priceDetails] = await Promise.all([
     db.project.findUnique({
       where: {
@@ -41,7 +42,7 @@ export const create_subscription: APPRouteHandler<CreateSubscription> = async (
     ),
   ]);
 
-  // 2. Validate currencies match & prices
+  // 2. Validate currencies and prices
   const currencies = new Set(priceDetails.map((p) => p.currency_code));
   if (currencies.size > 1) {
     throw new Error("All prices must be in the same currency");
@@ -49,15 +50,18 @@ export const create_subscription: APPRouteHandler<CreateSubscription> = async (
   if (priceDetails.some((p) => p.status === "archived")) {
     throw new Error("Cannot create subscription with archived prices");
   }
-  // 3. calculate all subscription dates
+
+  // 3. Calculate dates and determine status
   const dates = calculateSubscriptionDates(priceDetails);
-  // 5. Create the subscription with a transaction
+  const { subscriptionStatus, itemStatus } =
+    getSubscriptionStatus(priceDetails);
+
+  // 4. Create the subscription with a transaction
   return await db.$transaction(async (tx) => {
-    // Create the subscription
     const subscription = await tx.subscriptions.create({
       data: {
         id: `sub_${crypto.randomUUID()}`,
-        status: input.status,
+        status: subscriptionStatus, // Automatically set based on trial periods
         currency_code: input.currency_code,
         customer_id: input.customer_id,
         address_id: input.address_id,
@@ -81,36 +85,38 @@ export const create_subscription: APPRouteHandler<CreateSubscription> = async (
           createMany: {
             data: input.items.map((item, index) => ({
               id: `si_${crypto.randomUUID()}`,
-              //   subscription_id: "",
               price_id: item.price_id,
               quantity: Number(item.quantity),
-              status: "trialing",
+              status: itemStatus, // Automatically set based on trial periods
               recurring: true,
               created_at: new Date(),
               updated_at: new Date(),
-              trial_started_at: dates.started_at,
-              trial_ended_at: dates.trial_end_dates[index],
-              previously_billed_at: null,
+              // Only set trial dates if there's a trial
+              trial_started_at: dates.has_trial ? dates.started_at : null,
+              trial_ended_at: dates.has_trial
+                ? dates.trial_end_dates[index]
+                : null,
+              previously_billed_at: dates.has_trial ? null : dates.started_at,
               next_billed_at: dates.next_billed_at,
             })),
           },
         },
 
-        // // Create billing details if provided
-        // BillingDetails: input.billing_details
-        //   ? {
-        //       create: {
-        //         id: generateId("bd"),
-        //         payment_interval: input.billing_details.payment_interval,
-        //         payment_frequency: input.billing_details.payment_frequency,
-        //         enable_checkout: input.billing_details.enable_checkout,
-        //         purchase_order_number:
-        //           input.billing_details.purchase_order_number,
-        //         additional_information:
-        //           input.billing_details.additional_information,
-        //       },
-        //     }
-        //   : undefined,
+        // Create billing details if provided
+        BillingDetails: input.billingDetails
+          ? {
+              create: {
+                id: `bd_${crypto.randomUUID()}`,
+                payment_interval: input.billingDetails.payment_interval,
+                payment_frequency: input.billingDetails.payment_frequency,
+                enable_checkout: input.billingDetails.enable_checkout,
+                purchase_order_number: `po_${crypto.randomUUID()}`,
+                additional_information:
+                  input.billingDetails.additional_information,
+                updated_at: new Date(),
+              },
+            }
+          : undefined,
       },
       include: {
         Subscription_Items: {
