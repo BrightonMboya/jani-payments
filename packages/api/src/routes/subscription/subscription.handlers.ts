@@ -1,7 +1,6 @@
-import { createRoute } from "@hono/zod-openapi";
 import { type Context } from "hono";
 import { APPRouteHandler } from "~/lib/types";
-import { CreateSubscription } from "./subscription.routes";
+import { CreateSubscription, ListSubscription } from "./subscription.routes";
 import { PrismaClient } from "@repo/db/types";
 import { createSubscriptionSchema, transformSubscription } from "./helpers";
 import { calculateSubscriptionDates, getSubscriptionStatus } from "./fns";
@@ -119,6 +118,11 @@ export const create_subscription: APPRouteHandler<CreateSubscription> = async (
           : undefined,
       },
       include: {
+        discount: {
+          include: {
+            discount_prices: true,
+          },
+        },
         Subscription_Items: {
           include: {
             price: true,
@@ -127,10 +131,47 @@ export const create_subscription: APPRouteHandler<CreateSubscription> = async (
         BillingDetails: true,
       },
     });
-
-    const formattedSubscription = transformSubscription({
-      ...(subscription as any),
-    });
+    const formattedSubscription = transformSubscription(subscription);
     return c.json(formattedSubscription, HttpStatusCodes.OK);
   });
+};
+
+export const list_subscriptions: APPRouteHandler<ListSubscription> = async (
+  c: Context
+) => {
+  const db: PrismaClient = c.get("db");
+  const user = c.get("user");
+  const project_id = await db.project.findUnique({
+    where: {
+      slug: user?.user.defaultWorkspace,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  const subscriptions = await db.subscriptions.findMany({
+    where: {
+      project_id: project_id?.id!,
+    },
+    include: {
+      discount: {
+        include: {
+          discount_prices: true,
+        },
+      },
+      Subscription_Items: {
+        include: {
+          price: true,
+        },
+      },
+      BillingDetails: true,
+    },
+  });
+
+  const transformedSubscriptions = subscriptions.map((x) =>
+    transformSubscription(x)
+  );
+
+  return c.json(transformedSubscriptions, 200);
 };

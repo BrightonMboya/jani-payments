@@ -107,7 +107,6 @@ export type TransformedSubscription = z.infer<
 export function transformSubscription(
   input: Subscriptions
 ): TransformedSubscription {
-  console.log(input);
   return {
     data: {
       id: input.id,
