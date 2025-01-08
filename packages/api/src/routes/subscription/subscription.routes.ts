@@ -6,6 +6,7 @@ import {
   createSubscriptionSchema,
   transformedSubscriptionSchema,
 } from "./helpers";
+
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
 
 const tags = ["subscription"];
@@ -24,7 +25,7 @@ export const create_subscription = createRoute({
     },
   },
   responses: {
-    [HttpsStatusCodes.CREATED]: jsonContent(
+    [HttpsStatusCodes.OK]: jsonContent(
       transformedSubscriptionSchema,
       "Creates a Subscription"
     ),
@@ -56,6 +57,23 @@ export const get_subscription = createRoute({
     [HttpsStatusCodes.NOT_FOUND]: jsonContent(
       ErrorSchema,
       "Subscription not found"
+    ),
+  },
+});
+
+export const activate_subscription = createRoute({
+  path: "/subscription/{subscription_id}",
+  method: "post",
+  tags,
+  request: {
+    params: z.object({
+      subscription_id: z.string(),
+    }),
+  },
+  responses: {
+    [HttpsStatusCodes.OK]: jsonContent(
+      transformedSubscriptionSchema,
+      "Activates a trialling subscription given its id"
     ),
   },
 });

@@ -99,8 +99,7 @@ export const invites = createTRPCRouter({
         `${process.env.NEXTAUTH_URL}/invites?email=${input.email}&workspaceSlug=${input.workspaceSlug}`;
 
       return await sendEmail({
-        subject:
-          `You've been invited to join a workspace on ${process.env.NEXT_PUBLIC_APP_NAME}`,
+        subject: `You've been invited to join a workspace on ${process.env.NEXT_PUBLIC_APP_NAME}`,
         email: input.email,
         react: WorkspaceInvite({
           email: input.email,

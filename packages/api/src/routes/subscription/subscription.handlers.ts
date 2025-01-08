@@ -1,15 +1,10 @@
-import {
-  type CreateSubscription,
-  GetSubscription,
-  ListSubscription,
-} from "./subscription.routes";
-import { type APPRouteHandler } from "~/lib/types";
+import { createRoute } from "@hono/zod-openapi";
 import { type Context } from "hono";
+import { APPRouteHandler } from "~/lib/types";
+import { CreateSubscription } from "./subscription.routes";
 import { PrismaClient } from "@repo/db/types";
-import { type SubscriptionItemsStatus } from "@repo/db/types";
 import { createSubscriptionSchema, transformSubscription } from "./helpers";
-import { ErrorSchema } from "~/lib/utils/zod-helpers";
-import { z } from "zod";
+import { calculateSubscriptionDates } from "./fns";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 
 export const create_subscription: APPRouteHandler<CreateSubscription> = async (
@@ -17,217 +12,119 @@ export const create_subscription: APPRouteHandler<CreateSubscription> = async (
 ) => {
   const db: PrismaClient = c.get("db");
   const user = c.get("user");
-  const unparsed_input = await c.req.json();
-  const input = createSubscriptionSchema.parse(unparsed_input);
-
-  const project_id = await db.project.findUnique({
-    where: {
-      slug: user?.user.defaultWorkspace,
-    },
-    select: {
-      id: true,
-    },
-  });
-  const subscription = await db.$transaction(async (tx) => {
-    // 1. Verify all prices exist and belong to project
-    const prices = await tx.prices.findMany({
+  const input = createSubscriptionSchema.parse(await c.req.json());
+  // 1. Fetch all prices to get trial periods and billing cycles
+  const [project_id, priceDetails] = await Promise.all([
+    db.project.findUnique({
       where: {
-        id: {
-          in: input.items.map((item) => item.price_id),
-        },
-        projectId: project_id?.id!,
+        slug: user?.user.defaultWorkspace,
       },
-      include: {
-        billing_cycle: true,
+      select: {
+        id: true,
       },
-    });
+    }),
 
-    if (prices.length !== input.items.length) {
-      const errorResponse: z.infer<typeof ErrorSchema> = {
-        error: "One or more prices not found or do not belong to projec",
-        message: "BAD REQUEST",
-      };
-      return c.json(errorResponse, HttpStatusCodes.BAD_REQUEST);
-      // throw new Error(
-      //   "One or more prices not found or do not belong to project"
-      // );
-    }
+    Promise.all(
+      input.items.map((item) =>
+        db.prices.findUniqueOrThrow({
+          where: { id: item.price_id },
+          select: {
+            trial_period_frequency: true,
+            trial_period_interval: true,
+            billing_cycle_frequency: true,
+            billing_cycle_interval: true,
+            currency_code: true,
+            status: true,
+          },
+        })
+      )
+    ),
+  ]);
 
-    // 2. If discount provided, verify it exists and is valid
-    let discount;
-    if (input.discount_id) {
-      discount = await tx.discounts.findFirst({
-        where: {
-          id: input.discount_id,
-          projectId: project_id?.id!,
-          status: "active",
-          OR: [{ expires_at: null }, { expires_at: { gt: new Date() } }],
-        },
-      });
-
-      if (!discount) {
-        const errorResponse: z.infer<typeof ErrorSchema> = {
-          error: "One or more prices not found or do not belong to projec",
-          message: "BAD REQUEST",
-        };
-        return c.json(errorResponse, HttpStatusCodes.BAD_REQUEST);
-        // throw new Error("Discount not found or is invalid");
-      }
-    }
-
-    // 3. Create the subscription
+  // 2. Validate currencies match & prices
+  const currencies = new Set(priceDetails.map((p) => p.currency_code));
+  if (currencies.size > 1) {
+    throw new Error("All prices must be in the same currency");
+  }
+  if (priceDetails.some((p) => p.status === "archived")) {
+    throw new Error("Cannot create subscription with archived prices");
+  }
+  // 3. calculate all subscription dates
+  const dates = calculateSubscriptionDates(priceDetails);
+  // 5. Create the subscription with a transaction
+  return await db.$transaction(async (tx) => {
+    // Create the subscription
     const subscription = await tx.subscriptions.create({
       data: {
         id: `sub_${crypto.randomUUID()}`,
-        status: "active",
+        status: input.status,
         currency_code: input.currency_code,
-        collection_mode: input.collection_mode,
-        billing_cycle_interval: input.billing_cycle.interval,
-        billing_cycle_frequency: input.billing_cycle.frequency,
         customer_id: input.customer_id,
         address_id: input.address_id,
         project_id: project_id?.id!,
         discount_id: input.discount_id,
-        started_at: new Date(),
-        // Calculate first billing date based on trial periods if any
-        // first_billed_at: new Date(), // TODO: Handle trial periods
-        // next_billed_at: new Date(), // TODO: Calculate based on billing cycle
+        collection_mode: "automatic",
+
+        // Billing cycle info from first price
+        billing_cycle_interval: priceDetails[0].billing_cycle_interval,
+        billing_cycle_frequency: priceDetails[0].billing_cycle_frequency,
+
+        // Dates
+        started_at: dates.started_at,
+        first_billed_at: dates.first_billed_at,
+        next_billed_at: dates.next_billed_at,
+        current_period_starts: dates.current_period_starts,
+        current_period_ends: dates.current_period_ends,
 
         // Create subscription items
         Subscription_Items: {
-          create: input.items.map((item) => ({
-            id: `si_${crypto.randomUUID()}`,
-            price_id: item.price_id,
-            quantity: item.quantity,
-            status: SubscriptionItemsStatus.active,
-            recurring: true,
-            // next_billed_at: new Date(), // TODO: Calculate based on trial
-          })),
+          createMany: {
+            data: input.items.map((item, index) => ({
+              id: `si_${crypto.randomUUID()}`,
+              //   subscription_id: "",
+              price_id: item.price_id,
+              quantity: Number(item.quantity),
+              status: "trialing",
+              recurring: true,
+              created_at: new Date(),
+              updated_at: new Date(),
+              trial_started_at: dates.started_at,
+              trial_ended_at: dates.trial_end_dates[index],
+              previously_billed_at: null,
+              next_billed_at: dates.next_billed_at,
+            })),
+          },
         },
 
-        // Create billing details if provided
-        BillingDetails: input.billing_details
-          ? {
-              create: {
-                payment_interval: input.billing_details.payment_interval,
-                payment_frequency: input.billing_details.payment_frequency,
-                enable_checkout: input.billing_details.enable_checkout ?? false,
-                purchase_order_number:
-                  input.billing_details.purchase_order_number,
-                additional_information:
-                  input.billing_details.additional_information,
-              },
-            }
-          : undefined,
+        // // Create billing details if provided
+        // BillingDetails: input.billing_details
+        //   ? {
+        //       create: {
+        //         id: generateId("bd"),
+        //         payment_interval: input.billing_details.payment_interval,
+        //         payment_frequency: input.billing_details.payment_frequency,
+        //         enable_checkout: input.billing_details.enable_checkout,
+        //         purchase_order_number:
+        //           input.billing_details.purchase_order_number,
+        //         additional_information:
+        //           input.billing_details.additional_information,
+        //       },
+        //     }
+        //   : undefined,
+      },
+      include: {
+        Subscription_Items: {
+          include: {
+            price: true,
+          },
+        },
+        BillingDetails: true,
       },
     });
 
-    return subscription;
+    const formattedSubscription = transformSubscription({
+      ...(subscription as any),
+    });
+    return c.json(formattedSubscription, HttpStatusCodes.OK);
   });
-
-  const transformedSubscription = transformSubscription(subscription);
-  return c.json(transformedSubscription, 200);
-};
-
-export const list_subscriptions: APPRouteHandler<ListSubscription> = async (
-  c: Context
-) => {
-  const db: PrismaClient = c.get("db");
-  const user = c.get("user");
-  const project_id = await db.project.findUnique({
-    where: {
-      slug: user?.user.defaultWorkspace,
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  const subscriptions = await db.subscriptions.findMany({
-    where: {
-      project_id: project_id?.id!,
-    },
-    include: {
-      Subscription_Items: {
-        include: {
-          price: {
-            omit: {
-              projectId: true,
-            },
-            include: {
-              Products: {
-                omit: {
-                  project_id: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
-
-  const transformedSubscriptions = subscriptions.map((x) =>
-    transformSubscription(x)
-  );
-
-  return c.json(transformedSubscriptions, 200);
-};
-
-export const get_subscription: APPRouteHandler<GetSubscription> = async (
-  c: Context
-) => {
-  const db: PrismaClient = c.get("db");
-  const user = c.get("user");
-  const subscription_id = c.req.param("subscription_id");
-  const project_id = await db.project.findUnique({
-    where: {
-      slug: user?.user.defaultWorkspace,
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  const subscription = await db.subscriptions.findUnique({
-    where: {
-      id: subscription_id,
-      project_id: project_id?.id!,
-    },
-    include: {
-      discount: {
-        omit: {
-          projectId: true,
-        },
-      },
-      Subscription_Items: {
-        include: {
-          price: {
-            omit: {
-              projectId: true,
-            },
-            include: {
-              Products: {
-                omit: {
-                  project_id: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
-
-  if (!subscription) {
-    const errorResponse: z.infer<typeof ErrorSchema> = {
-      error: "Subscription not found",
-      message: "BAD REQUEST",
-    };
-    return c.json(errorResponse, HttpStatusCodes.NOT_FOUND);
-  }
-
-  const transformedSubscription = transformSubscription(subscription);
-
-  return c.json(transformedSubscription, 200);
 };

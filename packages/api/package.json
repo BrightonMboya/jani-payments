@@ -12,6 +12,7 @@
     "@scalar/hono-api-reference": "^0.5.165",
     "hono": "^4.6.14",
     "hono-pino": "^0.7.0",
+    "luxon": "^3.5.0",
     "nanoid": "^5.0.9",
     "next-auth": "5.0.0-beta.25",
     "pino": "^9.6.0",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241218.0",
+    "@types/luxon": "^3.4.2",
     "wrangler": "^3.96.0"
   }
 }
