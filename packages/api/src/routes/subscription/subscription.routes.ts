@@ -3,7 +3,9 @@ import * as HttpsStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
 import { SubscriptionsModel } from "@repo/db/zod/subscriptions.ts";
 import {
+  cancelSubscriptionSchema,
   createSubscriptionSchema,
+  pauseSubscriptionSchema,
   transformedSubscriptionSchema,
 } from "./helpers";
 
@@ -45,6 +47,69 @@ export const list_subscriptions = createRoute({
   },
 });
 
+export const cancel_subscription = createRoute({
+  path: "/subscription/{subscription_id}/cancel",
+  method: "post",
+  tags,
+  request: {
+    params: z.object({
+      subscription_id: z.string(),
+    }),
+    body: {
+      content: {
+        "application/json": {
+          schema: cancelSubscriptionSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    [HttpsStatusCodes.OK]: jsonContent(
+      transformedSubscriptionSchema,
+      "Cancels an active subscription given its id"
+    ),
+
+    [HttpsStatusCodes.NOT_FOUND]: jsonContent(
+      ErrorSchema,
+      "No Subscription found with that Id"
+    ),
+    [HttpsStatusCodes.BAD_REQUEST]: jsonContent(ErrorSchema, "Bad Request"),
+  },
+});
+
+export const pause_subscription = createRoute({
+  path: "/subscription/{subscription_id}/pause",
+  method: "post",
+  tags,
+  request: {
+    params: z.object({
+      subscription_id: z.string(),
+    }),
+    body: {
+      content: {
+        "application/json": {
+          schema: pauseSubscriptionSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    [HttpsStatusCodes.OK]: jsonContent(
+      transformedSubscriptionSchema,
+      "Pause a subscription given its id"
+    ),
+    [HttpsStatusCodes.NOT_FOUND]: jsonContent(
+      ErrorSchema,
+      "No Subscription found with that Id"
+    ),
+    [HttpsStatusCodes.BAD_REQUEST]: jsonContent(ErrorSchema, "Bad Request"),
+    [HttpsStatusCodes.CONFLICT]: jsonContent(
+      ErrorSchema,
+      "Failed to update subscription due to bad conflict"
+    ),
+  },
+});
+
 export const get_subscription = createRoute({
   path: "/subscription/{subscription_id}",
   method: "get",
@@ -80,3 +145,5 @@ export const activate_subscription = createRoute({
 export type CreateSubscription = typeof create_subscription;
 export type GetSubscription = typeof get_subscription;
 export type ListSubscription = typeof list_subscriptions;
+export type CancelSubscription = typeof cancel_subscription;
+export type PauseSubscription = typeof pause_subscription;

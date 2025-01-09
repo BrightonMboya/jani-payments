@@ -5,6 +5,8 @@ import { CreateRouter } from "~/lib/create-app";
 const router = CreateRouter()
   .openapi(routes.create_subscription, handlers.create_subscription)
   .openapi(routes.list_subscriptions, handlers.list_subscriptions)
-  .openapi(routes.get_subscription, handlers.get_subscription);
+  // .openapi(routes.get_subscription, handlers.get_subscription)
+  .openapi(routes.cancel_subscription, handlers.cancel_subscription)
+  .openapi(routes.pause_subscription, handlers.pause_subscription);
 
 export default router;

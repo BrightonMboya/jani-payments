@@ -9,6 +9,7 @@ import { jsonSchema } from "~/lib/utils/zod-helpers";
 import { DiscountResponseSchema } from "../discounts/discounts.routes";
 import { PricesResponseSchema, transformPrices } from "../prices/helpers";
 import { transformDiscount } from "../discounts/helpers";
+import { Subscription_Scheduled_ChangesModel } from "@repo/db/zod/subscription_scheduled_changes.ts";
 
 type Subscriptions = Prisma.SubscriptionsGetPayload<{
   include: {
@@ -22,6 +23,7 @@ type Subscriptions = Prisma.SubscriptionsGetPayload<{
         discount_prices: true;
       };
     };
+    Subscription_Scheduled_Changes: true;
   };
 }>;
 
@@ -53,7 +55,7 @@ export const transformedSubscriptionSchema = z.object({
     status: z.string(),
     customer_id: z.string(),
     address_id: z.string(),
-    business_id: z.null(),
+    // business_id: z.null(),
     currency_code: z.string(),
     created_at: z.date(),
     updated_at: z.date(),
@@ -72,7 +74,7 @@ export const transformedSubscriptionSchema = z.object({
       frequency: z.number().int().positive(),
       interval: z.string(),
     }),
-    scheduled_change: z.null(),
+    scheduled_change: z.array(Subscription_Scheduled_ChangesModel.nullish()),
     items: z.array(
       z.object({
         status: z.nativeEnum(SubscriptionItemsStatus),
@@ -107,13 +109,14 @@ export type TransformedSubscription = z.infer<
 export function transformSubscription(
   input: Subscriptions
 ): TransformedSubscription {
+  // console.log(input)
   return {
     data: {
       id: input.id,
       status: input.status,
       customer_id: input.customer_id,
       address_id: input.address_id,
-      business_id: null,
+      //   business_id: null,
       currency_code: input.currency_code,
       created_at: input.created_at,
       updated_at: input.updated_at,
@@ -132,7 +135,8 @@ export function transformSubscription(
         frequency: input.billing_cycle_frequency,
         interval: input.billing_cycle_interval,
       },
-      scheduled_change: null,
+
+      scheduled_change: input.Subscription_Scheduled_Changes,
       //   items: input.Subscription_Items,\
       items: input.Subscription_Items.map((item) => ({
         status: item.status as SubscriptionItemsStatus,
@@ -169,3 +173,20 @@ export function transformSubscription(
     },
   };
 }
+
+const effective_from_enum = z
+  .enum(["immediately", "next_billing_period"])
+  .default("next_billing_period");
+
+export const cancelSubscriptionSchema = z.object({
+  effective_from: effective_from_enum,
+});
+
+export const pauseSubscriptionSchema = z.object({
+  effective_from: effective_from_enum,
+  resume_at: z.string().datetime().nullish(),
+  on_resume: z.enum([
+    "continue_existing_billing_period",
+    "start_new_billing_period",
+  ]),
+});

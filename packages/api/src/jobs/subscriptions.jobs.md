@@ -56,3 +56,6 @@ Example: Monthly subscription
 
 6. this is not a job parse, but when you collect the payment u need to update the 
 first_billed_at, next_billed_at, and current_billing_period dates
+
+7. Job to handle subscription_scheduled_changes
+go to the schdeduled_changes table and then perfrom the logic for the scheduled change
