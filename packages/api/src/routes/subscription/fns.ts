@@ -4,6 +4,7 @@ import {
   SubscriptionsStatus,
   SubscriptionItemsStatus,
 } from "@repo/db/types";
+import { type Subscriptions } from "./helpers";
 
 interface Price {
   trial_period_interval: BillingInterval;
@@ -74,4 +75,35 @@ export function getSubscriptionStatus(prices: Price[]): {
     subscriptionStatus: hasTrialPeriod ? "trial" : "active",
     itemStatus: hasTrialPeriod ? "trialing" : "active",
   };
+}
+
+// Helper function to calculate period end based on billing cycle
+export function calculatePeriodEnd(
+  startDate: Date,
+  subscription: Subscriptions
+): Date {
+  const start = DateTime.fromJSDate(startDate);
+
+  switch (subscription.billing_cycle_interval) {
+    case "day":
+      return start
+        .plus({ days: subscription.billing_cycle_frequency })
+        .toJSDate();
+    case "week":
+      return start
+        .plus({ weeks: subscription.billing_cycle_frequency })
+        .toJSDate();
+    case "month":
+      return start
+        .plus({ months: subscription.billing_cycle_frequency })
+        .toJSDate();
+    case "year":
+      return start
+        .plus({ years: subscription.billing_cycle_frequency })
+        .toJSDate();
+    default:
+      throw new Error(
+        `Invalid billing cycle interval: ${subscription.billing_cycle_interval}`
+      );
+  }
 }

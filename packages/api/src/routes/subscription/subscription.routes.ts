@@ -110,6 +110,27 @@ export const pause_subscription = createRoute({
   },
 });
 
+export const resume_subscription = createRoute({
+  path: "/subscription/{subscription_id}/resume",
+  method: "get",
+  request: {
+    params: z.object({
+      subscription_id: z.string(),
+    }),
+  },
+  responses: {
+    [HttpsStatusCodes.OK]: jsonContent(
+      transformedSubscriptionSchema,
+      "Resumes a subscription given its id"
+    ),
+    [HttpsStatusCodes.BAD_REQUEST]: jsonContent(ErrorSchema, "Bad Request"),
+    [HttpsStatusCodes.NOT_FOUND]: jsonContent(
+      ErrorSchema,
+      "No Subscription found with that Id"
+    ),
+  },
+});
+
 export const get_subscription = createRoute({
   path: "/subscription/{subscription_id}",
   method: "get",
@@ -147,3 +168,4 @@ export type GetSubscription = typeof get_subscription;
 export type ListSubscription = typeof list_subscriptions;
 export type CancelSubscription = typeof cancel_subscription;
 export type PauseSubscription = typeof pause_subscription;
+export type ResumeSubscription = typeof resume_subscription;

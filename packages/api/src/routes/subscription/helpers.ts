@@ -11,7 +11,7 @@ import { PricesResponseSchema, transformPrices } from "../prices/helpers";
 import { transformDiscount } from "../discounts/helpers";
 import { Subscription_Scheduled_ChangesModel } from "@repo/db/zod/subscription_scheduled_changes.ts";
 
-type Subscriptions = Prisma.SubscriptionsGetPayload<{
+export type Subscriptions = Prisma.SubscriptionsGetPayload<{
   include: {
     Subscription_Items: {
       include: {
@@ -189,4 +189,11 @@ export const pauseSubscriptionSchema = z.object({
     "continue_existing_billing_period",
     "start_new_billing_period",
   ]),
+});
+
+export const resumeSubscriptionSchema = z.object({
+  effective_from: effective_from_enum,
+  on_resume: z
+    .enum(["continue_existing_billing_period", "start_new_billing_period"])
+    .default("start_new_billing_period"),
 });
