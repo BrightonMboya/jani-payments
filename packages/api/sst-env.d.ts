@@ -2,17 +2,17 @@
 /* tslint:disable */
 /* eslint-disable */
 /* deno-fmt-ignore-file */
+
+import "sst"
+declare module "sst" {
+  export interface Resource {
+    "Hono": {
+      "name": string
+      "type": "sst.aws.Function"
+      "url": string
+    }
+  }
+}
+
 import "sst"
 export {}
-import "sst"
-declare module "sst" {
-  export interface Resource {
-  }
-}
-// cloudflare 
-import * as cloudflare from "@cloudflare/workers-types";
-declare module "sst" {
-  export interface Resource {
-    "Hono": cloudflare.Service
-  }
-}
