@@ -12,6 +12,7 @@ export function CreateRouter() {
     strict: false,
   });
 }
+export type AppType = OpenAPIHono<APPBindings>;
 
 export default function CreateAPP() {
   const app = CreateRouter();

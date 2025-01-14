@@ -6,6 +6,7 @@ import discounts from "./routes/discounts/discounts.index";
 import configureOpenAPI from "./lib/configure-open-api";
 import addresses from "./routes/addresses/addresses.index";
 import subscriptions from "./routes/subscription/subscription.index";
+import { handle } from "hono/aws-lambda";
 
 const app = CreateAPP();
 configureOpenAPI(app);
@@ -19,7 +20,6 @@ const routes = [
   subscriptions,
 ] as const;
 
-
 app.get("/", (c) => {
   return c.text("Hello Hono!");
 });
@@ -30,3 +30,5 @@ routes.forEach((route) => {
 
 export type AppType = (typeof routes)[number];
 export default app;
+export const handler = handle(app);
+export const ts = app.fetch;

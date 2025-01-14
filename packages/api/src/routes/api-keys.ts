@@ -4,7 +4,6 @@ import { z } from "zod";
 import { Context } from "hono";
 import { nanoid } from "nanoid";
 import type { Prisma } from "@repo/db/types";
-import { PrismaType } from "../middleware/with-db";
 import type { PrismaClient } from "@repo/db/types";
 
 const apiKeySchema = z.object({

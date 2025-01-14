@@ -7,6 +7,7 @@ import {
   createSubscriptionSchema,
   pauseSubscriptionSchema,
   transformedSubscriptionSchema,
+  updateSubscriptionSchema,
 } from "./helpers";
 
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
@@ -154,6 +155,34 @@ export const activate_subscription = createRoute({
   },
 });
 
+export const update_subscription = createRoute({
+  path: "/subscription/{subscription_id}",
+  method: "patch",
+  tags,
+  request: {
+    params: z.object({
+      subscription_id: z.string(),
+    }),
+    body: {
+      content: {
+        "application/json": {
+          schema: updateSubscriptionSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    [HttpsStatusCodes.OK]: jsonContent(
+      transformedSubscriptionSchema,
+      "Updates a Subscription given its Id"
+    ),
+    [HttpsStatusCodes.NOT_FOUND]: jsonContent(
+      ErrorSchema,
+      "Subscription not found"
+    ),
+    [HttpsStatusCodes.BAD_REQUEST]: jsonContent(ErrorSchema, "Bad Request"),
+  },
+});
 export const get_subscription = createRoute({
   path: "/subscription/{subscription_id}",
   method: "get",
@@ -177,3 +206,4 @@ export type CancelSubscription = typeof cancel_subscription;
 export type PauseSubscription = typeof pause_subscription;
 export type ResumeSubscription = typeof resume_subscription;
 export type ActivateSubscription = typeof activate_subscription;
+export type UpdateSubscription = typeof update_subscription;

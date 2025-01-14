@@ -6,6 +6,10 @@
 import "sst"
 declare module "sst" {
   export interface Resource {
+    "DATABASE_URL": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "Hono": {
       "name": string
       "type": "sst.aws.Function"

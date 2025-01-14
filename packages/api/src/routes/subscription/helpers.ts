@@ -1,6 +1,7 @@
 import { z } from "@hono/zod-openapi";
 import {
   BillingInterval,
+  CollectionMode,
   Prisma,
   SubscriptionItemsStatus,
   SubscriptionsStatus,
@@ -23,9 +24,43 @@ export type Subscriptions = Prisma.SubscriptionsGetPayload<{
         discount_prices: true;
       };
     };
+    BillingDetails: true;
     Subscription_Scheduled_Changes: true;
   };
 }>;
+
+const SubscriptionItemsSchema = z.array(
+  z.object({
+    status: z.nativeEnum(SubscriptionItemsStatus),
+    price_id: z.string(),
+    quantity: z.number().int().positive(),
+    id: z.string(),
+    subscription_id: z.string(),
+    recurring: z.boolean(),
+    created_at: z.date(),
+    updated_at: z.date(),
+    previously_billed_at: z.date().nullable(),
+    next_billed_at: z.date().nullable(),
+    trial_started_at: z.date().nullable(),
+    trial_ended_at: z.date().nullable(),
+    custom_data: z.any(),
+    price: PricesResponseSchema,
+  })
+);
+
+const effective_from_enum = z
+  .enum(["immediately", "next_billing_period"])
+  .default("next_billing_period");
+
+const billingDetailsSchema = z.object({
+  payment_terms: z.object({
+    payment_interval: z.nativeEnum(BillingInterval),
+    payment_frequency: z.number(),
+  }),
+  enable_checkout: z.boolean(),
+  additional_information: z.string(),
+  purchase_order_number: z.string(),
+});
 
 export const createSubscriptionSchema = z.object({
   status: z.nativeEnum(SubscriptionsStatus),
@@ -39,12 +74,53 @@ export const createSubscriptionSchema = z.object({
       quantity: z.string(),
     })
   ),
-  billingDetails: z
+  billingDetails: billingDetailsSchema,
+});
+
+export const updateSubscriptionSchema = z.object({
+  customer_id: z.string().nullish(),
+  address_id: z.string().nullish(),
+  currency_code: z.string().nullish(),
+  next_billed_at: z.string().date().nullish(),
+  collection_mode: z.nativeEnum(CollectionMode).nullish(),
+  discount: z
     .object({
-      payment_interval: z.nativeEnum(BillingInterval),
-      payment_frequency: z.number(),
-      enable_checkout: z.boolean(),
-      additional_information: z.string().nullish(),
+      id: z.string(),
+      effective_from: effective_from_enum,
+    })
+    .nullish(),
+  billing_details: z.object({
+    payment_terms: z
+      .object({
+        payment_interval: z.nativeEnum(BillingInterval),
+        payment_frequency: z.number(),
+      })
+      .nullish(),
+    enable_checkout: z.boolean().nullish(),
+    additional_information: z.string().nullish(),
+    purchase_order_number: z.string().nullish(),
+  }),
+  current_billing_period: z
+    .object({
+      starts_at: z.date().nullable(),
+      ends_at: z.date().nullable(),
+    })
+    .nullish(),
+  // billing_cycle: z.object({
+  //   frequency: z.number().int().positive(),
+  //   interval: z.string(),
+  // }),
+  items: z.array(
+    z.object({
+      price_id: z.string(),
+      quantity: z.number().nullish(),
+    })
+  ),
+  custom_data: jsonSchema.nullish(),
+  management_urls: z
+    .object({
+      update_payment_method: z.string().nullable(),
+      cancel: z.string().nullable(),
     })
     .nullish(),
 });
@@ -65,7 +141,15 @@ export const transformedSubscriptionSchema = z.object({
     paused_at: z.date().nullable(),
     canceled_at: z.date().nullable(),
     collection_mode: z.string(),
-    billing_details: z.null(),
+    billing_details: z.object({
+      payment_terms: z.object({
+        interval: z.nativeEnum(BillingInterval).nullish(),
+        frequency: z.number().nullish(),
+      }),
+      enable_checkout: z.boolean().nullish(),
+      additional_information: z.string().nullish(),
+      purchase_order_number: z.string().nullish(),
+    }),
     current_billing_period: z.object({
       starts_at: z.date().nullable(),
       ends_at: z.date().nullable(),
@@ -75,25 +159,8 @@ export const transformedSubscriptionSchema = z.object({
       interval: z.string(),
     }),
     scheduled_change: z.array(Subscription_Scheduled_ChangesModel.nullish()),
-    items: z.array(
-      z.object({
-        status: z.nativeEnum(SubscriptionItemsStatus),
-        price_id: z.string(),
-        quantity: z.number().int().positive(),
-        id: z.string(),
-        subscription_id: z.string(),
-        recurring: z.boolean(),
-        created_at: z.date(),
-        updated_at: z.date(),
-        previously_billed_at: z.date().nullable(),
-        next_billed_at: z.date().nullable(),
-        trial_started_at: z.date().nullable(),
-        trial_ended_at: z.date().nullable(),
-        custom_data: z.any(),
-        price: PricesResponseSchema,
-      })
-    ),
-    custom_data: jsonSchema,
+    items: SubscriptionItemsSchema,
+    custom_data: jsonSchema.nullish(),
     management_urls: z.object({
       update_payment_method: z.string().nullable(),
       cancel: z.string().nullable(),
@@ -126,7 +193,15 @@ export function transformSubscription(
       paused_at: input.paused_at,
       canceled_at: input.canceled_at,
       collection_mode: input.collection_mode,
-      billing_details: null,
+      billing_details: {
+        payment_terms: {
+          interval: input.BillingDetails?.payment_interval,
+          frequency: input.BillingDetails?.payment_frequency,
+        },
+        enable_checkout: input.BillingDetails?.enable_checkout,
+        purchase_order_number: input.BillingDetails?.purchase_order_number,
+        additional_information: input.BillingDetails?.additional_information,
+      },
       current_billing_period: {
         starts_at: input.current_period_starts,
         ends_at: input.current_period_ends,
@@ -173,10 +248,6 @@ export function transformSubscription(
     },
   };
 }
-
-const effective_from_enum = z
-  .enum(["immediately", "next_billing_period"])
-  .default("next_billing_period");
 
 export const cancelSubscriptionSchema = z.object({
   effective_from: effective_from_enum,
