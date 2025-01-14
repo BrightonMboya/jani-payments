@@ -15,6 +15,10 @@ declare module "sst" {
       "type": "sst.aws.Function"
       "url": string
     }
+    "KMS_KEYID": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
   }
 }
 

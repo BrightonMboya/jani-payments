@@ -7,6 +7,7 @@
     "deploy": "wrangler deploy --minify"
   },
   "dependencies": {
+    "@aws-crypto/client-node": "^4.0.2",
     "@hono/zod-openapi": "^0.18.3",
     "@repo/db": "workspace:*",
     "@scalar/hono-api-reference": "^0.5.165",

@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { PriceType, BillingInterval,  Entity_Status } from "@prisma/client"
+import { PriceType, BillingInterval, BillingInterval, Entity_Status } from "@prisma/client"
 import { CompleteProducts, RelatedProductsModel, CompleteProject, RelatedProjectModel, CompleteDiscount_Prices, RelatedDiscount_PricesModel, CompleteSubscriptionItems, RelatedSubscriptionItemsModel } from "./index"
 
 // Helper schema for JSON fields

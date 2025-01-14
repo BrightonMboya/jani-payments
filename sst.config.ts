@@ -16,14 +16,16 @@ export default $config({
   },
   async run() {
     const secret = new sst.Secret("DATABASE_URL");
+    const kms_id = new sst.Secret("KMS_KEYID");
     const hono = new sst.aws.Function("Hono", {
       url: true,
       handler: "./packages/api/src/index.handler",
       // runtime: "nodejs18.x",
       environment: {
         DATABASE_URL: process.env.DATABASE_URL!,
+        KMS_KEYID: process.env.KMS_KEYID!,
       },
-      link: [secret],
+      link: [secret, kms_id],
     });
     return {
       api: hono.url,

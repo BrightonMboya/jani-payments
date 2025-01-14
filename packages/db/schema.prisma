@@ -176,13 +176,14 @@ enum product_status {
 
 model Api_keys {
   id          String   @unique @default(uuid())
-  prefix      String
-  description String
-  name        String
+  prefix      String?
+  description String?
   createdAt   DateTime @default(now())
   key         String   @unique
-  User        User?    @relation(fields: [userId], references: [id])
-  userId      String?
+  User        User     @relation(fields: [userId], references: [id])
+  userId      String
+
+  @@index([key, userId])
 }
 
 enum Entity_Status {
@@ -194,7 +195,6 @@ enum PriceType {
   standard //considered part of the catalog and can be reused across transaction
   custom // just a one time price, ideally created for a specific transaction
 }
-
 
 enum BillingInterval {
   day
@@ -213,8 +213,8 @@ enum BillingInterval {
 
 // Main Price model
 model Prices {
-  id                      String               @id
-  type                    PriceType            @default(standard)
+  id                      String              @id
+  type                    PriceType           @default(standard)
   description             String?
   name                    String
   billing_cycle_frequency Int
@@ -228,18 +228,16 @@ model Prices {
   status                  Entity_Status
   // quantity                QuantityConstraints?
   created_at              DateTime
-  updated_at              DateTime             @updatedAt
-  Products                Products?            @relation(fields: [product_id], references: [id])
+  updated_at              DateTime            @updatedAt
+  Products                Products?           @relation(fields: [product_id], references: [id])
   product_id              String
-  Project                 Project              @relation(fields: [projectId], references: [id])
+  Project                 Project             @relation(fields: [projectId], references: [id])
   projectId               String
   Discount_Prices         Discount_Prices[]
   Subscription_Items      SubscriptionItems[]
 
   @@index([product_id, projectId])
 }
-
-
 
 enum Discount_type {
   flat
@@ -249,7 +247,7 @@ enum Discount_type {
 
 model Discounts {
   id                      String            @id
-  status                  Entity_Status?  @default(active)
+  status                  Entity_Status?    @default(active)
   description             String?
   enabled_for_checkout    Boolean?
   amount                  Decimal

@@ -6,12 +6,49 @@ import { nanoid } from "nanoid";
 import type { Prisma } from "@repo/db/types";
 import type { PrismaClient } from "@repo/db/types";
 
+import {
+  KmsKeyringNode,
+  buildClient,
+  CommitmentPolicy,
+} from "@aws-crypto/client-node";
+import { Resource } from "sst";
+
+
+
+
 const apiKeySchema = z.object({
   prefix: z.string(),
   user_id: z.string(),
   description: z.string(),
   name: z.string(),
 });
+
+// step 1, set commitment policy
+const { encrypt, decrypt } = buildClient(
+  CommitmentPolicy.REQUIRE_ENCRYPT_REQUIRE_DECRYPT
+);
+
+// step 2: set up the keyring
+const generatorKeyId = Resource.KMS_KEYID.value;
+
+// const keyIds = [
+//   "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab",
+// ];
+
+const keyring = new KmsKeyringNode({ generatorKeyId });
+
+// step 3: encrypting the data
+
+const main = async () => {
+  const { result } = await encrypt(keyring, "Hello World");
+
+  console.log(result, "this is the encryption key, store it in the database");
+
+  const { plaintext } = await decrypt(keyring, result);
+  console.log(plaintext, "this should read hello world");
+};
+
+main();
 
 const api_keys = new Hono()
   .post("/", async (c: Context) => {
@@ -78,3 +115,5 @@ const api_keys = new Hono()
   });
 
 export default api_keys;
+
+
