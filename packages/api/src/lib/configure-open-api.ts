@@ -1,5 +1,4 @@
 import { apiReference } from "@scalar/hono-api-reference";
-import { bearerAuth } from "./protect-route-config";
 import type { AppOpenAPI } from "./types";
 
 import packageJSON from "../../package.json";

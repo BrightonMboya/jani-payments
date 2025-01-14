@@ -7,7 +7,6 @@
     "deploy": "wrangler deploy --minify"
   },
   "dependencies": {
-    "@aws-crypto/client-node": "^4.0.2",
     "@hono/zod-openapi": "^0.18.3",
     "@repo/db": "workspace:*",
     "@scalar/hono-api-reference": "^0.5.165",
@@ -22,7 +21,6 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241218.0",
     "@types/luxon": "^3.4.2",
     "wrangler": "^3.96.0"
   }

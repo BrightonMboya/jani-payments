@@ -3,7 +3,6 @@ import { getToken } from "next-auth/jwt";
 import { type Context, type Next } from "hono";
 import { PrismaClient } from "@repo/db/types";
 import { createHash } from "crypto";
-import { bearerAuth } from "hono/bearer-auth";
 
 
 
@@ -20,6 +19,10 @@ const withAuth = async (c: Context, next: Next) => {
 
     // Check for Bearer token first
     const authHeader = c.req.header("Authorization");
+
+    if (!authHeader) {
+      return c.json({error: "Unauthorized", message: "No Valid Bearer token provided"}, 401)
+    }
     if (authHeader?.startsWith("Bearer ")) {
       const apiKey = authHeader.slice(7);
       const hashedProvidedKey = createHash("sha256")
