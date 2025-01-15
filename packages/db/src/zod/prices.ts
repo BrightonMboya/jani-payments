@@ -1,6 +1,6 @@
 import * as z from "zod"
 import { PriceType, BillingInterval, BillingInterval, Entity_Status } from "@prisma/client"
-import { CompleteProducts, RelatedProductsModel, CompleteProject, RelatedProjectModel, CompleteDiscount_Prices, RelatedDiscount_PricesModel, CompleteSubscriptionItems, RelatedSubscriptionItemsModel } from "./index"
+import { CompleteProducts, RelatedProductsModel, CompleteProject, RelatedProjectModel, CompleteDiscount_Prices, RelatedDiscount_PricesModel, CompleteSubscriptionItems, RelatedSubscriptionItemsModel, CompleteTransactionItems, RelatedTransactionItemsModel } from "./index"
 
 // Helper schema for JSON fields
 type Literal = boolean | number | string
@@ -32,6 +32,7 @@ export interface CompletePrices extends z.infer<typeof PricesModel> {
   Project: CompleteProject
   Discount_Prices: CompleteDiscount_Prices[]
   Subscription_Items: CompleteSubscriptionItems[]
+  TransactionItems: CompleteTransactionItems[]
 }
 
 /**
@@ -44,4 +45,5 @@ export const RelatedPricesModel: z.ZodSchema<CompletePrices> = z.lazy(() => Pric
   Project: RelatedProjectModel,
   Discount_Prices: RelatedDiscount_PricesModel.array(),
   Subscription_Items: RelatedSubscriptionItemsModel.array(),
+  TransactionItems: RelatedTransactionItemsModel.array(),
 }))

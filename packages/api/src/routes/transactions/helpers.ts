@@ -2,16 +2,44 @@ import { CollectionMode, TransactionStatus } from "@repo/db/types";
 import { z } from "zod";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
 import { type Prisma } from "@repo/db/types";
-import { PricesResponseSchema } from "../prices/helpers";
+import { PricesResponseSchema, transformPrices } from "../prices/helpers";
 import { CustomersResponseSchema } from "../customers/helpers";
 import { AddressResponseSchema } from "../addresses/addresses.routes";
 import { DiscountResponseSchema } from "../discounts/discounts.routes";
+import { transformDiscount } from "../discounts/helpers";
+import { ProductsResponseSchema } from "../products/helpers";
 
 type Transaction = Prisma.TransactionsGetPayload<{
   include: {
-    product: true;
+    transactionItems: {
+      select: {
+        price: {
+          include: {
+            Products: {
+              omit: {
+                project_id: true;
+              };
+            };
+          };
+        };
+        // price_id: true;
+        quantity: true;
+      };
+    };
     price: true;
-    discount: true;
+    address: true;
+    discount: {
+      omit: {
+        projectId: true;
+      };
+      include: {
+        discount_prices: {
+          select: {
+            price_id: true;
+          };
+        };
+      };
+    };
     customer: true;
   };
 }>;
@@ -43,22 +71,25 @@ export const createTransactionSchema = z.object({
 export const transformedTransactionSchema = createTransactionSchema
   .omit({ items: true })
   .extend({
-    total: z.object({
-      subtotal: z.number(),
-      discount: z.number(),
-      grand_total: z.number(),
+    details: z.object({
+      total: z.object({
+        subtotal: z.number(),
+        discount: z.number(),
+        grand_total: z.number(),
+      }),
     }),
     items: z.array(
       z.object({
         price: PricesResponseSchema,
         quantity: z.number(),
+        product: ProductsResponseSchema,
       })
     ),
     created_at: z.date(),
     updated_at: z.date().nullish(),
     customer: CustomersResponseSchema,
     address: AddressResponseSchema,
-    discount: DiscountResponseSchema,
+    discount: DiscountResponseSchema.nullish(),
     invoice_id: z.string(),
   });
 
@@ -84,7 +115,36 @@ export function transformTransaction(
       starts_at: input.current_period_starts,
       ends_at: input.current_period_ends,
     },
-    discount: 
+    items: input.transactionItems.map((item) => {
+      return {
+        price: transformPrices({
+          ...item.price,
+          amount: Number(item.price.amount),
+          custom_data: item.price.custom_data! as any,
+        }),
+        quantity: Number(item.quantity),
+        product: {
+          ...item.price.Products!,
+          custom_data: item.price.Products?.custom_data as any,
+        },
+      };
+    }),
+    discount: input.discount && transformDiscount(input.discount),
+    details: {
+      total: {
+        subtotal: Number(input.subtotal),
+        discount: Number(input.discount_ammount),
+        grand_total: Number(input.grand_total),
+      },
+    },
+    address: {
+      ...input.address,
+      custom_data: input.custom_data as any,
+    },
+    customer: {
+      ...input.customer,
+      custom_data: input.custom_data as any,
+    },
     created_at: input.created_at,
     updated_at: input.updated_at,
   };

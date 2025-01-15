@@ -237,6 +237,7 @@ model Prices {
   projectId               String
   Discount_Prices         Discount_Prices[]
   Subscription_Items      SubscriptionItems[]
+  TransactionItems        TransactionItems[]
 
   @@index([product_id, projectId])
 }
@@ -437,6 +438,16 @@ enum TransactionStatus {
   cancelled
 }
 
+model TransactionItems {
+  id             String        @id
+  price_id       String
+  price          Prices        @relation(fields: [pricesId], references: [id])
+  quantity       Int
+  Transactions   Transactions? @relation(fields: [transactionsId], references: [id])
+  transactionsId String?
+  pricesId       String
+}
+
 model Transactions {
   id              String            @id
   status          TransactionStatus
@@ -452,6 +463,8 @@ model Transactions {
   subscription    Subscriptions?    @relation(fields: [subscription_id], references: [id])
   subscription_id String?           @unique // one transaction belongs to one subscription
 
+  // transaction items
+  transactionItems TransactionItems[]
   // Basic totals
   subtotal         Decimal
   // tax           Decimal  will handle the tax logic later in time
@@ -475,6 +488,6 @@ model Transactions {
   collection_mode CollectionMode
 
   // Temporal Data
-  created_at DateTime @default(now())
+  created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
 }
