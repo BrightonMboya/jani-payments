@@ -53,6 +53,7 @@ model Project {
   discounts         Discounts[]
   customers         Customers[]
   Subscriptions     Subscriptions[]
+  Transactions      Transactions[]
 
   @@index(usageLastChecked(sort: Asc))
 }
@@ -157,16 +158,17 @@ model VerificationToken {
 }
 
 model Products {
-  id          String         @unique @default(uuid())
-  name        String
-  description String
-  status      product_status @default(active)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime
-  custom_data Json?
-  Project     Project        @relation(fields: [project_id], references: [id])
-  project_id  String
-  prices      Prices[]
+  id           String         @unique @default(uuid())
+  name         String
+  description  String
+  status       product_status @default(active)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime
+  custom_data  Json?
+  Project      Project        @relation(fields: [project_id], references: [id])
+  project_id   String
+  prices       Prices[]
+  Transactions Transactions[]
 }
 
 enum product_status {
@@ -265,6 +267,7 @@ model Discounts {
   Project                 Project?          @relation(fields: [projectId], references: [id])
   projectId               String?
   Subscriptions           Subscriptions[]
+  Transactions            Transactions[]
 }
 
 model Discount_Prices {
@@ -289,6 +292,7 @@ model Customers {
   projectId     String?
   Addresses     Addresses[]
   Subscriptions Subscriptions[]
+  Transactions  Transactions[]
 }
 
 model Addresses {
@@ -303,6 +307,7 @@ model Addresses {
   Customers     Customers?      @relation(fields: [customer_id], references: [id])
   customer_id   String?
   Subscriptions Subscriptions[]
+  Transactions  Transactions[]
 }
 
 enum SubscriptionsStatus {
@@ -420,8 +425,56 @@ model Subscriptions {
   Subscription_Items             SubscriptionItems[]
   Subscription_Scheduled_Changes Subscription_Scheduled_Changes[]
   BillingDetails                 BillingDetails?
+  transaction                    Transactions?
 
   @@index([customer_id])
   @@index([project_id])
   @@index([next_billed_at])
+}
+
+enum TransactionStatus {
+  billed
+  cancelled
+}
+
+model Transactions {
+  id              String            @id
+  status          TransactionStatus
+  // relationships
+  customer        Customers         @relation(fields: [customer_id], references: [id])
+  customer_id     String
+  address         Addresses         @relation(fields: [address_id], references: [id])
+  address_id      String
+  project         Project           @relation(fields: [project_id], references: [id])
+  project_id      String
+  product         Products          @relation(fields: [product_id], references: [id])
+  product_id      String
+  subscription    Subscriptions?    @relation(fields: [subscription_id], references: [id])
+  subscription_id String?           @unique // one transaction belongs to one subscription
+
+  // Basic totals
+  subtotal         Decimal
+  // tax           Decimal  will handle the tax logic later in time
+  discount_ammount Decimal
+  total            Decimal
+  grand_total      Decimal
+
+  // Active Discount
+  discount    Discounts? @relation(fields: [discount_id], references: [id])
+  discount_id String?
+
+  // invoice details
+  invoice_id String
+
+  // current_billing_period
+  current_period_starts DateTime?
+  current_period_ends   DateTime?
+
+  custom_data     Json?
+  currency_code   String
+  collection_mode CollectionMode
+
+  // Temporal Data
+  created_at DateTime @default(now())
+  updated_at DateTime? @updatedAt
 }

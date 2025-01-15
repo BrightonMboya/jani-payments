@@ -239,7 +239,7 @@ export function transformSubscription(
           ...(item.price as any),
         }),
       })),
-      custom_data: null,
+      // custom_data: null,
       management_urls: {
         update_payment_method: input.update_payment_method_url,
         cancel: input.cancel_url,

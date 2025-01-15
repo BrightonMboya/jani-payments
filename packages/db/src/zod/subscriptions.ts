@@ -1,6 +1,6 @@
 import * as z from "zod"
 import { SubscriptionsStatus, BillingInterval, CollectionMode } from "@prisma/client"
-import { CompleteCustomers, RelatedCustomersModel, CompleteAddresses, RelatedAddressesModel, CompleteProject, RelatedProjectModel, CompleteDiscounts, RelatedDiscountsModel, CompleteSubscriptionItems, RelatedSubscriptionItemsModel, CompleteSubscription_Scheduled_Changes, RelatedSubscription_Scheduled_ChangesModel, CompleteBillingDetails, RelatedBillingDetailsModel } from "./index"
+import { CompleteCustomers, RelatedCustomersModel, CompleteAddresses, RelatedAddressesModel, CompleteProject, RelatedProjectModel, CompleteDiscounts, RelatedDiscountsModel, CompleteSubscriptionItems, RelatedSubscriptionItemsModel, CompleteSubscription_Scheduled_Changes, RelatedSubscription_Scheduled_ChangesModel, CompleteBillingDetails, RelatedBillingDetailsModel, CompleteTransactions, RelatedTransactionsModel } from "./index"
 
 export const SubscriptionsModel = z.object({
   id: z.string(),
@@ -34,6 +34,7 @@ export interface CompleteSubscriptions extends z.infer<typeof SubscriptionsModel
   Subscription_Items: CompleteSubscriptionItems[]
   Subscription_Scheduled_Changes: CompleteSubscription_Scheduled_Changes[]
   BillingDetails?: CompleteBillingDetails | null
+  transaction?: CompleteTransactions | null
 }
 
 /**
@@ -49,4 +50,5 @@ export const RelatedSubscriptionsModel: z.ZodSchema<CompleteSubscriptions> = z.l
   Subscription_Items: RelatedSubscriptionItemsModel.array(),
   Subscription_Scheduled_Changes: RelatedSubscription_Scheduled_ChangesModel.array(),
   BillingDetails: RelatedBillingDetailsModel.nullish(),
+  transaction: RelatedTransactionsModel.nullish(),
 }))

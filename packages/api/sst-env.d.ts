@@ -3,24 +3,7 @@
 /* eslint-disable */
 /* deno-fmt-ignore-file */
 
-import "sst"
-declare module "sst" {
-  export interface Resource {
-    "DATABASE_URL": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "Hono": {
-      "name": string
-      "type": "sst.aws.Function"
-      "url": string
-    }
-    "KMS_KEYID": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-  }
-}
+/// <reference path="../../sst-env.d.ts" />
 
 import "sst"
 export {}

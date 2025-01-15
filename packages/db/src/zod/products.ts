@@ -1,6 +1,6 @@
 import * as z from "zod"
 import { product_status } from "@prisma/client"
-import { CompleteProject, RelatedProjectModel, CompletePrices, RelatedPricesModel } from "./index"
+import { CompleteProject, RelatedProjectModel, CompletePrices, RelatedPricesModel, CompleteTransactions, RelatedTransactionsModel } from "./index"
 
 // Helper schema for JSON fields
 type Literal = boolean | number | string
@@ -22,6 +22,7 @@ export const ProductsModel = z.object({
 export interface CompleteProducts extends z.infer<typeof ProductsModel> {
   Project: CompleteProject
   prices: CompletePrices[]
+  Transactions: CompleteTransactions[]
 }
 
 /**
@@ -32,4 +33,5 @@ export interface CompleteProducts extends z.infer<typeof ProductsModel> {
 export const RelatedProductsModel: z.ZodSchema<CompleteProducts> = z.lazy(() => ProductsModel.extend({
   Project: RelatedProjectModel,
   prices: RelatedPricesModel.array(),
+  Transactions: RelatedTransactionsModel.array(),
 }))
