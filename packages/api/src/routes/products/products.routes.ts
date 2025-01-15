@@ -1,17 +1,14 @@
 import { z, createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
-import { ProductsModel } from "@repo/db/zod/products.ts";
 import {
   CreateProductsSchema,
   ProductsResponseSchema,
   UpdateProductsSchema,
 } from "./helpers";
 import {
-  createErrorSchema,
+
   ErrorSchema,
-  jsonSchema,
-  notFoundSchema,
 } from "~/lib/utils/zod-helpers";
 
 export const tags = ["Products"];

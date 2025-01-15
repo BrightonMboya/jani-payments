@@ -9,7 +9,7 @@ import { DiscountResponseSchema } from "../discounts/discounts.routes";
 import { transformDiscount } from "../discounts/helpers";
 import { ProductsResponseSchema } from "../products/helpers";
 
-type Transaction = Prisma.TransactionsGetPayload<{
+export type Transaction = Prisma.TransactionsGetPayload<{
   include: {
     transactionItems: {
       select: {
@@ -26,7 +26,7 @@ type Transaction = Prisma.TransactionsGetPayload<{
         quantity: true;
       };
     };
-    price: true;
+    // price: true;
     address: true;
     discount: {
       omit: {
@@ -149,3 +149,101 @@ export function transformTransaction(
     updated_at: input.updated_at,
   };
 }
+
+// Operator types for date comparisons
+export enum DateOperator {
+  LT = "LT", // less than
+  LTE = "LTE", // less than or equal
+  GT = "GT", // greater than
+  GTE = "GTE", // greater than or equal
+}
+enum SortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+enum TransactionOrderByField {
+  billed_at = "billed_at",
+  created_at = "created_at",
+  id = "id",
+  updated_at = "updated_at",
+}
+
+export const listTransactionQueryParams = z.object({
+  // Pagination
+  after: z.string().optional(),
+  per_page: z.number().int().min(1).max(100).optional().default(30),
+
+  // Date filters
+  billed_at: z
+    .union([
+      z.string().datetime(), // exact match
+      z.object({
+        operator: z.nativeEnum(DateOperator),
+        value: z.string().datetime(),
+      }),
+    ])
+    .optional(),
+
+  created_at: z
+    .union([
+      z.string().datetime(),
+      z.object({
+        operator: z.nativeEnum(DateOperator),
+        value: z.string().datetime(),
+      }),
+    ])
+    .optional(),
+
+  updated_at: z
+    .union([
+      z.string().datetime(),
+      z.object({
+        operator: z.nativeEnum(DateOperator),
+        value: z.string().datetime(),
+      }),
+    ])
+    .optional(),
+
+  // Array filters
+  customer_id: z.string().array().optional(),
+  id: z.string().array().optional(),
+  invoice_number: z.string().array().optional(),
+  subscription_id: z
+    .union([
+      z.string().array(),
+      z.literal("null"), // handle null case specifically
+    ])
+    .optional(),
+
+  // Enum filters
+  collection_mode: z.nativeEnum(CollectionMode).optional(),
+  // origin: z.nativeEnum(TransactionOrigin).array().optional(),
+  status: z.nativeEnum(TransactionStatus).array().optional(),
+
+  // Sorting
+  order_by: z
+    .object({
+      field: z.nativeEnum(TransactionOrderByField),
+      direction: z.nativeEnum(SortDirection),
+    })
+    .optional(),
+
+  // Include related entities
+  include: z
+    .array(z.enum(["customer", "subscription", "items", "discount"]))
+    .optional(),
+});
+
+export const ListTransactionsResponse = z.object({
+  data: z.array(transformedTransactionSchema),
+  meta: z.object({
+    total: z.number(),
+    per_page: z.number(),
+    next_cursor: z.string(),
+  }),
+});
+
+export type IListTransactionQueryParams = z.infer<
+  typeof listTransactionQueryParams
+>;

@@ -478,6 +478,7 @@ model Transactions {
 
   // invoice details
   invoice_id String
+  // invoice_number String   // should maybe add this ??
 
   // current_billing_period
   current_period_starts DateTime?
@@ -490,4 +491,7 @@ model Transactions {
   // Temporal Data
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
+
+  @@index([created_at])
+  @@index([customer_id, created_at])
 }
