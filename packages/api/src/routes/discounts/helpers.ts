@@ -2,9 +2,23 @@ import { DiscountResponseSchema } from "./discounts.routes";
 import { z } from "zod";
 import { Json, jsonSchema } from "~/lib/utils/zod-helpers";
 import { DiscountsModel } from "@repo/db/zod/discounts.ts";
+import { type Prisma } from "@repo/db/types";
+
+export type Discount = Prisma.DiscountsGetPayload<{
+  omit: {
+    projectId: true;
+  };
+  include: {
+    discount_prices: {
+      select: {
+        price_id: true;
+      };
+    };
+  };
+}>;
 
 export const transformDiscount = (
-  discount: any
+  discount: Discount
 ): z.infer<typeof DiscountResponseSchema> => ({
   id: discount.id,
   status: discount.status,

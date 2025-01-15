@@ -8,7 +8,6 @@ import {
 import { type Context } from "hono";
 import { PrismaClient } from "@repo/db/types";
 import * as HttpStatusCodes from "~/lib/http-status-code";
-import * as HttpStatusPhrases from "~/lib/http-status-phrases";
 import { z } from "zod";
 import { DiscountResponseSchema } from "./discounts.routes";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
