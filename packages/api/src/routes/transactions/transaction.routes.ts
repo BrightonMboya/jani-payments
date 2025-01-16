@@ -8,6 +8,7 @@ import {
   ListTransactionsResponse,
   transactionIdSchema,
   transformedTransactionSchema,
+  updateTransactionSchema,
 } from "./helpers";
 
 const tags = ["transactions"];
@@ -33,7 +34,7 @@ export const create_transaction = createRoute({
     [HttpStatusCodes.NOT_FOUND]: jsonContent(
       ErrorSchema,
       "One of the specified Ids are invalid"
-    )
+    ),
   },
 });
 
@@ -71,6 +72,33 @@ export const get_transaction = createRoute({
   },
 });
 
+export const update_transaction = createRoute({
+  path: "/transaction/{transaction_id}",
+  method: "patch",
+  tags,
+  request: {
+    params: transactionIdSchema,
+    body: {
+      content: {
+        "application/json": {
+          schema: updateTransactionSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    [HttpStatusCodes.OK]: jsonContent(
+      transformedTransactionSchema,
+      "Returns an updated Transaction"
+    ),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(
+      ErrorSchema,
+      "No Transaction found with the specified Id"
+    ),
+  },
+});
+
 export type CreateTransaction = typeof create_transaction;
 export type ListTransaction = typeof list_transaction;
 export type GetTransaction = typeof get_transaction;
+export type UpdateTransaction = typeof update_transaction;

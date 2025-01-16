@@ -4,8 +4,6 @@ import { type Context, type Next } from "hono";
 import { PrismaClient } from "@repo/db/types";
 import { createHash } from "crypto";
 
-
-
 const withAuth = async (c: Context, next: Next) => {
   try {
     // Skip auth for public routes
@@ -21,7 +19,10 @@ const withAuth = async (c: Context, next: Next) => {
     const authHeader = c.req.header("Authorization");
 
     if (!authHeader) {
-      return c.json({error: "Unauthorized", message: "No Valid Bearer token provided"}, 401)
+      return c.json(
+        { error: "Unauthorized", message: "No Valid Bearer token provided" },
+        401
+      );
     }
     if (authHeader?.startsWith("Bearer ")) {
       const apiKey = authHeader.slice(7);
@@ -87,6 +88,10 @@ const withAuth = async (c: Context, next: Next) => {
       email: token.email,
       authMethod: "session",
     });
+
+    // set the project_id which comes as organization_id from the cookie
+    const project_id = getCookie(c, "organization_id");
+    c.set("project_id", project_id);
 
     return next();
   } catch (error) {

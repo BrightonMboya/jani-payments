@@ -10,6 +10,7 @@ import {
   transformTransaction,
 } from "../helpers";
 import { z } from "zod";
+import * as HttpStatusCodes from "~/lib/http-status-code";
 
 const list_transaction: APPRouteHandler<ListTransaction> = async (
   c: Context
@@ -112,7 +113,7 @@ const list_transaction: APPRouteHandler<ListTransaction> = async (
         next_cursor: nextCursor,
       },
     } satisfies z.infer<typeof ListTransactionsResponse>,
-    200
+    HttpStatusCodes.OK
   );
 };
 

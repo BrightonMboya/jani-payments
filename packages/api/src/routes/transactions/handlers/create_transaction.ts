@@ -9,8 +9,6 @@ import {
   transformTransaction,
 } from "../helpers";
 import * as HttpStatusCodes from "~/lib/http-status-code";
-import { ErrorSchema } from "~/lib/utils/zod-helpers";
-import { z } from "zod";
 
 const create_transaction: APPRouteHandler<CreateTransaction> = async (
   c: Context
@@ -19,68 +17,73 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
   const input = createTransactionSchema.parse(await c.req.json());
   const projectId = c.get("project_id");
 
-  // Verify all prices belong to the same project
-  const prices = await db.prices.findMany({
-    where: {
-      id: {
-        in: input.items.map((item) => item.price_id),
-      },
-      projectId,
-    },
-    include: {
-      Products: true,
-    },
-  });
-
-  if (prices.length !== input.items.length) {
-    return c.json(
-      {
-        error: "Not Found",
-        message: "One or more prices not found or don't belong to this project",
-      } satisfies z.infer<typeof ErrorSchema>,
-      HttpStatusCodes.NOT_FOUND
-    );
-  }
-  // calculate totals
-  const subtotal = input.items.reduce((acc, item) => {
-    const price = prices.find((p) => p.id === item.price_id);
-    if (!price) throw new Error("Price not found");
-    return acc + Number(price.amount) * item.quantity;
-  }, 0);
-
-  // 3. Handle discount if provided
-  let discountAmount = 0;
-  if (input.discount_id) {
-    const discount = await db.discounts.findFirst({
-      where: {
-        id: input.discount_id,
-        projectId,
-        status: "active",
-      },
-    });
-
-    if (!discount) {
-      return c.json(
-        {
-          error: "Not Found",
-          message: "Discount not found or inactive",
-        } satisfies z.infer<typeof ErrorSchema>,
-        HttpStatusCodes.NOT_FOUND
-      );
-    }
-
-    // Calculate discount amount based on type
-    discountAmount = calculateDiscountAmount(
-      discount,
-      subtotal,
-      input.items.reduce((acc, item) => acc + item.quantity, 0)
-    );
-  }
-
-  const grandTotal = subtotal - discountAmount;
+  
   const transaction = await db.$transaction(async (tx) => {
     const transaction_id = `txn_${crypto.randomUUID()}`;
     const invoice_id = `inv_${crypto.randomUUID()}`; // u should send this to the event queue to create an invoice, maybe take it above this txn
+    // Verify all prices belong to the same project
+    const prices = await db.prices.findMany({
+      where: {
+        id: {
+          in: input.items.map((item) => item.price_id),
+        },
+        projectId,
+      },
+      include: {
+        Products: true,
+      },
+    });
+
+    if (prices.length !== input.items.length) {
+      throw new Error(
+        "One or more prices not found or don't belong to this project"
+      );
+      // return c.json(
+      //   {
+      //     error: "Not Found",
+      //     message:
+      //       "One or more prices not found or don't belong to this project",
+      //   } satisfies z.infer<typeof ErrorSchema>,
+      //   HttpStatusCodes.NOT_FOUND
+      // );
+    }
+    // calculate totals
+    const subtotal = input.items.reduce((acc, item) => {
+      const price = prices.find((p) => p.id === item.price_id);
+      if (!price) throw new Error("Price not found");
+      return acc + Number(price.amount) * item.quantity;
+    }, 0);
+
+    // 3. Handle discount if provided
+    let discountAmount = 0;
+    if (input.discount_id) {
+      const discount = await db.discounts.findFirst({
+        where: {
+          id: input.discount_id,
+          projectId,
+          status: "active",
+        },
+      });
+
+      if (!discount) {
+        throw new Error("Provided Discount Id Not Found or Inactive")
+        // return c.json(
+        //   {
+        //     error: "Not Found",
+        //     message: "Discount not found or inactive",
+        //   } satisfies z.infer<typeof ErrorSchema>,
+        //   HttpStatusCodes.NOT_FOUND
+        // );
+      }
+
+      // Calculate discount amount based on type
+      discountAmount = calculateDiscountAmount(
+        discount,
+        subtotal,
+        input.items.reduce((acc, item) => acc + item.quantity, 0)
+      );
+    }
+    const grandTotal = subtotal - discountAmount;
     return await tx.transactions.create({
       data: {
         id: transaction_id,
@@ -92,7 +95,7 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
         currency_code: input.currency_code,
         subscription_id: input.subscription_id,
         discount_id: input.discount_id,
-        collection_mode: input.collection_mode ?? "automatic",
+        collection_mode: input.collection_mode ?? "automatic", 
         custom_data: input.custom_data as any,
         current_period_starts: input.current_billing_period?.starts_at,
         current_period_ends: input.current_billing_period?.ends_at,

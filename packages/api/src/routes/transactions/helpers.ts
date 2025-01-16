@@ -4,7 +4,7 @@ import {
   PaymentProvider,
   PaymentStatus,
   TransactionStatus,
-  Discount_type
+  Discount_type,
 } from "@repo/db/types";
 import { z } from "zod";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
@@ -173,6 +173,10 @@ export const createTransactionSchema = z.object({
         message: "End Date must be after the start date",
       }
     ),
+});
+
+export const updateTransactionSchema = z.object({
+  status: z.nativeEnum(TransactionStatus),
 });
 
 export const transformedTransactionSchema = createTransactionSchema
@@ -454,10 +458,9 @@ export const transactionIdSchema = z.object({
   transaction_id: z.string(),
 });
 
-
 export function calculateDiscountAmount(
   discount: {
-    type: Discount_type,
+    type: Discount_type;
     amount: Prisma.Decimal;
     currency_code: string;
     max_recurring_intervals?: Prisma.Decimal | null;
@@ -467,7 +470,6 @@ export function calculateDiscountAmount(
   totalQuantity: number
 ): number {
   const discountAmount = Number(discount.amount);
-
 
   if (discount.usage_limit !== null && discount?.usage_limit! <= 0) {
     return 0;
