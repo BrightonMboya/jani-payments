@@ -20,8 +20,8 @@ const routes = [
   customers,
   addresses,
   subscriptions,
-  keys,
   transactions,
+  keys,
 ] as const;
 
 app.get("/", (c) => {

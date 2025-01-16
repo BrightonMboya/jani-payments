@@ -247,3 +247,41 @@ export const ListTransactionsResponse = z.object({
 export type IListTransactionQueryParams = z.infer<
   typeof listTransactionQueryParams
 >;
+
+
+export const GetTransactionInclude = {
+  transactionItems: {
+    select: {
+      price: {
+        include: {
+          Products: {
+            omit: {
+              project_id: true,
+            },
+          },
+        },
+      },
+      // price_id: true;
+      quantity: true,
+    },
+  },
+  // price: true,
+  address: true,
+  discount: {
+    omit: {
+      projectId: true,
+    },
+    include: {
+      discount_prices: {
+        select: {
+          price_id: true,
+        },
+      },
+    },
+  },
+  customer: true,
+};
+
+export const transactionIdSchema = z.object({
+  transaction_id: z.string(),
+});

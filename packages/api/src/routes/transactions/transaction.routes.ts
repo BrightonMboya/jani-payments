@@ -6,6 +6,7 @@ import {
   createTransactionSchema,
   listTransactionQueryParams,
   ListTransactionsResponse,
+  transactionIdSchema,
   transformedTransactionSchema,
 } from "./helpers";
 
@@ -51,6 +52,9 @@ export const get_transaction = createRoute({
   path: "/transaction/{transaction_id}",
   method: "get",
   tags,
+  request: {
+    params: transactionIdSchema,
+  },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       transformedTransactionSchema,

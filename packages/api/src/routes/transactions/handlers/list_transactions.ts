@@ -4,6 +4,7 @@ import { ListTransaction } from "../transaction.routes";
 import { Prisma, PrismaClient } from "@repo/db/types";
 import {
   DateOperator,
+  GetTransactionInclude,
   IListTransactionQueryParams,
   ListTransactionsResponse,
   transformTransaction,
@@ -21,38 +22,7 @@ const list_transaction: APPRouteHandler<ListTransaction> = async (
     // cursor: undefined,
     take: query.per_page,
     // skip: undefined,
-    include: {
-      transactionItems: {
-        select: {
-          price: {
-            include: {
-              Products: {
-                omit: {
-                  project_id: true,
-                },
-              },
-            },
-          },
-          // price_id: true;
-          quantity: true,
-        },
-      },
-      // price: true,
-      address: true,
-      discount: {
-        omit: {
-          projectId: true,
-        },
-        include: {
-          discount_prices: {
-            select: {
-              price_id: true,
-            },
-          },
-        },
-      },
-      customer: true,
-    },
+    include: GetTransactionInclude,
     orderBy: query.order_by
       ? {
           [query.order_by.field]: query.order_by.direction.toLowerCase(),
