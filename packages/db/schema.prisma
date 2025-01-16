@@ -453,7 +453,7 @@ enum PaymentMethod {
   MOBILE_MONEY
   CARD
   BANK_TRANSFER
-  OFFLINE
+  // OFFLINE  // is accepting payments offline legal?
 }
 
 // who helped u to process this payment
@@ -494,10 +494,11 @@ model TransactionPayment {
   phone_suffix   String? // Last 4 digits only
 
   // Card specific (PCI compliant)
-  card_last4     String?
-  card_brand     String? // e.g., "Visa", "Mastercard"
-  card_exp_month Int?
-  card_exp_year  Int?
+  card_last4       String?
+  card_brand       String? // e.g., "Visa", "Mastercard"
+  card_exp_month   Int?
+  card_exp_year    Int?
+  card_holder_name String?
 
   // Bank Transfer specific
   bank_reference String?
@@ -508,7 +509,7 @@ model TransactionPayment {
   provider_metadata  Json? // Any additional provider-specific data
   error_message      String?
 
-  created_at DateTime @default(now())
+  created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
 
   @@index([status])

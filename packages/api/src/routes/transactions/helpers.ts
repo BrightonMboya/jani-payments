@@ -1,4 +1,10 @@
-import { CollectionMode, TransactionStatus } from "@repo/db/types";
+import {
+  CollectionMode,
+  PaymentMethod,
+  PaymentProvider,
+  PaymentStatus,
+  TransactionStatus,
+} from "@repo/db/types";
 import { z } from "zod";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
 import { type Prisma } from "@repo/db/types";
@@ -41,8 +47,57 @@ export type Transaction = Prisma.TransactionsGetPayload<{
       };
     };
     customer: true;
+    TransactionPayment: true;
   };
 }>;
+
+// Payment method specific details schemas
+const mobileMoneyDetailsSchema = z.object({
+  network: z.string(),
+  phone_suffix: z.string(),
+});
+
+const cardDetailsSchema = z.object({
+  last4: z.string(),
+  brand: z.string(),
+  exp_month: z.number(),
+  exp_year: z.number(),
+  cardholder_name: z.string().nullable(),
+  // country: z.string().nullable(),
+});
+
+const bankTransferDetailsSchema = z.object({
+  bank_name: z.string(),
+  bank_reference: z.string(),
+  // account_suffix: z.string().nullable(),
+  // transfer_type: z.enum(["instant", "manual"]),
+});
+
+const PaymentResponseSchema = z.object({
+  id: z.string(),
+  status: z.nativeEnum(PaymentStatus),
+  // amount: z.number(),
+  payment_method: z.nativeEnum(PaymentMethod),
+  provider: z.nativeEnum(PaymentProvider),
+  created_at: z.date(),
+  updated_at: z.date().nullish(),
+  provider_reference: z.string().nullable(),
+  provider_metadata: jsonSchema.nullable(),
+  method_details: z.discriminatedUnion("payment_method", [
+    z.object({
+      payment_method: z.literal(PaymentMethod.MOBILE_MONEY),
+      details: mobileMoneyDetailsSchema,
+    }),
+    z.object({
+      payment_method: z.literal(PaymentMethod.CARD),
+      details: cardDetailsSchema,
+    }),
+    z.object({
+      payment_method: z.literal(PaymentMethod.BANK_TRANSFER),
+      details: bankTransferDetailsSchema,
+    }),
+  ]),
+});
 
 export const createTransactionSchema = z.object({
   items: z.array(
@@ -85,6 +140,7 @@ export const transformedTransactionSchema = createTransactionSchema
         product: ProductsResponseSchema,
       })
     ),
+    payments: PaymentResponseSchema,
     created_at: z.date(),
     updated_at: z.date().nullish(),
     customer: CustomersResponseSchema,
@@ -92,6 +148,62 @@ export const transformedTransactionSchema = createTransactionSchema
     discount: DiscountResponseSchema.nullish(),
     invoice_id: z.string(),
   });
+
+// helper fn to transform payment data
+function transformPayment(payment: Transaction["TransactionPayment"]) {
+   if (!payment) {
+     throw new Error("Payment data is required");
+   }
+  const methodDetails = getPaymentMethodDetails(payment);
+  return {
+    id: payment?.id!,
+    status: payment?.status as PaymentStatus,
+    amount: Number(payment?.amount),
+    currency_code: payment?.currency_code,
+    payment_method: payment?.payment_method,
+    provider: payment?.payment_provider,
+    created_at: payment?.created_at,
+    updated_at: payment?.updated_at,
+    error_message: payment?.error_message,
+    provider_reference: payment?.provider_reference,
+    provider_metadata: payment?.provider_metadata as any,
+    method_details: methodDetails,
+  };
+}
+
+function getPaymentMethodDetails(payment: NonNullable<Transaction["TransactionPayment"]>) {
+  switch (payment?.payment_method) {
+    case PaymentMethod.MOBILE_MONEY:
+      return {
+        payment_method: PaymentMethod.MOBILE_MONEY,
+        details: {
+          network: payment.mobile_network!,
+          phone_suffix: payment.phone_suffix!,
+        },
+      };
+    case PaymentMethod.CARD:
+      return {
+        payment_method: PaymentMethod.CARD,
+        details: {
+          last4: payment.card_last4!,
+          brand: payment.card_brand!,
+          exp_month: payment.card_exp_month!,
+          exp_year: payment.card_exp_year!,
+          cardholder_name: payment.card_holder_name!,
+        },
+      };
+    case PaymentMethod.BANK_TRANSFER:
+      return {
+        payment_method: PaymentMethod.BANK_TRANSFER,
+        details: {
+          bank_name: payment.bank_name!,
+          bank_reference: payment.bank_reference!,
+        },
+      };
+    default:
+      throw new Error(`Unknown payment method: ${payment?.payment_method}`);
+  }
+}
 
 type TransformedTransactionSchema = z.infer<
   typeof transformedTransactionSchema
@@ -129,6 +241,9 @@ export function transformTransaction(
         },
       };
     }),
+    //
+    payments: transformPayment(input.TransactionPayment),
+    // input?.TransactionPayment?.map((item) => transformPayment(item)),
     discount: input.discount && transformDiscount(input.discount),
     details: {
       total: {
@@ -248,7 +363,6 @@ export type IListTransactionQueryParams = z.infer<
   typeof listTransactionQueryParams
 >;
 
-
 export const GetTransactionInclude = {
   transactionItems: {
     select: {
@@ -280,6 +394,7 @@ export const GetTransactionInclude = {
     },
   },
   customer: true,
+  TransactionPayment: true,
 };
 
 export const transactionIdSchema = z.object({

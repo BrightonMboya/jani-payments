@@ -22,6 +22,7 @@ export const TransactionPaymentModel = z.object({
   card_brand: z.string().nullish(),
   card_exp_month: z.number().int().nullish(),
   card_exp_year: z.number().int().nullish(),
+  card_holder_name: z.string().nullish(),
   bank_reference: z.string().nullish(),
   bank_name: z.string().nullish(),
   provider_reference: z.string().nullish(),
