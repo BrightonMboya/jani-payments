@@ -10,7 +10,6 @@ import {
   transformTransaction,
 } from "../helpers";
 import { z } from "zod";
-import * as HttpStatusCodes from "~/lib/http-status-code";
 
 const list_transaction: APPRouteHandler<ListTransaction> = async (
   c: Context

@@ -30,6 +30,10 @@ export const create_transaction = createRoute({
       transformedTransactionSchema,
       "Creates a Transaction and returns an Id"
     ),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(
+      ErrorSchema,
+      "One of the specified Ids are invalid"
+    )
   },
 });
 

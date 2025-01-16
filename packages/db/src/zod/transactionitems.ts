@@ -6,7 +6,6 @@ export const TransactionItemsModel = z.object({
   price_id: z.string(),
   quantity: z.number().int(),
   transactionsId: z.string().nullish(),
-  pricesId: z.string(),
 })
 
 export interface CompleteTransactionItems extends z.infer<typeof TransactionItemsModel> {

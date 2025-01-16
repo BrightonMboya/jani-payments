@@ -439,13 +439,13 @@ enum TransactionStatus {
 }
 
 model TransactionItems {
-  id             String        @id
+  id             String        @id @default(cuid())
+  price          Prices        @relation(fields: [price_id], references: [id])
   price_id       String
-  price          Prices        @relation(fields: [pricesId], references: [id])
   quantity       Int
   Transactions   Transactions? @relation(fields: [transactionsId], references: [id])
   transactionsId String?
-  pricesId       String
+
 }
 
 // how did you accept this payment

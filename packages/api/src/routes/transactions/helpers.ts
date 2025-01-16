@@ -4,6 +4,7 @@ import {
   PaymentProvider,
   PaymentStatus,
   TransactionStatus,
+  Discount_type
 } from "@repo/db/types";
 import { z } from "zod";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
@@ -14,6 +15,7 @@ import { AddressResponseSchema } from "../addresses/addresses.routes";
 import { DiscountResponseSchema } from "../discounts/discounts.routes";
 import { transformDiscount } from "../discounts/helpers";
 import { ProductsResponseSchema } from "../products/helpers";
+import { HTTPException } from "hono/http-exception";
 
 export type Transaction = Prisma.TransactionsGetPayload<{
   include: {
@@ -73,6 +75,41 @@ const bankTransferDetailsSchema = z.object({
   // transfer_type: z.enum(["instant", "manual"]),
 });
 
+// Payment Details Schema
+const BasePaymentSchema = z.object({
+  payment_method: z.nativeEnum(PaymentMethod),
+  payment_provider: z.nativeEnum(PaymentProvider),
+  amount: z.number().positive(),
+  currency_code: z.string().length(3), // ISO 4217 currency code
+});
+
+// Conditional payment details based on payment method
+const MobileMoneyPaymentSchema = BasePaymentSchema.extend({
+  payment_method: z.literal("MOBILE_MONEY"),
+  mobile_network: z.string(),
+  phone_suffix: z.string().length(4),
+});
+
+const CardPaymentSchema = BasePaymentSchema.extend({
+  payment_method: z.literal("CARD"),
+  card_last4: z.string().length(4),
+  card_brand: z.string(),
+  card_exp_month: z.number().int().min(1).max(12),
+  card_exp_year: z.number().int().min(new Date().getFullYear()),
+  card_holder_name: z.string(),
+});
+
+const BankTransferPaymentSchema = BasePaymentSchema.extend({
+  payment_method: z.literal("BANK_TRANSFER"),
+  bank_reference: z.string(),
+  bank_name: z.string(),
+});
+const PaymentDetailsSchema = z.discriminatedUnion("payment_method", [
+  MobileMoneyPaymentSchema,
+  CardPaymentSchema,
+  BankTransferPaymentSchema,
+]);
+
 const PaymentResponseSchema = z.object({
   id: z.string(),
   status: z.nativeEnum(PaymentStatus),
@@ -100,6 +137,7 @@ const PaymentResponseSchema = z.object({
 });
 
 export const createTransactionSchema = z.object({
+  // required fields
   items: z.array(
     z.object({
       price_id: z.string(),
@@ -111,20 +149,34 @@ export const createTransactionSchema = z.object({
   address_id: z.string(),
   //   product_id: z.string(),
   currency_code: z.string(),
+
+  //payment details
+  payment_details: PaymentDetailsSchema,
+
+  // optional fields
   subscription_id: z.string().nullish(),
   discount_id: z.string().nullish(),
   collection_mode: z.nativeEnum(CollectionMode).nullish(),
   custom_data: jsonSchema.nullish(),
   current_billing_period: z
     .object({
-      starts_at: z.date().nullable(),
-      ends_at: z.date().nullable(),
+      starts_at: z.date(),
+      ends_at: z.date(),
     })
-    .nullish(),
+    .optional()
+    .refine(
+      (data) => {
+        if (!data) return true;
+        return data.ends_at > data.starts_at;
+      },
+      {
+        message: "End Date must be after the start date",
+      }
+    ),
 });
 
 export const transformedTransactionSchema = createTransactionSchema
-  .omit({ items: true })
+  .omit({ items: true, payment_details: true })
   .extend({
     details: z.object({
       total: z.object({
@@ -151,9 +203,9 @@ export const transformedTransactionSchema = createTransactionSchema
 
 // helper fn to transform payment data
 function transformPayment(payment: Transaction["TransactionPayment"]) {
-   if (!payment) {
-     throw new Error("Payment data is required");
-   }
+  if (!payment) {
+    throw new Error("Payment data is required");
+  }
   const methodDetails = getPaymentMethodDetails(payment);
   return {
     id: payment?.id!,
@@ -171,7 +223,9 @@ function transformPayment(payment: Transaction["TransactionPayment"]) {
   };
 }
 
-function getPaymentMethodDetails(payment: NonNullable<Transaction["TransactionPayment"]>) {
+function getPaymentMethodDetails(
+  payment: NonNullable<Transaction["TransactionPayment"]>
+) {
   switch (payment?.payment_method) {
     case PaymentMethod.MOBILE_MONEY:
       return {
@@ -224,8 +278,8 @@ export function transformTransaction(
     custom_data: input.custom_data as any,
     invoice_id: input.invoice_id,
     current_billing_period: {
-      starts_at: input.current_period_starts,
-      ends_at: input.current_period_ends,
+      starts_at: input.current_period_starts!,
+      ends_at: input.current_period_ends!,
     },
     items: input.transactionItems.map((item) => {
       return {
@@ -243,7 +297,6 @@ export function transformTransaction(
     }),
     //
     payments: transformPayment(input.TransactionPayment),
-    // input?.TransactionPayment?.map((item) => transformPayment(item)),
     discount: input.discount && transformDiscount(input.discount),
     details: {
       total: {
@@ -400,3 +453,55 @@ export const GetTransactionInclude = {
 export const transactionIdSchema = z.object({
   transaction_id: z.string(),
 });
+
+
+export function calculateDiscountAmount(
+  discount: {
+    type: Discount_type,
+    amount: Prisma.Decimal;
+    currency_code: string;
+    max_recurring_intervals?: Prisma.Decimal | null;
+    usage_limit?: number | null;
+  },
+  subtotal: number,
+  totalQuantity: number
+): number {
+  const discountAmount = Number(discount.amount);
+
+
+  if (discount.usage_limit !== null && discount?.usage_limit! <= 0) {
+    return 0;
+  }
+
+  switch (discount.type) {
+    case "percentage":
+      if (discountAmount < 0 || discountAmount > 100) {
+        throw new HTTPException(400, {
+          message: "Percentage discount must be between 0 and 100",
+        });
+      }
+      return (discountAmount / 100) * subtotal;
+
+    case "flat":
+      if (discountAmount < 0) {
+        throw new HTTPException(400, {
+          message: "Flat discount amount cannot be negative",
+        });
+      }
+      // Ensure discount doesn't exceed subtotal
+      return Math.min(discountAmount, subtotal);
+
+    case "flat_per_seat":
+      if (discountAmount < 0) {
+        throw new HTTPException(400, {
+          message: "Per-seat discount amount cannot be negative",
+        });
+      }
+      const totalDiscount = discountAmount * totalQuantity;
+      // Ensure total discount doesn't exceed subtotal
+      return Math.min(totalDiscount, subtotal);
+
+    default:
+      throw new HTTPException(400, { message: "Invalid discount type" });
+  }
+}
