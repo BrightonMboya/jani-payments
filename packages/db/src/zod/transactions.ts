@@ -1,6 +1,6 @@
 import * as z from "zod"
 import { TransactionStatus, CollectionMode } from "@prisma/client"
-import { CompleteCustomers, RelatedCustomersModel, CompleteAddresses, RelatedAddressesModel, CompleteProject, RelatedProjectModel, CompleteProducts, RelatedProductsModel, CompleteSubscriptions, RelatedSubscriptionsModel, CompleteTransactionItems, RelatedTransactionItemsModel, CompleteDiscounts, RelatedDiscountsModel } from "./index"
+import { CompleteCustomers, RelatedCustomersModel, CompleteAddresses, RelatedAddressesModel, CompleteProject, RelatedProjectModel, CompleteProducts, RelatedProductsModel, CompleteSubscriptions, RelatedSubscriptionsModel, CompleteTransactionPayment, RelatedTransactionPaymentModel, CompleteTransactionItems, RelatedTransactionItemsModel, CompleteDiscounts, RelatedDiscountsModel } from "./index"
 
 // Helper schema for JSON fields
 type Literal = boolean | number | string
@@ -37,6 +37,7 @@ export interface CompleteTransactions extends z.infer<typeof TransactionsModel> 
   project: CompleteProject
   product: CompleteProducts
   subscription?: CompleteSubscriptions | null
+  TransactionPayment?: CompleteTransactionPayment | null
   transactionItems: CompleteTransactionItems[]
   discount?: CompleteDiscounts | null
 }
@@ -52,6 +53,7 @@ export const RelatedTransactionsModel: z.ZodSchema<CompleteTransactions> = z.laz
   project: RelatedProjectModel,
   product: RelatedProductsModel,
   subscription: RelatedSubscriptionsModel.nullish(),
+  TransactionPayment: RelatedTransactionPaymentModel.nullish(),
   transactionItems: RelatedTransactionItemsModel.array(),
   discount: RelatedDiscountsModel.nullish(),
 }))

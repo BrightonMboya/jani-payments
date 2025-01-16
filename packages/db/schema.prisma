@@ -448,20 +448,89 @@ model TransactionItems {
   pricesId       String
 }
 
+// how did you accept this payment
+enum PaymentMethod {
+  MOBILE_MONEY
+  CARD
+  BANK_TRANSFER
+  OFFLINE
+}
+
+// who helped u to process this payment
+enum PaymentProvider {
+  MPESA
+  AIRTEL
+  MTN
+  STRIPE
+  PAYSTACK
+  FLUTTERWAVE
+  TIGO
+  ORANGE
+  DPO
+  SELCOM
+}
+
+// and what is the status of that payment
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model TransactionPayment {
+  id               String          @id @default(cuid())
+  transaction      Transactions    @relation(fields: [transaction_id], references: [id])
+  transaction_id   String          @unique
+  payment_method   PaymentMethod
+  payment_provider PaymentProvider
+  status           PaymentStatus   @default(PENDING)
+  amount           Decimal
+  currency_code    String
+
+  // Mobile Money specific
+  mobile_network String? // e.g., "Safaricom", "MTN"
+  phone_suffix   String? // Last 4 digits only
+
+  // Card specific (PCI compliant)
+  card_last4     String?
+  card_brand     String? // e.g., "Visa", "Mastercard"
+  card_exp_month Int?
+  card_exp_year  Int?
+
+  // Bank Transfer specific
+  bank_reference String?
+  bank_name      String?
+
+  // Common fields
+  provider_reference String? // Reference from payment provider
+  provider_metadata  Json? // Any additional provider-specific data
+  error_message      String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime? @updatedAt
+
+  @@index([status])
+  @@index([payment_method])
+  @@index([created_at])
+}
+
 model Transactions {
-  id              String            @id
-  status          TransactionStatus
+  id                 String              @id
+  status             TransactionStatus
   // relationships
-  customer        Customers         @relation(fields: [customer_id], references: [id])
-  customer_id     String
-  address         Addresses         @relation(fields: [address_id], references: [id])
-  address_id      String
-  project         Project           @relation(fields: [project_id], references: [id])
-  project_id      String
-  product         Products          @relation(fields: [product_id], references: [id])
-  product_id      String
-  subscription    Subscriptions?    @relation(fields: [subscription_id], references: [id])
-  subscription_id String?           @unique // one transaction belongs to one subscription
+  customer           Customers           @relation(fields: [customer_id], references: [id])
+  customer_id        String
+  address            Addresses           @relation(fields: [address_id], references: [id])
+  address_id         String
+  project            Project             @relation(fields: [project_id], references: [id])
+  project_id         String
+  product            Products            @relation(fields: [product_id], references: [id])
+  product_id         String
+  subscription       Subscriptions?      @relation(fields: [subscription_id], references: [id])
+  subscription_id    String?             @unique // one transaction belongs to one subscription
+  TransactionPayment TransactionPayment?
 
   // transaction items
   transactionItems TransactionItems[]
