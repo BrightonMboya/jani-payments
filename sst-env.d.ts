@@ -6,6 +6,11 @@
 import "sst"
 declare module "sst" {
   export interface Resource {
+    "Bus": {
+      "arn": string
+      "name": string
+      "type": "sst.aws.Bus"
+    }
     "DATABASE_URL": {
       "type": "sst.sst.Secret"
       "value": string

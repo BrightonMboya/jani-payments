@@ -1,9 +1,32 @@
 import { Hono } from "hono";
 import { type Context, type Next } from "hono";
+import { Resource } from "sst";
+import { bus } from "sst/aws/bus";
+import { ZodValidator } from "sst/event/validator";
+import { event } from "sst/event";
+// import { defineEvent } from "~/events/utils";
+import { z } from "zod";
+
+export const defineEvent = event.builder({
+  validator: ZodValidator,
+  metadata() {
+    return {};
+  },
+});
+
+export const Event = {
+  Created: defineEvent(
+    "sample.event",
+    z.object({
+      message: z.string(),
+    })
+  ),
+};
 
 const test = new Hono().get("/", async (c: Context) => {
   const user = c.get("user");
-  const project_slug = c.get("project_slug");
+  // const project_slug = c.get("project_slug");
+  // bus.publish(Resource.Bus, TestEvent.Created, {"Hello World" });
 
   return c.json({
     message: "Hello from the server",
@@ -12,24 +35,5 @@ const test = new Hono().get("/", async (c: Context) => {
     // project_slug: user?.project_slug || "no way",
   });
 });
-
-//   "message": "Hello from the server",
-//   "user": {
-//     "id": "cm510khzb0000mxqj2s1v2eoq",
-//     "user": {
-//       "id": "cm510khzb0000mxqj2s1v2eoq",
-//       "name": "Brighton Mboya",
-//       "email": "brighton.mboya.io@gmail.com",
-//       "emailVerified": null,
-//       "image": "https://lh3.googleusercontent.com/a/ACg8ocI31-qy_dZ4xyTV7hyaZCs4nWl2Y37j3SO4mYUDENm-ui0ljQ=s96-c",
-//       "source": null,
-//       "defaultWorkspace": "mboya-store",
-//       "createdAt": "2024-12-23T12:29:04.391Z",
-//       "updatedAt": "2024-12-23T12:45:25.139Z"
-//     },
-//     "project_slug": "mboya-store",
-//     "email": "brighton.mboya.io@gmail.com"
-//   }
-// }
 
 export default test;

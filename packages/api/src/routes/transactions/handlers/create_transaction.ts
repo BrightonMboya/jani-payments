@@ -17,7 +17,6 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
   const input = createTransactionSchema.parse(await c.req.json());
   const projectId = c.get("project_id");
 
-  
   const transaction = await db.$transaction(async (tx) => {
     const transaction_id = `txn_${crypto.randomUUID()}`;
     const invoice_id = `inv_${crypto.randomUUID()}`; // u should send this to the event queue to create an invoice, maybe take it above this txn
@@ -38,14 +37,6 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
       throw new Error(
         "One or more prices not found or don't belong to this project"
       );
-      // return c.json(
-      //   {
-      //     error: "Not Found",
-      //     message:
-      //       "One or more prices not found or don't belong to this project",
-      //   } satisfies z.infer<typeof ErrorSchema>,
-      //   HttpStatusCodes.NOT_FOUND
-      // );
     }
     // calculate totals
     const subtotal = input.items.reduce((acc, item) => {
@@ -66,7 +57,7 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
       });
 
       if (!discount) {
-        throw new Error("Provided Discount Id Not Found or Inactive")
+        throw new Error("Provided Discount Id Not Found or Inactive");
         // return c.json(
         //   {
         //     error: "Not Found",
@@ -95,7 +86,7 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
         currency_code: input.currency_code,
         subscription_id: input.subscription_id,
         discount_id: input.discount_id,
-        collection_mode: input.collection_mode ?? "automatic", 
+        collection_mode: input.collection_mode ?? "automatic",
         custom_data: input.custom_data as any,
         current_period_starts: input.current_billing_period?.starts_at,
         current_period_ends: input.current_billing_period?.ends_at,
@@ -142,6 +133,5 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
   const formattedTransaction = transformTransaction(transaction);
   return c.json(formattedTransaction, HttpStatusCodes.OK);
 };
-
 
 export default create_transaction;

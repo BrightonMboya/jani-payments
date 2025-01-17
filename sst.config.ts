@@ -1,5 +1,7 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
+import { readdirSync } from "fs";
+
 export default $config({
   app(input) {
     return {
@@ -15,19 +17,19 @@ export default $config({
     };
   },
   async run() {
-    const secret = new sst.Secret("DATABASE_URL");
-
-    const hono = new sst.aws.Function("Hono", {
-      url: true,
-      handler: "./packages/api/src/index.handler",
-      // runtime: "nodejs18.x",
-      environment: {
-        DATABASE_URL: process.env.DATABASE_URL!,
-      },
-      link: [secret],
-    });
-    return {
-      api: hono.url,
-    };
+    // this imports all the infra defn on the infra directory and then returns it.
+    // good trick for not needing to update this file whenever you change stuff there
+    const infra = {};
+    for (const value of readdirSync("./infra")) {
+      const result = await import("./infra/" + value);
+      if (result.outputs) Object.assign(infra, result.outputs);
+    }
+    return infra;
+    // await import("./infra/api");
+    // await import("./infra/bus");
+    // return {
+    //   // api
+    //   // api: api
+    // };
   },
 });

@@ -9,6 +9,10 @@ import subscriptions from "./routes/subscription/subscription.index";
 import keys from "./routes/api-keys/keys.index";
 import transactions from "./routes/transactions/transaction.index";
 import { handle } from "hono/aws-lambda";
+import { Context } from "hono";
+import { Resource } from "sst";
+import { bus } from "sst/aws/bus";
+import { Event } from "./routes/test";
 
 const app = CreateAPP();
 configureOpenAPI(app);
@@ -30,6 +34,16 @@ app.get("/", (c) => {
 
 routes.forEach((route) => {
   app.route("/", route);
+});
+
+app.get("/test", async (c: Context) => {
+  bus.publish(Resource.Bus, Event.Created, {
+    message: "Hello World",
+  });
+
+  return c.json({
+    message: "Hello from the server",
+  });
 });
 
 export type AppType = (typeof routes)[number];
