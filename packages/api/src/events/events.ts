@@ -9,8 +9,17 @@ not to be confused with cron jobs which runs like every midnight
  */
 
 import { bus } from "sst/aws/bus";
-import { Event } from "~/routes/test";
+import { TransactionEvent } from "~/routes/transactions/events/event-defintion";
+import { updateSubscriptionDates } from "~/routes/transactions/events/update-subscription-dates";
 
-export const handler = bus.subscriber([Event.Created], async (event) => {
-  console.log(event.type, event.properties, event.metadata);
-});
+export const handler = bus.subscriber(
+  [TransactionEvent.Created],
+  async (event) => {
+    // console.log(event.type, event.properties, event.metadata);
+    switch (event.type) {
+    case "transaction.created": {
+      await updateSubscriptionDates(event.properties)
+    }
+    }
+  }
+);

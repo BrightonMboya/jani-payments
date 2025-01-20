@@ -9,6 +9,9 @@ import {
   transformTransaction,
 } from "../helpers";
 import * as HttpStatusCodes from "~/lib/http-status-code";
+import { Resource } from "sst";
+import { bus } from "sst/aws/bus";
+import { TransactionEvent } from "../events/event-defintion";
 
 const create_transaction: APPRouteHandler<CreateTransaction> = async (
   c: Context
@@ -16,6 +19,7 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
   const db: PrismaClient = c.get("db");
   const input = createTransactionSchema.parse(await c.req.json());
   const projectId = c.get("project_id");
+  
 
   const transaction = await db.$transaction(async (tx) => {
     const transaction_id = `txn_${crypto.randomUUID()}`;
@@ -128,6 +132,12 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
       },
       include: GetTransactionInclude,
     });
+  });
+
+  bus.publish(Resource.Bus, TransactionEvent.Created, {
+    subscription_id: input.subscription_id!,
+    c: c,
+    is_first_payment: true,
   });
 
   const formattedTransaction = transformTransaction(transaction);

@@ -34,7 +34,7 @@ export interface CompleteSubscriptions extends z.infer<typeof SubscriptionsModel
   Subscription_Items: CompleteSubscriptionItems[]
   Subscription_Scheduled_Changes: CompleteSubscription_Scheduled_Changes[]
   BillingDetails?: CompleteBillingDetails | null
-  transaction?: CompleteTransactions | null
+  transaction: CompleteTransactions[]
 }
 
 /**
@@ -50,5 +50,5 @@ export const RelatedSubscriptionsModel: z.ZodSchema<CompleteSubscriptions> = z.l
   Subscription_Items: RelatedSubscriptionItemsModel.array(),
   Subscription_Scheduled_Changes: RelatedSubscription_Scheduled_ChangesModel.array(),
   BillingDetails: RelatedBillingDetailsModel.nullish(),
-  transaction: RelatedTransactionsModel.nullish(),
+  transaction: RelatedTransactionsModel.array(),
 }))

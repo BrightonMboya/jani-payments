@@ -3,6 +3,10 @@
 
 generator client {
   provider        = "prisma-client-js"
+  engineType      = "binary"
+  // binaryTargets   = ["native", "rhel-openssl-3.0.x"]
+   binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
+  output = "src/client"
   previewFeatures = ["driverAdapters", "omitApi"]
 }
 
@@ -393,13 +397,13 @@ model Subscriptions {
   updated_at      DateTime  @updatedAt
   started_at      DateTime?
   first_billed_at DateTime?
-  next_billed_at  DateTime?
+  next_billed_at  DateTime? // when should you attempt to charge
   paused_at       DateTime?
   canceled_at     DateTime?
 
   // current_billing_period
   current_period_starts DateTime?
-  current_period_ends   DateTime?
+  current_period_ends   DateTime? // the customer has currently paid until this date
 
   // billing_cycle info
   billing_cycle_interval  BillingInterval
@@ -426,7 +430,7 @@ model Subscriptions {
   Subscription_Items             SubscriptionItems[]
   Subscription_Scheduled_Changes Subscription_Scheduled_Changes[]
   BillingDetails                 BillingDetails?
-  transaction                    Transactions?
+  transaction                    Transactions[]
 
   @@index([customer_id])
   @@index([project_id])
@@ -445,7 +449,6 @@ model TransactionItems {
   quantity       Int
   Transactions   Transactions? @relation(fields: [transactionsId], references: [id])
   transactionsId String?
-
 }
 
 // how did you accept this payment
@@ -481,7 +484,7 @@ enum PaymentStatus {
 
 model TransactionPayment {
   id               String          @id @default(cuid())
-  transaction      Transactions    @relation(fields: [transaction_id], references: [id])
+  transaction      Transactions    @relation(fields: [transaction_id], references: [id], onDelete: Cascade)
   transaction_id   String          @unique
   payment_method   PaymentMethod
   payment_provider PaymentProvider
@@ -518,19 +521,24 @@ model TransactionPayment {
 }
 
 model Transactions {
-  id                 String              @id
-  status             TransactionStatus
+  id              String            @id
+  status          TransactionStatus
   // relationships
-  customer           Customers           @relation(fields: [customer_id], references: [id])
-  customer_id        String
-  address            Addresses           @relation(fields: [address_id], references: [id])
-  address_id         String
-  project            Project             @relation(fields: [project_id], references: [id])
-  project_id         String
-  product            Products            @relation(fields: [product_id], references: [id])
-  product_id         String
+  customer_id     String
+  address_id      String
+  project_id      String
+  product_id      String
+  subscription_id String? // one transaction belongs to one subscription
+
+  customer Customers @relation(fields: [customer_id], references: [id])
+
+  address Addresses @relation(fields: [address_id], references: [id])
+
+  project Project @relation(fields: [project_id], references: [id])
+
+  product Products @relation(fields: [product_id], references: [id])
+
   subscription       Subscriptions?      @relation(fields: [subscription_id], references: [id])
-  subscription_id    String?             @unique // one transaction belongs to one subscription
   TransactionPayment TransactionPayment?
 
   // transaction items

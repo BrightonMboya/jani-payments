@@ -52,8 +52,10 @@ const withAuth = async (c: Context, next: Next) => {
         defaultWorkSpace: apiKeyRecord.User.defaultWorkspace,
         authMethod: "apiKey",
       });
+      // set the project_id which comes as organization_id from the cookie
+      const project_id = getCookie(c, "organization_id");
+      c.set("project_id", project_id);
 
-      // console.log(beforeQuery - startTime   , "is this long?")
       return next();
     }
 
@@ -90,9 +92,7 @@ const withAuth = async (c: Context, next: Next) => {
       authMethod: "session",
     });
 
-    // set the project_id which comes as organization_id from the cookie
-    const project_id = getCookie(c, "organization_id");
-    c.set("project_id", project_id);
+    
 
     return next();
   } catch (error) {

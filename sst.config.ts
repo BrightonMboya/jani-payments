@@ -6,6 +6,7 @@ export default $config({
   app(input) {
     return {
       name: "jani-payments",
+      architecture: "arm64",
       removal: input?.stage === "production" ? "retain" : "remove",
       protect: ["production"].includes(input?.stage),
       home: "aws",

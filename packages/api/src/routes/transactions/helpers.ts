@@ -160,8 +160,8 @@ export const createTransactionSchema = z.object({
   custom_data: jsonSchema.nullish(),
   current_billing_period: z
     .object({
-      starts_at: z.date(),
-      ends_at: z.date(),
+      starts_at: z.string().datetime(),
+      ends_at: z.string().datetime(),
     })
     .optional()
     .refine(
@@ -282,8 +282,8 @@ export function transformTransaction(
     custom_data: input.custom_data as any,
     invoice_id: input.invoice_id,
     current_billing_period: {
-      starts_at: input.current_period_starts!,
-      ends_at: input.current_period_ends!,
+      starts_at: input.current_period_starts!.toISOString(),
+      ends_at: input.current_period_ends!.toISOString(),
     },
     items: input.transactionItems.map((item) => {
       return {
