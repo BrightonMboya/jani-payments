@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { ScheduledChangeAction } from "@prisma/client"
+import { ScheduledChangeAction } from "../client"
 import { CompleteSubscriptions, RelatedSubscriptionsModel } from "./index"
 
 export const Subscription_Scheduled_ChangesModel = z.object({

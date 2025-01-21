@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { PaymentMethod, PaymentProvider, PaymentStatus } from "@prisma/client"
+import { PaymentMethod, PaymentProvider, PaymentStatus } from "../client"
 import { CompleteTransactions, RelatedTransactionsModel } from "./index"
 
 // Helper schema for JSON fields

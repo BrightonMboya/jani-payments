@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { SubscriptionsStatus, BillingInterval, CollectionMode } from "@prisma/client"
+import { SubscriptionsStatus, BillingInterval, CollectionMode } from "../client"
 import { CompleteCustomers, RelatedCustomersModel, CompleteAddresses, RelatedAddressesModel, CompleteProject, RelatedProjectModel, CompleteDiscounts, RelatedDiscountsModel, CompleteSubscriptionItems, RelatedSubscriptionItemsModel, CompleteSubscription_Scheduled_Changes, RelatedSubscription_Scheduled_ChangesModel, CompleteBillingDetails, RelatedBillingDetailsModel, CompleteTransactions, RelatedTransactionsModel } from "./index"
 
 export const SubscriptionsModel = z.object({

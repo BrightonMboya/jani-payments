@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { BillingInterval } from "@prisma/client"
+import { BillingInterval } from "../client"
 import { CompleteSubscriptions, RelatedSubscriptionsModel } from "./index"
 
 export const BillingDetailsModel = z.object({

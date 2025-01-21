@@ -6,8 +6,7 @@
   },
   "packageManager": "pnpm@8.5.0",
   "scripts": {
-    "build": "turbo build",
-    "postinstall": "prisma generate"
+    "build": "turbo build"
   },
   "dependencies": {
     "eslint": "^8.40.0",

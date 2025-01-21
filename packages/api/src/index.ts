@@ -13,6 +13,13 @@ import { Context } from "hono";
 import { Resource } from "sst";
 import { bus } from "sst/aws/bus";
 import { Event } from "./routes/test";
+import {
+
+  generateInvoice,
+
+} from "./routes/transactions/events/create-invoice";
+import { testRoute } from "./routes/del";
+
 
 const app = CreateAPP();
 configureOpenAPI(app);
@@ -37,14 +44,10 @@ routes.forEach((route) => {
 });
 
 app.get("/test", async (c: Context) => {
-  bus.publish(Resource.Bus, Event.Created, {
-    message: "Hello World",
-  });
-
-  return c.json({
-    message: "Hello from the server",
-  });
+  return generateInvoice(c)
 });
+
+// app.get("/test", testRoute)
 
 export type AppType = (typeof routes)[number];
 export default app;
