@@ -23,7 +23,6 @@ export async function updateSubscriptionDates({
 }: UpdateSubscriptionDatesProps) {
   // First fetch the subscription to get billing cycle details
 
-  console.log("starting to update the subscription dates");
   const subscription = await db.subscriptions.findUnique({
     where: { id: subscription_id },
     include: {
@@ -98,5 +97,5 @@ export async function updateSubscriptionDates({
       },
     });
   }
-  console.log("I am done with updating the dates");
+
 }
