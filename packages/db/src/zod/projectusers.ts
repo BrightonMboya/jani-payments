@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { Role } from "../client"
+import { Role } from "@prisma/client"
 import { CompleteUser, RelatedUserModel, CompleteProject, RelatedProjectModel } from "./index"
 
 export const ProjectUsersModel = z.object({

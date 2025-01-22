@@ -5,8 +5,8 @@ generator client {
   provider        = "prisma-client-js"
   engineType      = "binary"
   // binaryTargets   = ["native", "rhel-openssl-3.0.x"]
-   binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
-  output = "src/client"
+  binaryTargets   = ["native", "linux-arm64-openssl-3.0.x"]
+  // output          = "src/client"
   previewFeatures = ["driverAdapters", "omitApi"]
 }
 
@@ -361,13 +361,19 @@ enum ScheduledChangeAction {
   cancel
 }
 
+enum ScheduledChangesStatus {
+  completed
+  scheduled
+}
+
 model Subscription_Scheduled_Changes {
-  id              String                @id @default(cuid())
-  subscription    Subscriptions         @relation(fields: [subscription_id], references: [id])
+  id              String                 @id @default(cuid())
+  subscription    Subscriptions          @relation(fields: [subscription_id], references: [id])
   subscription_id String
   action          ScheduledChangeAction
   effective_at    DateTime
   resumes_at      DateTime?
+  status          ScheduledChangesStatus @default(scheduled)
 
   @@index([subscription_id])
   @@index([effective_at])

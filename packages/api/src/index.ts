@@ -10,9 +10,7 @@ import keys from "./routes/api-keys/keys.index";
 import transactions from "./routes/transactions/transaction.index";
 import { handle } from "hono/aws-lambda";
 import { Context } from "hono";
-import { Resource } from "sst";
-import { bus } from "sst/aws/bus";
-import { Event } from "./routes/test";
+import { SubscriptionScheduledChanges } from "./routes/subscription/jobs/subscription_scheduled_changes";
 import {
 
   generateInvoice,
@@ -44,7 +42,9 @@ routes.forEach((route) => {
 });
 
 app.get("/test", async (c: Context) => {
-  return generateInvoice(c)
+  // return generateInvoice(c)
+  const changes = await SubscriptionScheduledChanges()
+  return c.json(changes)
 });
 
 // app.get("/test", testRoute)

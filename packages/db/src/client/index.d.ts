@@ -216,6 +216,14 @@ export const ScheduledChangeAction: {
 export type ScheduledChangeAction = (typeof ScheduledChangeAction)[keyof typeof ScheduledChangeAction]
 
 
+export const ScheduledChangesStatus: {
+  completed: 'completed',
+  scheduled: 'scheduled'
+};
+
+export type ScheduledChangesStatus = (typeof ScheduledChangesStatus)[keyof typeof ScheduledChangesStatus]
+
+
 export const TransactionStatus: {
   billed: 'billed',
   cancelled: 'cancelled'
@@ -300,6 +308,10 @@ export const SubscriptionItemsStatus: typeof $Enums.SubscriptionItemsStatus
 export type ScheduledChangeAction = $Enums.ScheduledChangeAction
 
 export const ScheduledChangeAction: typeof $Enums.ScheduledChangeAction
+
+export type ScheduledChangesStatus = $Enums.ScheduledChangesStatus
+
+export const ScheduledChangesStatus: typeof $Enums.ScheduledChangesStatus
 
 export type TransactionStatus = $Enums.TransactionStatus
 
@@ -20634,6 +20646,7 @@ export namespace Prisma {
     action: $Enums.ScheduledChangeAction | null
     effective_at: Date | null
     resumes_at: Date | null
+    status: $Enums.ScheduledChangesStatus | null
   }
 
   export type Subscription_Scheduled_ChangesMaxAggregateOutputType = {
@@ -20642,6 +20655,7 @@ export namespace Prisma {
     action: $Enums.ScheduledChangeAction | null
     effective_at: Date | null
     resumes_at: Date | null
+    status: $Enums.ScheduledChangesStatus | null
   }
 
   export type Subscription_Scheduled_ChangesCountAggregateOutputType = {
@@ -20650,6 +20664,7 @@ export namespace Prisma {
     action: number
     effective_at: number
     resumes_at: number
+    status: number
     _all: number
   }
 
@@ -20660,6 +20675,7 @@ export namespace Prisma {
     action?: true
     effective_at?: true
     resumes_at?: true
+    status?: true
   }
 
   export type Subscription_Scheduled_ChangesMaxAggregateInputType = {
@@ -20668,6 +20684,7 @@ export namespace Prisma {
     action?: true
     effective_at?: true
     resumes_at?: true
+    status?: true
   }
 
   export type Subscription_Scheduled_ChangesCountAggregateInputType = {
@@ -20676,6 +20693,7 @@ export namespace Prisma {
     action?: true
     effective_at?: true
     resumes_at?: true
+    status?: true
     _all?: true
   }
 
@@ -20757,6 +20775,7 @@ export namespace Prisma {
     action: $Enums.ScheduledChangeAction
     effective_at: Date
     resumes_at: Date | null
+    status: $Enums.ScheduledChangesStatus
     _count: Subscription_Scheduled_ChangesCountAggregateOutputType | null
     _min: Subscription_Scheduled_ChangesMinAggregateOutputType | null
     _max: Subscription_Scheduled_ChangesMaxAggregateOutputType | null
@@ -20782,6 +20801,7 @@ export namespace Prisma {
     action?: boolean
     effective_at?: boolean
     resumes_at?: boolean
+    status?: boolean
     subscription?: boolean | SubscriptionsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscription_Scheduled_Changes"]>
 
@@ -20791,6 +20811,7 @@ export namespace Prisma {
     action?: boolean
     effective_at?: boolean
     resumes_at?: boolean
+    status?: boolean
     subscription?: boolean | SubscriptionsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscription_Scheduled_Changes"]>
 
@@ -20801,9 +20822,10 @@ export namespace Prisma {
     action?: boolean
     effective_at?: boolean
     resumes_at?: boolean
+    status?: boolean
   }
 
-  export type Subscription_Scheduled_ChangesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "subscription_id" | "action" | "effective_at" | "resumes_at", ExtArgs["result"]["subscription_Scheduled_Changes"]>
+  export type Subscription_Scheduled_ChangesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "subscription_id" | "action" | "effective_at" | "resumes_at" | "status", ExtArgs["result"]["subscription_Scheduled_Changes"]>
   export type Subscription_Scheduled_ChangesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     subscription?: boolean | SubscriptionsDefaultArgs<ExtArgs>
   }
@@ -20822,6 +20844,7 @@ export namespace Prisma {
       action: $Enums.ScheduledChangeAction
       effective_at: Date
       resumes_at: Date | null
+      status: $Enums.ScheduledChangesStatus
     }, ExtArgs["result"]["subscription_Scheduled_Changes"]>
     composites: {}
   }
@@ -21221,6 +21244,7 @@ export namespace Prisma {
     readonly action: FieldRef<"Subscription_Scheduled_Changes", 'ScheduledChangeAction'>
     readonly effective_at: FieldRef<"Subscription_Scheduled_Changes", 'DateTime'>
     readonly resumes_at: FieldRef<"Subscription_Scheduled_Changes", 'DateTime'>
+    readonly status: FieldRef<"Subscription_Scheduled_Changes", 'ScheduledChangesStatus'>
   }
     
 
@@ -27814,7 +27838,8 @@ export namespace Prisma {
     subscription_id: 'subscription_id',
     action: 'action',
     effective_at: 'effective_at',
-    resumes_at: 'resumes_at'
+    resumes_at: 'resumes_at',
+    status: 'status'
   };
 
   export type Subscription_Scheduled_ChangesScalarFieldEnum = (typeof Subscription_Scheduled_ChangesScalarFieldEnum)[keyof typeof Subscription_Scheduled_ChangesScalarFieldEnum]
@@ -28150,6 +28175,20 @@ export namespace Prisma {
    * Reference to a field of type 'ScheduledChangeAction[]'
    */
   export type ListEnumScheduledChangeActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduledChangeAction[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ScheduledChangesStatus'
+   */
+  export type EnumScheduledChangesStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduledChangesStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ScheduledChangesStatus[]'
+   */
+  export type ListEnumScheduledChangesStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduledChangesStatus[]'>
     
 
 
@@ -29504,6 +29543,7 @@ export namespace Prisma {
     action?: EnumScheduledChangeActionFilter<"Subscription_Scheduled_Changes"> | $Enums.ScheduledChangeAction
     effective_at?: DateTimeFilter<"Subscription_Scheduled_Changes"> | Date | string
     resumes_at?: DateTimeNullableFilter<"Subscription_Scheduled_Changes"> | Date | string | null
+    status?: EnumScheduledChangesStatusFilter<"Subscription_Scheduled_Changes"> | $Enums.ScheduledChangesStatus
     subscription?: XOR<SubscriptionsRelationFilter, SubscriptionsWhereInput>
   }
 
@@ -29513,6 +29553,7 @@ export namespace Prisma {
     action?: SortOrder
     effective_at?: SortOrder
     resumes_at?: SortOrderInput | SortOrder
+    status?: SortOrder
     subscription?: SubscriptionsOrderByWithRelationInput
   }
 
@@ -29525,6 +29566,7 @@ export namespace Prisma {
     action?: EnumScheduledChangeActionFilter<"Subscription_Scheduled_Changes"> | $Enums.ScheduledChangeAction
     effective_at?: DateTimeFilter<"Subscription_Scheduled_Changes"> | Date | string
     resumes_at?: DateTimeNullableFilter<"Subscription_Scheduled_Changes"> | Date | string | null
+    status?: EnumScheduledChangesStatusFilter<"Subscription_Scheduled_Changes"> | $Enums.ScheduledChangesStatus
     subscription?: XOR<SubscriptionsRelationFilter, SubscriptionsWhereInput>
   }, "id">
 
@@ -29534,6 +29576,7 @@ export namespace Prisma {
     action?: SortOrder
     effective_at?: SortOrder
     resumes_at?: SortOrderInput | SortOrder
+    status?: SortOrder
     _count?: Subscription_Scheduled_ChangesCountOrderByAggregateInput
     _max?: Subscription_Scheduled_ChangesMaxOrderByAggregateInput
     _min?: Subscription_Scheduled_ChangesMinOrderByAggregateInput
@@ -29548,6 +29591,7 @@ export namespace Prisma {
     action?: EnumScheduledChangeActionWithAggregatesFilter<"Subscription_Scheduled_Changes"> | $Enums.ScheduledChangeAction
     effective_at?: DateTimeWithAggregatesFilter<"Subscription_Scheduled_Changes"> | Date | string
     resumes_at?: DateTimeNullableWithAggregatesFilter<"Subscription_Scheduled_Changes"> | Date | string | null
+    status?: EnumScheduledChangesStatusWithAggregatesFilter<"Subscription_Scheduled_Changes"> | $Enums.ScheduledChangesStatus
   }
 
   export type BillingDetailsWhereInput = {
@@ -31490,6 +31534,7 @@ export namespace Prisma {
     action: $Enums.ScheduledChangeAction
     effective_at: Date | string
     resumes_at?: Date | string | null
+    status?: $Enums.ScheduledChangesStatus
     subscription: SubscriptionsCreateNestedOneWithoutSubscription_Scheduled_ChangesInput
   }
 
@@ -31499,6 +31544,7 @@ export namespace Prisma {
     action: $Enums.ScheduledChangeAction
     effective_at: Date | string
     resumes_at?: Date | string | null
+    status?: $Enums.ScheduledChangesStatus
   }
 
   export type Subscription_Scheduled_ChangesUpdateInput = {
@@ -31506,6 +31552,7 @@ export namespace Prisma {
     action?: EnumScheduledChangeActionFieldUpdateOperationsInput | $Enums.ScheduledChangeAction
     effective_at?: DateTimeFieldUpdateOperationsInput | Date | string
     resumes_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduledChangesStatusFieldUpdateOperationsInput | $Enums.ScheduledChangesStatus
     subscription?: SubscriptionsUpdateOneRequiredWithoutSubscription_Scheduled_ChangesNestedInput
   }
 
@@ -31515,6 +31562,7 @@ export namespace Prisma {
     action?: EnumScheduledChangeActionFieldUpdateOperationsInput | $Enums.ScheduledChangeAction
     effective_at?: DateTimeFieldUpdateOperationsInput | Date | string
     resumes_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduledChangesStatusFieldUpdateOperationsInput | $Enums.ScheduledChangesStatus
   }
 
   export type Subscription_Scheduled_ChangesCreateManyInput = {
@@ -31523,6 +31571,7 @@ export namespace Prisma {
     action: $Enums.ScheduledChangeAction
     effective_at: Date | string
     resumes_at?: Date | string | null
+    status?: $Enums.ScheduledChangesStatus
   }
 
   export type Subscription_Scheduled_ChangesUpdateManyMutationInput = {
@@ -31530,6 +31579,7 @@ export namespace Prisma {
     action?: EnumScheduledChangeActionFieldUpdateOperationsInput | $Enums.ScheduledChangeAction
     effective_at?: DateTimeFieldUpdateOperationsInput | Date | string
     resumes_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduledChangesStatusFieldUpdateOperationsInput | $Enums.ScheduledChangesStatus
   }
 
   export type Subscription_Scheduled_ChangesUncheckedUpdateManyInput = {
@@ -31538,6 +31588,7 @@ export namespace Prisma {
     action?: EnumScheduledChangeActionFieldUpdateOperationsInput | $Enums.ScheduledChangeAction
     effective_at?: DateTimeFieldUpdateOperationsInput | Date | string
     resumes_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduledChangesStatusFieldUpdateOperationsInput | $Enums.ScheduledChangesStatus
   }
 
   export type BillingDetailsCreateInput = {
@@ -33431,12 +33482,20 @@ export namespace Prisma {
     not?: NestedEnumScheduledChangeActionFilter<$PrismaModel> | $Enums.ScheduledChangeAction
   }
 
+  export type EnumScheduledChangesStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ScheduledChangesStatus | EnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ScheduledChangesStatus[] | ListEnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ScheduledChangesStatus[] | ListEnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduledChangesStatusFilter<$PrismaModel> | $Enums.ScheduledChangesStatus
+  }
+
   export type Subscription_Scheduled_ChangesCountOrderByAggregateInput = {
     id?: SortOrder
     subscription_id?: SortOrder
     action?: SortOrder
     effective_at?: SortOrder
     resumes_at?: SortOrder
+    status?: SortOrder
   }
 
   export type Subscription_Scheduled_ChangesMaxOrderByAggregateInput = {
@@ -33445,6 +33504,7 @@ export namespace Prisma {
     action?: SortOrder
     effective_at?: SortOrder
     resumes_at?: SortOrder
+    status?: SortOrder
   }
 
   export type Subscription_Scheduled_ChangesMinOrderByAggregateInput = {
@@ -33453,6 +33513,7 @@ export namespace Prisma {
     action?: SortOrder
     effective_at?: SortOrder
     resumes_at?: SortOrder
+    status?: SortOrder
   }
 
   export type EnumScheduledChangeActionWithAggregatesFilter<$PrismaModel = never> = {
@@ -33463,6 +33524,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumScheduledChangeActionFilter<$PrismaModel>
     _max?: NestedEnumScheduledChangeActionFilter<$PrismaModel>
+  }
+
+  export type EnumScheduledChangesStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ScheduledChangesStatus | EnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ScheduledChangesStatus[] | ListEnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ScheduledChangesStatus[] | ListEnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduledChangesStatusWithAggregatesFilter<$PrismaModel> | $Enums.ScheduledChangesStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumScheduledChangesStatusFilter<$PrismaModel>
+    _max?: NestedEnumScheduledChangesStatusFilter<$PrismaModel>
   }
 
   export type BillingDetailsCountOrderByAggregateInput = {
@@ -35373,6 +35444,10 @@ export namespace Prisma {
     set?: $Enums.ScheduledChangeAction
   }
 
+  export type EnumScheduledChangesStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ScheduledChangesStatus
+  }
+
   export type SubscriptionsUpdateOneRequiredWithoutSubscription_Scheduled_ChangesNestedInput = {
     create?: XOR<SubscriptionsCreateWithoutSubscription_Scheduled_ChangesInput, SubscriptionsUncheckedCreateWithoutSubscription_Scheduled_ChangesInput>
     connectOrCreate?: SubscriptionsCreateOrConnectWithoutSubscription_Scheduled_ChangesInput
@@ -36274,6 +36349,13 @@ export namespace Prisma {
     not?: NestedEnumScheduledChangeActionFilter<$PrismaModel> | $Enums.ScheduledChangeAction
   }
 
+  export type NestedEnumScheduledChangesStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ScheduledChangesStatus | EnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ScheduledChangesStatus[] | ListEnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ScheduledChangesStatus[] | ListEnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduledChangesStatusFilter<$PrismaModel> | $Enums.ScheduledChangesStatus
+  }
+
   export type NestedEnumScheduledChangeActionWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ScheduledChangeAction | EnumScheduledChangeActionFieldRefInput<$PrismaModel>
     in?: $Enums.ScheduledChangeAction[] | ListEnumScheduledChangeActionFieldRefInput<$PrismaModel>
@@ -36282,6 +36364,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumScheduledChangeActionFilter<$PrismaModel>
     _max?: NestedEnumScheduledChangeActionFilter<$PrismaModel>
+  }
+
+  export type NestedEnumScheduledChangesStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ScheduledChangesStatus | EnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ScheduledChangesStatus[] | ListEnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ScheduledChangesStatus[] | ListEnumScheduledChangesStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduledChangesStatusWithAggregatesFilter<$PrismaModel> | $Enums.ScheduledChangesStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumScheduledChangesStatusFilter<$PrismaModel>
+    _max?: NestedEnumScheduledChangesStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumSubscriptionsStatusFilter<$PrismaModel = never> = {
@@ -40163,6 +40255,7 @@ export namespace Prisma {
     action: $Enums.ScheduledChangeAction
     effective_at: Date | string
     resumes_at?: Date | string | null
+    status?: $Enums.ScheduledChangesStatus
   }
 
   export type Subscription_Scheduled_ChangesUncheckedCreateWithoutSubscriptionInput = {
@@ -40170,6 +40263,7 @@ export namespace Prisma {
     action: $Enums.ScheduledChangeAction
     effective_at: Date | string
     resumes_at?: Date | string | null
+    status?: $Enums.ScheduledChangesStatus
   }
 
   export type Subscription_Scheduled_ChangesCreateOrConnectWithoutSubscriptionInput = {
@@ -40490,6 +40584,7 @@ export namespace Prisma {
     action?: EnumScheduledChangeActionFilter<"Subscription_Scheduled_Changes"> | $Enums.ScheduledChangeAction
     effective_at?: DateTimeFilter<"Subscription_Scheduled_Changes"> | Date | string
     resumes_at?: DateTimeNullableFilter<"Subscription_Scheduled_Changes"> | Date | string | null
+    status?: EnumScheduledChangesStatusFilter<"Subscription_Scheduled_Changes"> | $Enums.ScheduledChangesStatus
   }
 
   export type BillingDetailsUpsertWithoutSubscriptionInput = {
@@ -43143,6 +43238,7 @@ export namespace Prisma {
     action: $Enums.ScheduledChangeAction
     effective_at: Date | string
     resumes_at?: Date | string | null
+    status?: $Enums.ScheduledChangesStatus
   }
 
   export type TransactionsCreateManySubscriptionInput = {
@@ -43217,6 +43313,7 @@ export namespace Prisma {
     action?: EnumScheduledChangeActionFieldUpdateOperationsInput | $Enums.ScheduledChangeAction
     effective_at?: DateTimeFieldUpdateOperationsInput | Date | string
     resumes_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduledChangesStatusFieldUpdateOperationsInput | $Enums.ScheduledChangesStatus
   }
 
   export type Subscription_Scheduled_ChangesUncheckedUpdateWithoutSubscriptionInput = {
@@ -43224,6 +43321,7 @@ export namespace Prisma {
     action?: EnumScheduledChangeActionFieldUpdateOperationsInput | $Enums.ScheduledChangeAction
     effective_at?: DateTimeFieldUpdateOperationsInput | Date | string
     resumes_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduledChangesStatusFieldUpdateOperationsInput | $Enums.ScheduledChangesStatus
   }
 
   export type Subscription_Scheduled_ChangesUncheckedUpdateManyWithoutSubscriptionInput = {
@@ -43231,6 +43329,7 @@ export namespace Prisma {
     action?: EnumScheduledChangeActionFieldUpdateOperationsInput | $Enums.ScheduledChangeAction
     effective_at?: DateTimeFieldUpdateOperationsInput | Date | string
     resumes_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumScheduledChangesStatusFieldUpdateOperationsInput | $Enums.ScheduledChangesStatus
   }
 
   export type TransactionsUpdateWithoutSubscriptionInput = {

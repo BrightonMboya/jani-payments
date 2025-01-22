@@ -303,7 +303,8 @@ exports.Prisma.Subscription_Scheduled_ChangesScalarFieldEnum = {
   subscription_id: 'subscription_id',
   action: 'action',
   effective_at: 'effective_at',
-  resumes_at: 'resumes_at'
+  resumes_at: 'resumes_at',
+  status: 'status'
 };
 
 exports.Prisma.BillingDetailsScalarFieldEnum = {
@@ -464,6 +465,11 @@ exports.ScheduledChangeAction = exports.$Enums.ScheduledChangeAction = {
   pause: 'pause',
   resume: 'resume',
   cancel: 'cancel'
+};
+
+exports.ScheduledChangesStatus = exports.$Enums.ScheduledChangesStatus = {
+  completed: 'completed',
+  scheduled: 'scheduled'
 };
 
 exports.SubscriptionsStatus = exports.$Enums.SubscriptionsStatus = {

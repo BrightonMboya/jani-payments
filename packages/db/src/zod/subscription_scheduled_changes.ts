@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { ScheduledChangeAction } from "../client"
+import { ScheduledChangeAction, ScheduledChangesStatus } from "@prisma/client"
 import { CompleteSubscriptions, RelatedSubscriptionsModel } from "./index"
 
 export const Subscription_Scheduled_ChangesModel = z.object({
@@ -8,6 +8,7 @@ export const Subscription_Scheduled_ChangesModel = z.object({
   action: z.nativeEnum(ScheduledChangeAction),
   effective_at: z.date(),
   resumes_at: z.date().nullish(),
+  status: z.nativeEnum(ScheduledChangesStatus),
 })
 
 export interface CompleteSubscription_Scheduled_Changes extends z.infer<typeof Subscription_Scheduled_ChangesModel> {

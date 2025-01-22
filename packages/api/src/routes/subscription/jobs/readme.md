@@ -53,5 +53,5 @@ Example: Monthly subscription
      - Any overage fees
   c. Send to customer before charging
 
-7. Job to handle subscription_scheduled_changes
+[Done] 7. Job to handle subscription_scheduled_changes
 go to the schdeduled_changes table and then perfrom the logic for the scheduled change
