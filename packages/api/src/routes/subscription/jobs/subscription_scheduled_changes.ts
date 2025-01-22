@@ -1,3 +1,8 @@
+/* 
+This cron jobs is responsible for perfoming actions of the scheduled changes
+it performs the action pasued | cancelled | resume on the subscription scheduled on that particular day
+and then marks the scheduled change as completed
+*/
 import { db } from "~/middleware/with-db";
 import { DateTime } from "luxon";
 

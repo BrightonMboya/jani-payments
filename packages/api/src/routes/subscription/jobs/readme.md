@@ -34,13 +34,12 @@ Example: Failed payment for $100
   - Day 7: Final retry
   - After all fails: Cancel subscription
 
-4. Subscription status updates
+[Done] 4. Subscription status updates
 Example: Past due subscription
 - Cron checks daily for overdue subscriptions
 - Status flow:
-  a. active → past_due (after failed payment)
-  b. past_due → cancelled (after grace period)
-  - Example: 7 days grace period before cancellation
+This will mark the subscription as paused, when the `current_period_ends` equals to that day.
+Currently doesn't support grace periods but needs to support in the future
 
 
 5. Invoice generation
@@ -53,5 +52,5 @@ Example: Monthly subscription
      - Any overage fees
   c. Send to customer before charging
 
-[Done] 7. Job to handle subscription_scheduled_changes
+[Done] 6. Job to handle subscription_scheduled_changes
 go to the schdeduled_changes table and then perfrom the logic for the scheduled change
