@@ -1,9 +1,9 @@
-// /**
-//  * this event is responsible for updating the subscription dates when the merchant
-//  * has received the money from the customer hence calling the `create-transaction` endpoint
-//  */
+/**
+ * this event is responsible for updating the subscription dates when the merchant
+ * has received the money from the customer hence calling the `create-transaction` endpoint
+ */
 
-import { PrismaClient } from "@repo/db/types";
+
 import { Context } from "hono";
 import { DateTime } from "luxon";
 import { db } from "~/middleware/with-db";

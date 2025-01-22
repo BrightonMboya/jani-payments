@@ -1,29 +1,16 @@
-# Create T3 App
+## Billing Engine where you Bring Your Own PSP 
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+The main goal of this project is to create a billing engine where you get to bring your own 
+Payment provider to process payments and use it for your billing logic.
 
-## What's next? How do I make an app with this?
+Depending on your market, this problem is pretty much solved for by companies like Paddle, and 
+even now recently Polar will get it nail down.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+This project comes into  markets where these products are not supported, primarly the African market 
+where people transact via mobile money networks. This project is for those markets.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+The initial Target market is African market where people transact with Mobile Money. This doesn't mean we only support these countries parse, but I have designed the project with an initial focus is to make it work on these market first.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+Still Early, and you can submit an issue and bug report or even better a PR.
 
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Cheers.

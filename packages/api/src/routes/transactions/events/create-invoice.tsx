@@ -14,8 +14,8 @@ export async function generateInvoice(c: Context) {
 
     // Set headers for PDF preview
     c.header("Content-Type", "application/pdf");
-    c.header("Content-Disposition", "inline; filename=invoice.pdf");
-    // c.header("Content-Length", buffer.length.toString());
+    // c.header("Content-Disposition", "inline; filename=invoice.pdf");
+
 
     // Return the PDF buffer
     return c.body(buffer);
