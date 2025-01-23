@@ -19,11 +19,10 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
   const db: PrismaClient = c.get("db");
   const input = createTransactionSchema.parse(await c.req.json());
   const projectId = c.get("project_id");
-  
 
   const transaction = await db.$transaction(async (tx) => {
     const transaction_id = `txn_${crypto.randomUUID()}`;
-    const invoice_id = `inv_${crypto.randomUUID()}`; // u should send this to the event queue to create an invoice, maybe take it above this txn
+    const invoice_id = `inv_${crypto.randomUUID()}`; //TODO: u should send this to the event queue to create an invoice, maybe take it above this txn
     // Verify all prices belong to the same project
     const prices = await db.prices.findMany({
       where: {
@@ -138,6 +137,7 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
     subscription_id: input.subscription_id!,
     c: c,
     is_first_payment: true,
+    discount_id: input.discount_id,
   });
 
   const formattedTransaction = transformTransaction(transaction);

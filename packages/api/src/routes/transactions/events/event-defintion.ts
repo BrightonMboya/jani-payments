@@ -8,6 +8,7 @@ export const TransactionEvent = {
     z.object({
       subscription_id: z.string(),
       is_first_payment: z.boolean(),
+      discount_id: z.string().nullish().optional(),
       c: z.custom<Context>(),
     })
   ),
