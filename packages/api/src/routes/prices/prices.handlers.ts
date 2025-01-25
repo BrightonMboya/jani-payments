@@ -3,13 +3,11 @@ import {
   type ListPrices,
   CreatePrices,
   GetPrice,
-  PricesSchema,
   UpdatePrice,
 } from "./prices.routes";
 import { type Context } from "hono";
 import { PrismaClient } from "@repo/db/types";
 import * as HttpStatusCodes from "~/lib/http-status-code";
-import * as HttpsStatusPhrases from "~/lib/http-status-phrases";
 import { z } from "zod";
 import {
   CreatePricesSchema,
@@ -20,21 +18,11 @@ import {
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
 
 export const list: APPRouteHandler<ListPrices> = async (c: Context) => {
-  const user = c.get("user");
   const db: PrismaClient = c.get("db");
-
-  const project_id = await db.project.findUnique({
-    where: {
-      slug: user?.user.defaultWorkspace,
-    },
-    select: {
-      id: true,
-    },
-  });
 
   const prices = await db.prices.findMany({
     where: {
-      projectId: project_id?.id,
+      projectId: c.get("organization_id"),
     },
     // omit: {
     //   projectId: true,
@@ -54,16 +42,8 @@ export const list: APPRouteHandler<ListPrices> = async (c: Context) => {
 
 export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
   try {
-    const user = c.get("user");
     const db: PrismaClient = c.get("db");
-    const project_id = await db.project.findUnique({
-      where: {
-        slug: user?.user.defaultWorkspace,
-      },
-      select: {
-        id: true,
-      },
-    });
+    
     const raw_input = await c.req.json();
     const input = CreatePricesSchema.parse(raw_input);
 
@@ -85,7 +65,7 @@ export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
         created_at: new Date(),
         updated_at: new Date(),
         product_id: input.product_id,
-        projectId: project_id?.id!,
+        projectId: c.get("organization_id"),
       },
     });
 
@@ -112,6 +92,7 @@ export const get_price: APPRouteHandler<GetPrice> = async (c: Context) => {
   const price = await db.prices.findUnique({
     where: {
       id: price_id,
+      projectId: c.get("organization_id"),
     },
     omit: {
       projectId: true,
@@ -146,6 +127,7 @@ export const update_price: APPRouteHandler<UpdatePrice> = async (
   const price = await db.prices.update({
     where: {
       id: price_id,
+      projectId: c.get("organization_id"),
     },
     data: {
       ...input,

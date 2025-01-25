@@ -6,7 +6,6 @@ generator client {
   // engineType      = "binary"
   binaryTargets   = ["native", "linux-arm64-openssl-1.0.x"]
   previewFeatures = ["driverAdapters", "omitApi"]
-
 }
 
 datasource db {
@@ -57,6 +56,7 @@ model Project {
   customers         Customers[]
   Subscriptions     Subscriptions[]
   Transactions      Transactions[]
+  Api_keys          Api_keys[]
 
   @@index(usageLastChecked(sort: Asc))
 }
@@ -187,6 +187,8 @@ model Api_keys {
   key         String   @unique
   User        User     @relation(fields: [userId], references: [id])
   userId      String
+  Project     Project? @relation(fields: [project_id], references: [id])
+  project_id  String?
 
   @@index([key, userId])
 }

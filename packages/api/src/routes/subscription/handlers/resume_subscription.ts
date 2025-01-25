@@ -16,7 +16,7 @@ const resume_subscription: APPRouteHandler<ResumeSubscription> = async (
 
   // 1. Fetch subscription and validate current state
   const subscription = await db.subscriptions.findUniqueOrThrow({
-    where: { id: subscriptionId },
+    where: { id: subscriptionId, project_id: c.get("organization_id") },
 
     include: {
       BillingDetails: true,

@@ -15,10 +15,7 @@ export const pause_subscription: APPRouteHandler<PauseSubscription> = async (
 
   // 1. Fetch subscription and validate current state
   const subscription = await db.subscriptions.findUniqueOrThrow({
-    where: { id: subscriptionId },
-    // include: {
-    //   Subscription_Scheduled_Changes: true,
-    // },
+    where: { id: subscriptionId, project_id: c.get("organization_id") },
     include: {
       Subscription_Scheduled_Changes: true,
       discount: {

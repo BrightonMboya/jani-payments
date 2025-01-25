@@ -24,20 +24,11 @@ const CustomersDefaultSelect = {
 };
 
 export const list: APPRouteHandler<ListCustomers> = async (c: Context) => {
-  const user = c.get("user");
   const db: PrismaClient = c.get("db");
-  const project_id = await db.project.findUnique({
-    where: {
-      slug: user?.user.defaultWorkspace,
-    },
-    select: {
-      id: true,
-    },
-  });
 
   const customers = await db.customers.findMany({
     where: {
-      projectId: project_id?.id,
+      projectId: c.get("organization_id"),
     },
     select: CustomersDefaultSelect,
   });
@@ -47,16 +38,7 @@ export const list: APPRouteHandler<ListCustomers> = async (c: Context) => {
 };
 
 export const create: APPRouteHandler<CreateCustomers> = async (c: Context) => {
-  const user = c.get("user");
   const db: PrismaClient = c.get("db");
-  const project_id = await db.project.findUnique({
-    where: {
-      slug: user?.user.defaultWorkspace,
-    },
-    select: {
-      id: true,
-    },
-  });
 
   const input = await c.req.json();
   const customer = await db.customers.create({
@@ -69,7 +51,7 @@ export const create: APPRouteHandler<CreateCustomers> = async (c: Context) => {
       custom_data: input.custom_data,
       created_at: new Date(),
       updated_at: new Date(),
-      projectId: project_id?.id,
+      projectId: c.get("organization_id"),
     },
     select: CustomersDefaultSelect,
   });
@@ -86,6 +68,7 @@ export const get_customer: APPRouteHandler<GetCustomer> = async (
   const customer = await db.customers.findUnique({
     where: {
       id: customer_id,
+      projectId: c.get("organization_id"),
     },
     select: CustomersDefaultSelect,
   });
@@ -111,6 +94,7 @@ export const update_customer: APPRouteHandler<UpdateCustomer> = async (
   const customer = await db.customers.update({
     where: {
       id: customer_id,
+      projectId: c.get("organization_id"),
     },
     data: {
       ...input,

@@ -18,21 +18,11 @@ import {
 } from "./helpers";
 
 export const list: APPRouteHandler<ListDiscounts> = async (c: Context) => {
-  const user = c.get("user");
   const db: PrismaClient = c.get("db");
-
-  const project_id = await db.project.findUnique({
-    where: {
-      slug: user?.user.defaultWorkspace,
-    },
-    select: {
-      id: true,
-    },
-  });
 
   const discounts = await db.discounts.findMany({
     where: {
-      projectId: project_id?.id,
+      projectId: c.get("organization_id"),
     },
     omit: {
       projectId: true,
@@ -56,23 +46,13 @@ export const list: APPRouteHandler<ListDiscounts> = async (c: Context) => {
 };
 
 export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
-  const user = c.get("user");
   const db: PrismaClient = c.get("db");
   const raw_input = await c.req.json();
   const input = CreateDiscountSchema.parse(raw_input);
 
-  const project_id = await db.project.findUnique({
-    where: {
-      slug: user?.user.defaultWorkspace,
-    },
-    select: {
-      id: true,
-    },
-  });
-
   const discount = await db.discounts.create({
     data: {
-      projectId: project_id?.id,
+      projectId: c.get("organization_id"),
       id: `dis_${crypto.randomUUID()}`,
       status: input.status || "active",
       description: input.description,
@@ -121,6 +101,7 @@ export const get_discount: APPRouteHandler<GetDiscount> = async (
   const discount = await db.discounts.findUnique({
     where: {
       id: discount_id,
+      projectId: c.get("organization_id"),
     },
     include: {
       discount_prices: {
@@ -160,6 +141,7 @@ export const update_discount: APPRouteHandler<UpdateDiscount> = async (
   const discount = await db.discounts.update({
     where: {
       id: discount_id,
+      projectId: c.get("organization_id"),
     },
     data: {
       ...input,

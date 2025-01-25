@@ -18,22 +18,11 @@ import { z } from "zod";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
 
 export const list: APPRouteHandler<ListRoute> = async (c: Context) => {
-  const user = c.get("user");
   const db: PrismaClient = c.get("db");
-
-  //fetch project_id
-  const project_id = await db.project.findUnique({
-    where: {
-      slug: user?.user.defaultWorkspace,
-    },
-    select: {
-      id: true,
-    },
-  });
-
+  const project_id = c.get("organization_id");
   const products = (await db.products.findMany({
     where: {
-      project_id: project_id?.id,
+      project_id,
     },
     select: {
       id: true,
@@ -49,17 +38,7 @@ export const list: APPRouteHandler<ListRoute> = async (c: Context) => {
 };
 
 export const create: APPRouteHandler<CreateRoute> = async (c: Context) => {
-  const user = c.get("user");
   const db: PrismaClient = c.get("db");
-
-  const project_id = await db.project.findUnique({
-    where: {
-      slug: user?.user.defaultWorkspace,
-    },
-    select: {
-      id: true,
-    },
-  });
 
   const raw_input = await c.req.json();
   const input = CreateProductsSchema.parse(raw_input);
@@ -68,7 +47,7 @@ export const create: APPRouteHandler<CreateRoute> = async (c: Context) => {
       id: `pro_${crypto.randomUUID()}`,
       description: input.description,
       name: input.name,
-      project_id: project_id?.id!,
+      project_id: c.get("organization_id"),
       custom_data: input.custom_data as any,
       updatedAt: new Date(),
       createdAt: new Date(),
@@ -89,6 +68,7 @@ export const get_product: APPRouteHandler<GetProductRoute> = async (
   const product = await db.products.findUnique({
     where: {
       id: product_id,
+      project_id: c.get("organization_id"),
     },
     omit: {
       project_id: true,
@@ -120,7 +100,7 @@ export const update_product: APPRouteHandler<UpdateProductRoute> = async (
   const input = UpdateProductsSchema.parse(raw_input);
 
   const product = await db.products.update({
-    where: { id: product_id },
+    where: { id: product_id, project_id: c.get("organization_id") },
     data: {
       ...input,
       updatedAt: new Date(),

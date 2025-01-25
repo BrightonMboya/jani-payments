@@ -10,24 +10,15 @@ const create_subscription: APPRouteHandler<CreateSubscription> = async (
   c: Context
 ) => {
   const db: PrismaClient = c.get("db");
-  const user = c.get("user");
+
   const input = createSubscriptionSchema.parse(await c.req.json());
 
   // 1. Fetch project and prices
-  const [project_id, priceDetails] = await Promise.all([
-    db.project.findUnique({
-      where: {
-        slug: user?.user.defaultWorkspace,
-      },
-      select: {
-        id: true,
-      },
-    }),
-
+  const [priceDetails] = await Promise.all([
     Promise.all(
       input.items.map((item) =>
         db.prices.findUniqueOrThrow({
-          where: { id: item.price_id },
+          where: { id: item.price_id, projectId: c.get("organization_id") },
           select: {
             trial_period_frequency: true,
             trial_period_interval: true,
@@ -64,7 +55,7 @@ const create_subscription: APPRouteHandler<CreateSubscription> = async (
         currency_code: input.currency_code,
         customer_id: input.customer_id,
         address_id: input.address_id,
-        project_id: project_id?.id!,
+        project_id: c.get("organization_id"),
         discount_id: input.discount_id,
         collection_mode: "automatic",
 
@@ -106,8 +97,10 @@ const create_subscription: APPRouteHandler<CreateSubscription> = async (
           ? {
               create: {
                 id: `bd_${crypto.randomUUID()}`,
-                payment_interval: input.billingDetails?.payment_terms?.payment_interval,
-                payment_frequency: input.billingDetails?.payment_terms?.payment_frequency,
+                payment_interval:
+                  input.billingDetails?.payment_terms?.payment_interval,
+                payment_frequency:
+                  input.billingDetails?.payment_terms?.payment_frequency,
                 enable_checkout: input.billingDetails.enable_checkout,
                 purchase_order_number: `po_${crypto.randomUUID()}`,
                 additional_information:

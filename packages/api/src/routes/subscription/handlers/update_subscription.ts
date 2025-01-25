@@ -22,6 +22,7 @@ const update_subscription: APPRouteHandler<UpdateSubscription> = async (
   const subscription = await db.subscriptions.findUnique({
     where: {
       id: subscription_id,
+      project_id: c.get("organization_id"),
     },
     include: {
       discount: {
@@ -119,7 +120,7 @@ const update_subscription: APPRouteHandler<UpdateSubscription> = async (
       }),
     };
 
-   return await db.$transaction(async (tx) => {
+    await db.$transaction(async (tx) => {
       // 7. Handle items update if provided
       if (input.items) {
         // Delete existing items not in the update
@@ -211,7 +212,7 @@ const update_subscription: APPRouteHandler<UpdateSubscription> = async (
 
         // 10. Update subscription
         const updatedSubscription = await tx.subscriptions.update({
-          where: { id: subscription_id },
+          where: { id: subscription_id, project_id: c.get("organization_id") },
           data: updateData,
           include: {
             discount: {

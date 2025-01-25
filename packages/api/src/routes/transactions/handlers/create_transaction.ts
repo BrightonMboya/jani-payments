@@ -18,7 +18,7 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
 ) => {
   const db: PrismaClient = c.get("db");
   const input = createTransactionSchema.parse(await c.req.json());
-  const projectId = c.get("project_id");
+
 
   const transaction = await db.$transaction(async (tx) => {
     const transaction_id = `txn_${crypto.randomUUID()}`;
@@ -29,7 +29,7 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
         id: {
           in: input.items.map((item) => item.price_id),
         },
-        projectId,
+        projectId: c.get("organization_id"),
       },
       include: {
         Products: true,
@@ -54,7 +54,7 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
       const discount = await db.discounts.findFirst({
         where: {
           id: input.discount_id,
-          projectId,
+          projectId: c.get("organization_id"),
           status: "active",
         },
       });
@@ -84,7 +84,7 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
         status: input.status,
         customer_id: input.customer_id,
         address_id: input.address_id,
-        project_id: projectId,
+        project_id: c.get("organization_id"),
         product_id: prices[0].Products!.id, // Using first product as main product
         currency_code: input.currency_code,
         subscription_id: input.subscription_id,

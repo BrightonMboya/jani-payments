@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { CompleteProjectUsers, RelatedProjectUsersModel, CompleteProjectInvite, RelatedProjectInviteModel, CompleteSentEmail, RelatedSentEmailModel, CompleteProducts, RelatedProductsModel, CompletePrices, RelatedPricesModel, CompleteDiscounts, RelatedDiscountsModel, CompleteCustomers, RelatedCustomersModel, CompleteSubscriptions, RelatedSubscriptionsModel, CompleteTransactions, RelatedTransactionsModel } from "./index"
+import { CompleteProjectUsers, RelatedProjectUsersModel, CompleteProjectInvite, RelatedProjectInviteModel, CompleteSentEmail, RelatedSentEmailModel, CompleteProducts, RelatedProductsModel, CompletePrices, RelatedPricesModel, CompleteDiscounts, RelatedDiscountsModel, CompleteCustomers, RelatedCustomersModel, CompleteSubscriptions, RelatedSubscriptionsModel, CompleteTransactions, RelatedTransactionsModel, CompleteApi_keys, RelatedApi_keysModel } from "./index"
 
 export const ProjectModel = z.object({
   id: z.string(),
@@ -24,6 +24,7 @@ export interface CompleteProject extends z.infer<typeof ProjectModel> {
   customers: CompleteCustomers[]
   Subscriptions: CompleteSubscriptions[]
   Transactions: CompleteTransactions[]
+  Api_keys: CompleteApi_keys[]
 }
 
 /**
@@ -41,4 +42,5 @@ export const RelatedProjectModel: z.ZodSchema<CompleteProject> = z.lazy(() => Pr
   customers: RelatedCustomersModel.array(),
   Subscriptions: RelatedSubscriptionsModel.array(),
   Transactions: RelatedTransactionsModel.array(),
+  Api_keys: RelatedApi_keysModel.array(),
 }))

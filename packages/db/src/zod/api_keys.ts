@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { CompleteUser, RelatedUserModel } from "./index"
+import { CompleteUser, RelatedUserModel, CompleteProject, RelatedProjectModel } from "./index"
 
 export const Api_keysModel = z.object({
   id: z.string(),
@@ -8,10 +8,12 @@ export const Api_keysModel = z.object({
   createdAt: z.date(),
   key: z.string(),
   userId: z.string(),
+  project_id: z.string().nullish(),
 })
 
 export interface CompleteApi_keys extends z.infer<typeof Api_keysModel> {
   User: CompleteUser
+  Project?: CompleteProject | null
 }
 
 /**
@@ -21,4 +23,5 @@ export interface CompleteApi_keys extends z.infer<typeof Api_keysModel> {
  */
 export const RelatedApi_keysModel: z.ZodSchema<CompleteApi_keys> = z.lazy(() => Api_keysModel.extend({
   User: RelatedUserModel,
+  Project: RelatedProjectModel.nullish(),
 }))

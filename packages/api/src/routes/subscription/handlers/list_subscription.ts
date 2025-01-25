@@ -9,19 +9,11 @@ const list_subscriptions: APPRouteHandler<ListSubscription> = async (
   c: Context
 ) => {
   const db: PrismaClient = c.get("db");
-  const user = c.get("user");
-  const project_id = await db.project.findUnique({
-    where: {
-      slug: user?.user.defaultWorkspace,
-    },
-    select: {
-      id: true,
-    },
-  });
+  
 
   const subscriptions = await db.subscriptions.findMany({
     where: {
-      project_id: project_id?.id!,
+      project_id: c.get("organization_id"),
     },
     include: {
       discount: {

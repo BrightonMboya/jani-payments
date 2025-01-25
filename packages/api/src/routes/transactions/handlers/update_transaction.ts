@@ -16,13 +16,12 @@ const update_transaction: APPRouteHandler<UpdateTransaction> = async (
 ) => {
   const db: PrismaClient = c.get("db");
   const transaction_id = c.req.param("transaction_id");
-  const project_id = c.get("project_id");
   const updatedStatus = updateTransactionSchema.parse(await c.req.json());
 
   const transaction = await db.transactions.update({
     where: {
       id: transaction_id,
-      project_id,
+      project_id: c.get("organization_id"),
     },
     data: {
       status: updatedStatus.status,

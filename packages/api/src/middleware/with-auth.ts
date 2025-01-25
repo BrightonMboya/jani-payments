@@ -3,6 +3,7 @@ import { getToken } from "next-auth/jwt";
 import { type Context, type Next } from "hono";
 import { PrismaClient } from "@repo/db/types";
 import { createHash } from "crypto";
+import * as HttpStatusCodes from "~/lib/http-status-code";
 
 const withAuth = async (c: Context, next: Next) => {
   try {
@@ -18,6 +19,7 @@ const withAuth = async (c: Context, next: Next) => {
 
     // Check for Bearer token first
     const authHeader = c.req.header("Authorization");
+    const project_id = getCookie(c, "organization_id");
 
     if (!authHeader) {
       return c.json(
@@ -42,7 +44,17 @@ const withAuth = async (c: Context, next: Next) => {
       });
 
       if (!apiKeyRecord) {
-        return c.json({ error: "Invalid API key" }, 401);
+        return c.json(
+          { error: "Invalid API key" },
+          HttpStatusCodes.BAD_REQUEST
+        );
+      }
+
+      if (!project_id || apiKeyRecord.project_id !== project_id) {
+        return c.json(
+          { error: "Invalid Organization Id" },
+          HttpStatusCodes.BAD_REQUEST
+        );
       }
 
       c.set("user", {
@@ -53,7 +65,7 @@ const withAuth = async (c: Context, next: Next) => {
         authMethod: "apiKey",
       });
       // set the project_id which comes as organization_id from the cookie
-      const project_id = getCookie(c, "organization_id");
+
       c.set("project_id", project_id);
 
       return next();
@@ -91,8 +103,6 @@ const withAuth = async (c: Context, next: Next) => {
       email: token.email,
       authMethod: "session",
     });
-
-    
 
     return next();
   } catch (error) {
