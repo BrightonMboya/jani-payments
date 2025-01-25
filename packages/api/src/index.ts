@@ -16,7 +16,8 @@ import {
   generateInvoice,
 
 } from "./routes/transactions/events/create-invoice";
-import { testRoute } from "./routes/del";
+
+import {db} from "~/middleware/with-db"
 
 
 const app = CreateAPP();
@@ -45,6 +46,8 @@ app.get("/test", async (c: Context) => {
   // return generateInvoice(c)
   const changes = await SubscriptionScheduledChanges()
   return c.json(changes)
+  // const tests = await db.transactions.findMany()
+  // return c.json(tests)
 });
 
 // app.get("/test", testRoute)

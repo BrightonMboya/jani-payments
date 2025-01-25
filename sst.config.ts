@@ -26,11 +26,12 @@ export default $config({
       if (result.outputs) Object.assign(infra, result.outputs);
     }
     return infra;
-    // await import("./infra/api");
-    // await import("./infra/bus");
+    // const api = await import("./infra/api");
+    // const bus = await import("./infra/bus");
     // return {
     //   // api
-    //   // api: api
+    //   api: api.api.url,
+    //   bus: bus.bus,
     // };
   },
 });

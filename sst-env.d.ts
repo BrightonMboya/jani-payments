@@ -15,9 +15,17 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "DeadLetterQueu": {
+      "type": "sst.aws.Queue"
+      "url": string
+    }
     "Hono": {
       "name": string
       "type": "sst.aws.Function"
+      "url": string
+    }
+    "busDlq": {
+      "type": "sst.aws.Queue"
       "url": string
     }
   }

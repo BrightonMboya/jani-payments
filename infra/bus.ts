@@ -6,7 +6,12 @@ export const bus = new sst.aws.Bus("Bus");
 bus.subscribe("MySubscriber", {
   handler: "./packages/api/src/events/events.handler",
   timeout: "5 minutes",
-  permissions: [],
+  permissions: [
+    {
+      actions: ["sqs:*"],
+      resources: [busDlq.arn],
+    },
+  ],
   transform: {
     function: {
       deadLetterConfig: {

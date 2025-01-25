@@ -22,10 +22,8 @@ export default function CreateAPP() {
     cors({
       origin: ["http://localhost:3000"],
       maxAge: 600,
-      credentials: true, // Important for cookies
       allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       allowHeaders: ["Content-Type", "Authorization"],
-      exposeHeaders: ["Content-Length", "X-Kuma-Revision"],
     })
   );
   app.use(withDB);
