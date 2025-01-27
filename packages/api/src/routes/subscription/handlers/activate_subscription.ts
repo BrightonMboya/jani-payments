@@ -15,7 +15,7 @@ const activate_subscription: APPRouteHandler<ActivateSubscription> = async (
 
   // 1. Fetch subscription with all relevant data
   const subscription = await db.subscriptions.findUniqueOrThrow({
-    where: { id: subscriptionId, project_id: c.get("organization_id") },
+    where: { id: subscriptionId, project_id: c.get("organization_Id") },
     include: {
       BillingDetails: true,
       Subscription_Scheduled_Changes: {
@@ -76,7 +76,7 @@ const activate_subscription: APPRouteHandler<ActivateSubscription> = async (
   return await db.$transaction(async (tx) => {
     // 4. Update subscription
     const updatedSubscription = await tx.subscriptions.update({
-      where: { id: subscriptionId, project_id: c.get("organization_id") },
+      where: { id: subscriptionId, project_id: c.get("organization_Id") },
       data: {
         status: "active",
         // Update billing period to start now

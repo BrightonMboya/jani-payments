@@ -19,7 +19,7 @@ import { ErrorSchema } from "~/lib/utils/zod-helpers";
 
 export const list: APPRouteHandler<ListRoute> = async (c: Context) => {
   const db: PrismaClient = c.get("db");
-  const project_id = c.get("organization_id");
+  const project_id = c.get("organization_Id");
   const products = (await db.products.findMany({
     where: {
       project_id,
@@ -47,7 +47,7 @@ export const create: APPRouteHandler<CreateRoute> = async (c: Context) => {
       id: `pro_${crypto.randomUUID()}`,
       description: input.description,
       name: input.name,
-      project_id: c.get("organization_id"),
+      project_id: c.get("organization_Id"),
       custom_data: input.custom_data as any,
       updatedAt: new Date(),
       createdAt: new Date(),
@@ -68,7 +68,7 @@ export const get_product: APPRouteHandler<GetProductRoute> = async (
   const product = await db.products.findUnique({
     where: {
       id: product_id,
-      project_id: c.get("organization_id"),
+      project_id: c.get("organization_Id"),
     },
     omit: {
       project_id: true,
@@ -100,7 +100,7 @@ export const update_product: APPRouteHandler<UpdateProductRoute> = async (
   const input = UpdateProductsSchema.parse(raw_input);
 
   const product = await db.products.update({
-    where: { id: product_id, project_id: c.get("organization_id") },
+    where: { id: product_id, project_id: c.get("organization_Id") },
     data: {
       ...input,
       updatedAt: new Date(),

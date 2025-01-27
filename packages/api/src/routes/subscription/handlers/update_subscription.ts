@@ -22,7 +22,7 @@ const update_subscription: APPRouteHandler<UpdateSubscription> = async (
   const subscription = await db.subscriptions.findUnique({
     where: {
       id: subscription_id,
-      project_id: c.get("organization_id"),
+      project_id: c.get("organization_Id"),
     },
     include: {
       discount: {
@@ -212,7 +212,7 @@ const update_subscription: APPRouteHandler<UpdateSubscription> = async (
 
         // 10. Update subscription
         const updatedSubscription = await tx.subscriptions.update({
-          where: { id: subscription_id, project_id: c.get("organization_id") },
+          where: { id: subscription_id, project_id: c.get("organization_Id") },
           data: updateData,
           include: {
             discount: {

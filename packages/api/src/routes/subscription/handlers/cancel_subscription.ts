@@ -16,7 +16,7 @@ const cancel_subscription: APPRouteHandler<CancelSubscription> = async (
   const subscription = await db.subscriptions.findUnique({
     where: {
       id: subscription_id,
-      project_id: c.get("organization_id"),
+      project_id: c.get("organization_Id"),
     },
     include: {
       discount: {
@@ -57,7 +57,7 @@ const cancel_subscription: APPRouteHandler<CancelSubscription> = async (
       const now = new Date();
       // Update subscription
       const updatedSubscription = await tx.subscriptions.update({
-        where: { id: subscription_id, project_id: c.get("organization_id") },
+        where: { id: subscription_id, project_id: c.get("organization_Id") },
         data: {
           status: "cancelled",
           canceled_at: now,

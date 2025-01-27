@@ -18,7 +18,7 @@ const create_subscription: APPRouteHandler<CreateSubscription> = async (
     Promise.all(
       input.items.map((item) =>
         db.prices.findUniqueOrThrow({
-          where: { id: item.price_id, projectId: c.get("organization_id") },
+          where: { id: item.price_id, projectId: c.get("organization_Id") },
           select: {
             trial_period_frequency: true,
             trial_period_interval: true,
@@ -55,7 +55,7 @@ const create_subscription: APPRouteHandler<CreateSubscription> = async (
         currency_code: input.currency_code,
         customer_id: input.customer_id,
         address_id: input.address_id,
-        project_id: c.get("organization_id"),
+        project_id: c.get("organization_Id"),
         discount_id: input.discount_id,
         collection_mode: "automatic",
 

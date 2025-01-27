@@ -21,7 +21,7 @@ const update_transaction: APPRouteHandler<UpdateTransaction> = async (
   const transaction = await db.transactions.update({
     where: {
       id: transaction_id,
-      project_id: c.get("organization_id"),
+      project_id: c.get("organization_Id"),
     },
     data: {
       status: updatedStatus.status,

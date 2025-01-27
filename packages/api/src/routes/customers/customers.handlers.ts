@@ -28,7 +28,7 @@ export const list: APPRouteHandler<ListCustomers> = async (c: Context) => {
 
   const customers = await db.customers.findMany({
     where: {
-      projectId: c.get("organization_id"),
+      projectId: c.get("organization_Id"),
     },
     select: CustomersDefaultSelect,
   });
@@ -51,7 +51,7 @@ export const create: APPRouteHandler<CreateCustomers> = async (c: Context) => {
       custom_data: input.custom_data,
       created_at: new Date(),
       updated_at: new Date(),
-      projectId: c.get("organization_id"),
+      projectId: c.get("organization_Id"),
     },
     select: CustomersDefaultSelect,
   });
@@ -68,7 +68,7 @@ export const get_customer: APPRouteHandler<GetCustomer> = async (
   const customer = await db.customers.findUnique({
     where: {
       id: customer_id,
-      projectId: c.get("organization_id"),
+      projectId: c.get("organization_Id"),
     },
     select: CustomersDefaultSelect,
   });
@@ -94,7 +94,7 @@ export const update_customer: APPRouteHandler<UpdateCustomer> = async (
   const customer = await db.customers.update({
     where: {
       id: customer_id,
-      projectId: c.get("organization_id"),
+      projectId: c.get("organization_Id"),
     },
     data: {
       ...input,

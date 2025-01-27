@@ -22,7 +22,7 @@ export const list: APPRouteHandler<ListDiscounts> = async (c: Context) => {
 
   const discounts = await db.discounts.findMany({
     where: {
-      projectId: c.get("organization_id"),
+      projectId: c.get("organization_Id"),
     },
     omit: {
       projectId: true,
@@ -52,7 +52,7 @@ export const create: APPRouteHandler<CreateDiscount> = async (c: Context) => {
 
   const discount = await db.discounts.create({
     data: {
-      projectId: c.get("organization_id"),
+      projectId: c.get("organization_Id"),
       id: `dis_${crypto.randomUUID()}`,
       status: input.status || "active",
       description: input.description,
@@ -101,7 +101,7 @@ export const get_discount: APPRouteHandler<GetDiscount> = async (
   const discount = await db.discounts.findUnique({
     where: {
       id: discount_id,
-      projectId: c.get("organization_id"),
+      projectId: c.get("organization_Id"),
     },
     include: {
       discount_prices: {
@@ -141,7 +141,7 @@ export const update_discount: APPRouteHandler<UpdateDiscount> = async (
   const discount = await db.discounts.update({
     where: {
       id: discount_id,
-      projectId: c.get("organization_id"),
+      projectId: c.get("organization_Id"),
     },
     data: {
       ...input,

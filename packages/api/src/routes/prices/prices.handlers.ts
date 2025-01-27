@@ -22,7 +22,7 @@ export const list: APPRouteHandler<ListPrices> = async (c: Context) => {
 
   const prices = await db.prices.findMany({
     where: {
-      projectId: c.get("organization_id"),
+      projectId: c.get("organization_Id"),
     },
     // omit: {
     //   projectId: true,
@@ -65,7 +65,7 @@ export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
         created_at: new Date(),
         updated_at: new Date(),
         product_id: input.product_id,
-        projectId: c.get("organization_id"),
+        projectId: c.get("organization_Id"),
       },
     });
 
@@ -92,7 +92,7 @@ export const get_price: APPRouteHandler<GetPrice> = async (c: Context) => {
   const price = await db.prices.findUnique({
     where: {
       id: price_id,
-      projectId: c.get("organization_id"),
+      projectId: c.get("organization_Id"),
     },
     omit: {
       projectId: true,
@@ -127,7 +127,7 @@ export const update_price: APPRouteHandler<UpdatePrice> = async (
   const price = await db.prices.update({
     where: {
       id: price_id,
-      projectId: c.get("organization_id"),
+      projectId: c.get("organization_Id"),
     },
     data: {
       ...input,

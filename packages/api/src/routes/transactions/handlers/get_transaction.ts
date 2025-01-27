@@ -13,7 +13,7 @@ const get_transaction: APPRouteHandler<GetTransaction> = async (c: Context) => {
   const transaction = await db.transactions.findUnique({
     where: {
       id: transaction_id,
-      project_id: c.get("organization_id"),
+      project_id: c.get("organization_Id"),
     },
     include: GetTransactionInclude,
   });

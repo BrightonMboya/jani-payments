@@ -19,7 +19,10 @@ const withAuth = async (c: Context, next: Next) => {
 
     // Check for Bearer token first
     const authHeader = c.req.header("Authorization");
-    const project_id = getCookie(c, "organization_id");
+
+    const allCookies = getCookie(c);
+
+    const project_id = getCookie(c, "organization_Id");
 
     if (!authHeader) {
       return c.json(

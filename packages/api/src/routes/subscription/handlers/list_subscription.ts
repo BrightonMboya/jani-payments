@@ -13,7 +13,7 @@ const list_subscriptions: APPRouteHandler<ListSubscription> = async (
 
   const subscriptions = await db.subscriptions.findMany({
     where: {
-      project_id: c.get("organization_id"),
+      project_id: c.get("organization_Id"),
     },
     include: {
       discount: {
