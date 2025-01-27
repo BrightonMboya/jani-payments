@@ -20,7 +20,7 @@ const list_transaction: APPRouteHandler<ListTransaction> = async (
   let prismaQuery: Prisma.TransactionsFindManyArgs = {
     where: {},
     // cursor: undefined,
-    take: query.per_page,
+    take: Number(query.per_page),
     // skip: undefined,
     include: GetTransactionInclude,
     orderBy: query.order_by
@@ -109,7 +109,7 @@ const list_transaction: APPRouteHandler<ListTransaction> = async (
       data: transformedTransactions,
       meta: {
         total,
-        per_page: query.per_page,
+        per_page: Number(query.per_page),
         next_cursor: nextCursor,
       },
     } satisfies z.infer<typeof ListTransactionsResponse>,

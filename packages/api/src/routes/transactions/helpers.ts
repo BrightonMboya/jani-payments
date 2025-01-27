@@ -311,6 +311,7 @@ export function transformTransaction(
     },
     address: {
       ...input.address,
+      status: "active",
       custom_data: input.custom_data as any,
     },
     customer: {

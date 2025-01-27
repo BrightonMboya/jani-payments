@@ -48,7 +48,7 @@ export const transformPrices = (price: z.infer<typeof PricesModel>) => ({
     frequency: price.trial_period_frequency,
   },
   unit_price: {
-    amount: price.amount,
+    amount: Number(price.amount),
     currency_code: price.currency_code,
   },
   status: price.status,
