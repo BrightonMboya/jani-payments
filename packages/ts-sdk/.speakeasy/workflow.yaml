@@ -1,0 +1,18 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    JANI Payments:
+        inputs:
+            - location: https://p5kv4b3h7rzao6bxlzmisxykfe0dragb.lambda-url.us-east-1.on.aws/doc
+        registry:
+            location: registry.speakeasyapi.dev/jani-payments/billing/jani-payments
+targets:
+    jani-payments:
+        target: typescript
+        source: JANI Payments
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/jani-payments/billing/jani-payments-typescript-code-samples
+            labelOverride:
+                fixedValue: Typescript (SDK)
+            blocking: false

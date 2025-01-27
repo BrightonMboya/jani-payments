@@ -1,0 +1,36 @@
+speakeasyVersion: 1.476.1
+sources:
+    JANI Payments:
+        sourceNamespace: jani-payments
+        sourceRevisionDigest: sha256:bfb6ef7042c27b69d73c066e5c61487cbbfb2b9ee153128ab41724c0c70cbdc4
+        sourceBlobDigest: sha256:d71c099fb4dc3578fd649621c4f3a574fda46a198066f2edbabb8c16df8674f7
+        tags:
+            - latest
+            - 1.0.0
+targets:
+    jani-payments:
+        source: JANI Payments
+        sourceNamespace: jani-payments
+        sourceRevisionDigest: sha256:bfb6ef7042c27b69d73c066e5c61487cbbfb2b9ee153128ab41724c0c70cbdc4
+        sourceBlobDigest: sha256:d71c099fb4dc3578fd649621c4f3a574fda46a198066f2edbabb8c16df8674f7
+        codeSamplesNamespace: jani-payments-typescript-code-samples
+        codeSamplesRevisionDigest: sha256:9da444bec2595d63ed34ab42f13b391ff6feac01476fb02a594092f91ecf509b
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        JANI Payments:
+            inputs:
+                - location: https://p5kv4b3h7rzao6bxlzmisxykfe0dragb.lambda-url.us-east-1.on.aws/doc
+            registry:
+                location: registry.speakeasyapi.dev/jani-payments/billing/jani-payments
+    targets:
+        jani-payments:
+            target: typescript
+            source: JANI Payments
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/jani-payments/billing/jani-payments-typescript-code-samples
+                labelOverride:
+                    fixedValue: Typescript (SDK)
+                blocking: false

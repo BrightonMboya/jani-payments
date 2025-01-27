@@ -1,8 +1,6 @@
 import { apiReference } from "@scalar/hono-api-reference";
 import type { AppOpenAPI } from "./types";
-import { writeFile } from "fs/promises";
 import packageJSON from "../../package.json";
-import { join } from "path";
 
 export default async function configureOpenAPI(app: AppOpenAPI) {
   app.doc("/doc", {
@@ -11,9 +9,23 @@ export default async function configureOpenAPI(app: AppOpenAPI) {
       version: packageJSON.version,
       title: "JANI Payments",
     },
-    security: [{ bearerAuth: [] }],
+    security: [{ Bearer: [], organization_Id: [] }],
+    servers: [
+      {
+        url: "https://p5kv4b3h7rzao6bxlzmisxykfe0dragb.lambda-url.us-east-1.on.aws",
+      },
+    ],
   });
-
+  app.openAPIRegistry.registerComponent("securitySchemes", "Bearer", {
+    type: "http",
+    scheme: "bearer",
+    bearerFormat: "JWT",
+  });
+  app.openAPIRegistry.registerComponent("securitySchemes", "organization_Id", {
+    type: "apiKey",
+    in: "cookie",
+    name: "organization_Id",
+  });
   app.get(
     "/reference",
     apiReference({

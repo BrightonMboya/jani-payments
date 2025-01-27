@@ -1,0 +1,18 @@
+# PatchSubscriptionSubscriptionIdBillingDetails
+
+## Example Usage
+
+```typescript
+import { PatchSubscriptionSubscriptionIdBillingDetails } from "jani-payments/models/operations";
+
+let value: PatchSubscriptionSubscriptionIdBillingDetails = {};
+```
+
+## Fields
+
+| Field                                                                                                                            | Type                                                                                                                             | Required                                                                                                                         | Description                                                                                                                      |
+| -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `paymentTerms`                                                                                                                   | [operations.PatchSubscriptionSubscriptionIdPaymentTerms](../../models/operations/patchsubscriptionsubscriptionidpaymentterms.md) | :heavy_minus_sign:                                                                                                               | N/A                                                                                                                              |
+| `enableCheckout`                                                                                                                 | *boolean*                                                                                                                        | :heavy_minus_sign:                                                                                                               | N/A                                                                                                                              |
+| `additionalInformation`                                                                                                          | *string*                                                                                                                         | :heavy_minus_sign:                                                                                                               | N/A                                                                                                                              |
+| `purchaseOrderNumber`                                                                                                            | *string*                                                                                                                         | :heavy_minus_sign:                                                                                                               | N/A                                                                                                                              |

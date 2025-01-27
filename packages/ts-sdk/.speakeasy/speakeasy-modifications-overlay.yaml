@@ -1,0 +1,302 @@
+overlay: 1.0.0
+info:
+  title: Speakeasy Modifications
+  version: 0.0.2
+  x-speakeasy-metadata:
+    after: ""
+    before: ""
+    type: speakeasy-modifications
+actions:
+  - target: $["paths"]["/prices"]["post"]
+    update:
+      x-speakeasy-name-override: create
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.prices.post_/prices()
+      after: sdk.prices.create()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/customers"]["get"]
+    update:
+      x-speakeasy-name-override: list
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.customers.get_/customers()
+      after: sdk.customers.list()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/subscription/{subscription_id}"]["patch"]
+    update:
+      x-speakeasy-group: subscriptions
+      x-speakeasy-name-override: update
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.subscription.patch_/subscription/{subscription_id}()
+      after: sdk.subscriptions.update()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/subscription"]["get"]
+    update:
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.subscription.get_/subscription()
+      after: sdk.subscription.get()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/customers/{customer_id}"]["patch"]
+    update:
+      x-speakeasy-name-override: update
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.customers.patch_/customers/{customer_id}()
+      after: sdk.customers.update()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/products/{product_id}"]["get"]
+    update:
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.Products.get_/products/{product_id}()
+      after: sdk.products.get()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/customers/{customer_id}/addresses/{address_id}"]["patch"]
+    update:
+      x-speakeasy-name-override: update
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.Addresses.patch_/customers/{customer_id}/addresses/{address_id}()
+      after: sdk.addresses.update()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/discounts"]["post"]
+    update:
+      x-speakeasy-name-override: create
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.discounts.post_/discounts()
+      after: sdk.discounts.create()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/api-keys"]["post"]
+    update:
+      x-speakeasy-group: developerTools
+      x-speakeasy-name-override: createApiKey
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.Developer Tools.post_/api-keys()
+      after: sdk.developerTools.createApiKey()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/discounts"]["get"]
+    update:
+      x-speakeasy-name-override: list
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.discounts.get_/discounts()
+      after: sdk.discounts.list()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/prices/{price_id}"]["patch"]
+    update:
+      x-speakeasy-name-override: update
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.prices.patch_/prices/{price_id}()
+      after: sdk.prices.update()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/products"]["post"]
+    update:
+      x-speakeasy-name-override: create
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.Products.post_/products()
+      after: sdk.products.create()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/customers"]["post"]
+    update:
+      x-speakeasy-name-override: create
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.customers.post_/customers()
+      after: sdk.customers.create()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/subscription/{subscription_id}/pause"]["post"]
+    update:
+      x-speakeasy-group: subscriptions
+      x-speakeasy-name-override: pause
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.subscription.post_/subscription/{subscription_id}/pause()
+      after: sdk.subscriptions.pause()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/subscription/{subscription_id}/cancel"]["post"]
+    update:
+      x-speakeasy-group: subscriptions
+      x-speakeasy-name-override: cancel
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.subscription.post_/subscription/{subscription_id}/cancel()
+      after: sdk.subscriptions.cancel()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/transactions"]["post"]
+    update:
+      x-speakeasy-name-override: create
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.transactions.post_/transactions()
+      after: sdk.transactions.create()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/customers/{customer_id}/addresses"]["get"]
+    update:
+      x-speakeasy-name-override: list
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.Addresses.get_/customers/{customer_id}/addresses()
+      after: sdk.addresses.list()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/transactions"]["get"]
+    update:
+      x-speakeasy-name-override: list
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.transactions.get_/transactions()
+      after: sdk.transactions.list()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/addresses/{address_id}"]["get"]
+    update:
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.Addresses.get_/addresses/{address_id}()
+      after: sdk.addresses.get()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/products"]["get"]
+    update:
+      x-speakeasy-name-override: list
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.Products.get_/products()
+      after: sdk.products.list()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/prices"]["get"]
+    update:
+      x-speakeasy-name-override: list
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.prices.get_/prices()
+      after: sdk.prices.list()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/transaction/{transaction_id}"]["get"]
+    update:
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.transactions.get_/transaction/{transaction_id}()
+      after: sdk.transactions.get()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/products/{product_id}"]["patch"]
+    update:
+      x-speakeasy-name-override: update
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.Products.patch_/products/{product_id}()
+      after: sdk.products.update()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/subscription"]["post"]
+    update:
+      x-speakeasy-group: subscriptions
+      x-speakeasy-name-override: create
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.subscription.post_/subscription()
+      after: sdk.subscriptions.create()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/subscription/{subscription_id}/resume"]["post"]
+    update:
+      x-speakeasy-name-override: resume
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.subscription.post_/subscription/{subscription_id}/resume()
+      after: sdk.subscription.resume()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/subscription/{subscription_id}/activate"]["post"]
+    update:
+      x-speakeasy-name-override: activate
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.subscription.post_/subscription/{subscription_id}/activate()
+      after: sdk.subscription.activate()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/discounts/{discount_id}"]["patch"]
+    update:
+      x-speakeasy-name-override: update
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.discounts.patch_/discounts/{discount_id}()
+      after: sdk.discounts.update()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/discounts/{discount_id}"]["get"]
+    update:
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.discounts.get_/discounts/{discount_id}()
+      after: sdk.discounts.get()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/transaction/{transaction_id}"]["patch"]
+    update:
+      x-speakeasy-name-override: update
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.transactions.patch_/transaction/{transaction_id}()
+      after: sdk.transactions.update()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/customers/{customer_id}/addresses"]["post"]
+    update:
+      x-speakeasy-name-override: create
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.Addresses.post_/customers/{customer_id}/addresses()
+      after: sdk.addresses.create()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/customers/{customer_id}"]["get"]
+    update:
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.customers.get_/customers/{customer_id}()
+      after: sdk.customers.get()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
+  - target: $["paths"]["/prices/{price_id}"]["get"]
+    update:
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      type: method-name
+      before: sdk.prices.get_/prices/{price_id}()
+      after: sdk.prices.get()
+      reviewed_at: 1737977450396
+      created_at: 1737977439825
