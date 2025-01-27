@@ -18,6 +18,7 @@ export const create_subscription = createRoute({
   path: "/subscription",
   method: "post",
   tags,
+  operationId: "create",
   request: {
     body: {
       content: {
@@ -40,6 +41,7 @@ export const list_subscriptions = createRoute({
   path: "/subscription",
   method: "get",
   tags,
+  operationId: "list",
   responses: {
     [HttpsStatusCodes.OK]: jsonContent(
       z.array(transformedSubscriptionSchema),
@@ -52,6 +54,7 @@ export const cancel_subscription = createRoute({
   path: "/subscription/{subscription_id}/cancel",
   method: "post",
   tags,
+  operationId: "cancelSubscription",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -82,6 +85,7 @@ export const pause_subscription = createRoute({
   path: "/subscription/{subscription_id}/pause",
   method: "post",
   tags,
+  operationId: "pauseSubscription",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -115,6 +119,7 @@ export const resume_subscription = createRoute({
   path: "/subscription/{subscription_id}/resume",
   method: "post",
   tags,
+  operationId: "resumeSubscription",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -137,6 +142,7 @@ export const activate_subscription = createRoute({
   path: "/subscription/{subscription_id}/activate",
   method: "post",
   tags,
+  operationId: "activateSubscription",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -159,6 +165,7 @@ export const update_subscription = createRoute({
   path: "/subscription/{subscription_id}",
   method: "patch",
   tags,
+  operationId: "updateSubscription",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -187,6 +194,7 @@ export const get_subscription = createRoute({
   path: "/subscription/{subscription_id}",
   method: "get",
   tags,
+  operationId: "getSubscription",
   responses: {
     [HttpsStatusCodes.OK]: jsonContent(
       transformedSubscriptionSchema,

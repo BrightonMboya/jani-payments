@@ -16,6 +16,7 @@ export const list = createRoute({
   path: "/customers/{customer_id}/addresses",
   method: "get",
   tags,
+  operationId: "list",
   request: {
     params: z.object({
       customer_id: z.string(),
@@ -32,6 +33,7 @@ export const list = createRoute({
 export const create = createRoute({
   path: "/customers/{customer_id}/addresses",
   method: "post",
+  operationId: "create",
   tags,
   request: {
     params: z.object({
@@ -60,6 +62,7 @@ export const create = createRoute({
 export const get_address = createRoute({
   path: "/addresses/{address_id}",
   method: "get",
+  operationId: "getAddress",
   tags,
   request: {
     params: z.object({
@@ -76,6 +79,7 @@ export const update_address = createRoute({
   path: "/customers/{customer_id}/addresses/{address_id}",
   method: "patch",
   tags,
+  operationId: "update",
   request: {
     params: z.object({
       customer_id: z.string(),

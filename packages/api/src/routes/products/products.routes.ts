@@ -17,6 +17,7 @@ export const list = createRoute({
   path: "/products",
   method: "get",
   tags,
+  operationId: "list",
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       z.array(ProductsResponseSchema),
@@ -29,6 +30,7 @@ export const create = createRoute({
   path: "/products",
   method: "post",
   tags,
+  operationId: "create",
   request: {
     body: {
       content: {
@@ -49,6 +51,7 @@ export const create = createRoute({
 export const get_product = createRoute({
   path: "/products/{product_id}",
   method: "get",
+  operationId: "getProduct",
   tags,
   request: {
     params: z.object({
@@ -68,6 +71,7 @@ export const update_product = createRoute({
   path: "/products/{product_id}",
   method: "patch",
   tags,
+  operationId: "update",
   request: {
     params: z.object({
       product_id: z.string(),

@@ -23,6 +23,7 @@ export const list = createRoute({
   path: "/prices",
   method: "get",
   tags,
+  operationId: "list",
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       z.array(PricesResponseSchema),
@@ -35,6 +36,7 @@ export const create_prices = createRoute({
   path: "/prices",
   method: "post",
   tags,
+  operationId: "create",
   request: {
     body: {
       content: {
@@ -60,6 +62,7 @@ export const get_price = createRoute({
   path: "/prices/{price_id}",
   method: "get",
   tags,
+  operationId: "getPrice",
   request: {
     params: z.object({
       price_id: z.string(),
@@ -77,6 +80,7 @@ export const get_price = createRoute({
 export const update_price = createRoute({
   path: "/prices/{price_id}",
   method: "patch",
+  operationId: "update",
   request: {
     params: z.object({
       price_id: z.string(),

@@ -22,6 +22,7 @@ export const list_discounts = createRoute({
   path: "/discounts",
   method: "get",
   tags,
+  operationId: "list",
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       z.array(DiscountResponseSchema),
@@ -34,6 +35,7 @@ export const create_discount = createRoute({
   path: "/discounts",
   method: "post",
   tags,
+  operationId: "create",
   request: {
     body: {
       content: {
@@ -59,6 +61,7 @@ export const get_discount = createRoute({
   path: "/discounts/{discount_id}",
   method: "get",
   tags,
+  operationId: "getDiscount",
   request: {
     params: z.object({
       discount_id: z.string(),
@@ -77,6 +80,7 @@ export const update_discount = createRoute({
   path: "/discounts/{discount_id}",
   method: "patch",
   tags,
+  operationId: "update",
   request: {
     params: z.object({
       discount_id: z.string(),
