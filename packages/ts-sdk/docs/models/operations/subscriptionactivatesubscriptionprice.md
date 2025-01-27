@@ -10,21 +10,21 @@ let value: SubscriptionActivateSubscriptionPrice = {
   type: "custom",
   name: "<value>",
   billingCycle: {
-    interval: "day",
-    frequency: 4589.7,
+    interval: "week",
+    frequency: 8738.33,
   },
   trialPeriod: {
-    interval: "week",
-    frequency: 3165.01,
+    interval: "year",
+    frequency: 2138.35,
   },
   unitPrice: {
-    amount: 4825.84,
-    currencyCode: "SAR",
+    amount: 7712.26,
+    currencyCode: "AFN",
   },
   status: "active",
   id: "<id>",
-  createdAt: "1734173334549",
-  updatedAt: "1737960812226",
+  createdAt: "1713688886080",
+  updatedAt: "1737942639827",
 };
 ```
 

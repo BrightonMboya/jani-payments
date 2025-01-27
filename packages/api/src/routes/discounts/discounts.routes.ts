@@ -45,6 +45,7 @@ export const create_discount = createRoute({
           schema: CreateDiscountSchema,
         },
       },
+      required: true,
     },
   },
   responses: {
@@ -84,7 +85,7 @@ export const update_discount = createRoute({
   method: "patch",
   tags,
   operationId: "discount:update",
-   "x-speakeasy-name-override": "update",
+  "x-speakeasy-name-override": "update",
   request: {
     params: z.object({
       discount_id: z.string(),
@@ -95,6 +96,7 @@ export const update_discount = createRoute({
           schema: UpdateDiscountSchema,
         },
       },
+      required: true,
     },
   },
   responses: {

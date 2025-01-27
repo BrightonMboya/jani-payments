@@ -12,8 +12,8 @@ let value: ProductsGetProductResponseBody = {
   name: "<value>",
   description: "overcharge general astride boohoo",
   status: "active",
-  createdAt: "1708568508792",
-  updatedAt: "1737956023338",
+  createdAt: "1708570031028",
+  updatedAt: "1737957545574",
   customData: {},
 };
 ```

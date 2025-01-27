@@ -5,7 +5,7 @@
 ```typescript
 import { EffectiveFrom } from "jani-payments/models/operations";
 
-let value: EffectiveFrom = "next_billing_period";
+let value: EffectiveFrom = "immediately";
 ```
 
 ## Values

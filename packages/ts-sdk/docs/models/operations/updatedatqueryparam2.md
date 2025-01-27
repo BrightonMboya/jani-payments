@@ -6,8 +6,8 @@
 import { UpdatedAtQueryParam2 } from "jani-payments/models/operations";
 
 let value: UpdatedAtQueryParam2 = {
-  operator: "LTE",
-  value: new Date("2025-05-17T18:29:32.722Z"),
+  operator: "GTE",
+  value: new Date("2023-04-24T12:31:40.449Z"),
 };
 ```
 

@@ -5,7 +5,7 @@
 ```typescript
 import { CustomersGetStatus } from "jani-payments/models/operations";
 
-let value: CustomersGetStatus = "active";
+let value: CustomersGetStatus = "archived";
 ```
 
 ## Values

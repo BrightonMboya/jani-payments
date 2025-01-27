@@ -7,24 +7,24 @@ import { SubscriptionCancelSubscriptionPrice } from "jani-payments/models/operat
 
 let value: SubscriptionCancelSubscriptionPrice = {
   productId: "<id>",
-  type: "custom",
+  type: "standard",
   name: "<value>",
   billingCycle: {
-    interval: "week",
-    frequency: 1905.67,
+    interval: "day",
+    frequency: 1995.96,
   },
   trialPeriod: {
-    interval: "day",
-    frequency: 5181.5,
+    interval: "week",
+    frequency: 5282.34,
   },
   unitPrice: {
-    amount: 8427.77,
-    currencyCode: "ILS",
+    amount: 3494.4,
+    currencyCode: "SOS",
   },
-  status: "active",
+  status: "archived",
   id: "<id>",
-  createdAt: "1708987382044",
-  updatedAt: "1737904695641",
+  createdAt: "1735689797779",
+  updatedAt: "1737901348619",
 };
 ```
 

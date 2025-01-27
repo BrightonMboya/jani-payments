@@ -6,38 +6,38 @@
 import { SubscriptionCancelSubscriptionItems } from "jani-payments/models/operations";
 
 let value: SubscriptionCancelSubscriptionItems = {
-  status: "active",
+  status: "trialing",
   priceId: "<id>",
-  quantity: 100014,
+  quantity: 392569,
   id: "<id>",
   subscriptionId: "<id>",
   recurring: false,
-  createdAt: "1714806016529",
-  updatedAt: "1737903040114",
+  createdAt: "1734149601287",
+  updatedAt: "1737958530265",
   previouslyBilledAt: "<value>",
   nextBilledAt: "<value>",
   trialStartedAt: "<value>",
   trialEndedAt: "<value>",
   price: {
     productId: "<id>",
-    type: "standard",
+    type: "custom",
     name: "<value>",
     billingCycle: {
       interval: "year",
-      frequency: 1621.2,
+      frequency: 3645.44,
     },
     trialPeriod: {
       interval: "month",
-      frequency: 7734.56,
+      frequency: 3763.89,
     },
     unitPrice: {
-      amount: 4564.1,
-      currencyCode: "BZD",
+      amount: 3649.12,
+      currencyCode: "ETB",
     },
     status: "active",
     id: "<id>",
-    createdAt: "1720102314364",
-    updatedAt: "1737942963765",
+    createdAt: "1727948597378",
+    updatedAt: "1737922809074",
   },
 };
 ```

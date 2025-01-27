@@ -107,6 +107,9 @@ const janiPayments = new JaniPayments({
 async function run() {
   const result = await janiPayments.addresses.create({
     customerId: "<id>",
+    requestBody: {
+      status: "active",
+    },
   });
 
   // Handle the result
@@ -136,6 +139,9 @@ const janiPayments = new JaniPaymentsCore({
 async function run() {
   const res = await addressesCreate(janiPayments, {
     customerId: "<id>",
+    requestBody: {
+      status: "active",
+    },
   });
 
   if (!res.ok) {
@@ -270,6 +276,7 @@ async function run() {
   const result = await janiPayments.addresses.update({
     customerId: "<id>",
     addressId: "<id>",
+    requestBody: {},
   });
 
   // Handle the result
@@ -300,6 +307,7 @@ async function run() {
   const res = await addressesUpdate(janiPayments, {
     customerId: "<id>",
     addressId: "<id>",
+    requestBody: {},
   });
 
   if (!res.ok) {

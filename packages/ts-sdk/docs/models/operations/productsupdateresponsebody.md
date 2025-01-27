@@ -13,8 +13,8 @@ let value: ProductsUpdateResponseBody = {
   description:
     "inasmuch sympathetically disappointment nor until twist oof ack flame turbulent",
   status: "active",
-  createdAt: "1733220007613",
-  updatedAt: "1737950708429",
+  createdAt: "1733221529844",
+  updatedAt: "1737952230660",
   customData: {},
 };
 ```

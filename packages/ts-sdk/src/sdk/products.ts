@@ -21,7 +21,7 @@ export class Products extends ClientSDK {
   }
 
   async create(
-    request?: operations.ProductsCreateRequestBody | undefined,
+    request: operations.ProductsCreateRequestBody,
     options?: RequestOptions,
   ): Promise<operations.ProductsCreateResponseBody> {
     return unwrapAsync(productsCreate(

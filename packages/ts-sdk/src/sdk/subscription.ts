@@ -24,7 +24,7 @@ export class Subscription extends ClientSDK {
   }
 
   async create(
-    request?: operations.SubscriptionCreateRequestBody | undefined,
+    request: operations.SubscriptionCreateRequestBody,
     options?: RequestOptions,
   ): Promise<operations.SubscriptionCreateResponseBody> {
     return unwrapAsync(subscriptionCreate(

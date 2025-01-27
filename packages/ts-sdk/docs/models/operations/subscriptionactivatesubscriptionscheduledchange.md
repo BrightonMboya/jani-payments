@@ -8,7 +8,7 @@ import { SubscriptionActivateSubscriptionScheduledChange } from "jani-payments/m
 let value: SubscriptionActivateSubscriptionScheduledChange = {
   id: "<id>",
   subscriptionId: "<id>",
-  action: "cancel",
+  action: "pause",
   effectiveAt: "<value>",
   status: "scheduled",
 };

@@ -6,8 +6,8 @@
 import { SubscriptionResumeSubscriptionUnitPrice } from "jani-payments/models/operations";
 
 let value: SubscriptionResumeSubscriptionUnitPrice = {
-  amount: 8989.61,
-  currencyCode: "CNY",
+  amount: 4483.69,
+  currencyCode: "MRU",
 };
 ```
 

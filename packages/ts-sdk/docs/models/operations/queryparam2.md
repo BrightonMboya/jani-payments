@@ -7,7 +7,7 @@ import { QueryParam2 } from "jani-payments/models/operations";
 
 let value: QueryParam2 = {
   operator: "GTE",
-  value: new Date("2023-12-29T03:54:31.758Z"),
+  value: new Date("2023-04-24T23:22:30.007Z"),
 };
 ```
 

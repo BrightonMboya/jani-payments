@@ -9,12 +9,13 @@ import { DiscountGetDiscountResponseBody } from "jani-payments/models/operations
 
 let value: DiscountGetDiscountResponseBody = {
   id: "<id>",
-  amount: 680.74,
-  currencyCode: "EGP",
+  status: "active",
+  amount: 1310.55,
+  currencyCode: "AFN",
   type: "flat",
   customData: {},
-  createdAt: "1714432361854",
-  updatedAt: "1737908647663",
+  createdAt: "1725953639707",
+  updatedAt: "1737983021624",
   restrictedTo: [
     "<value>",
   ],
@@ -26,7 +27,7 @@ let value: DiscountGetDiscountResponseBody = {
 | Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          |
 | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `id`                                                                                                 | *string*                                                                                             | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
-| `status`                                                                                             | [operations.DiscountGetDiscountStatus](../../models/operations/discountgetdiscountstatus.md)         | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
+| `status`                                                                                             | [operations.DiscountGetDiscountStatus](../../models/operations/discountgetdiscountstatus.md)         | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
 | `description`                                                                                        | *string*                                                                                             | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
 | `enabledForCheckout`                                                                                 | *boolean*                                                                                            | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
 | `amount`                                                                                             | *number*                                                                                             | :heavy_check_mark:                                                                                   | N/A                                                                                                  |

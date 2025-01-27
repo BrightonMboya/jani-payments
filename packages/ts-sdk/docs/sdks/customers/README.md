@@ -100,7 +100,11 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.customers.create();
+  const result = await janiPayments.customers.create({
+    email: "Loyal79@yahoo.com",
+    name: "<value>",
+    status: "active",
+  });
 
   // Handle the result
   console.log(result);
@@ -127,7 +131,11 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await customersCreate(janiPayments);
+  const res = await customersCreate(janiPayments, {
+    email: "Loyal79@yahoo.com",
+    name: "<value>",
+    status: "active",
+  });
 
   if (!res.ok) {
     throw res.error;
@@ -260,6 +268,7 @@ const janiPayments = new JaniPayments({
 async function run() {
   const result = await janiPayments.customers.update({
     customerId: "<id>",
+    requestBody: {},
   });
 
   // Handle the result
@@ -289,6 +298,7 @@ const janiPayments = new JaniPaymentsCore({
 async function run() {
   const res = await customersUpdate(janiPayments, {
     customerId: "<id>",
+    requestBody: {},
   });
 
   if (!res.ok) {

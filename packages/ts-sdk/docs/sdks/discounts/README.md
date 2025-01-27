@@ -100,7 +100,12 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.discounts.create();
+  const result = await janiPayments.discounts.create({
+    status: "active",
+    amount: 4865.89,
+    currencyCode: "NZD",
+    type: "percentage",
+  });
 
   // Handle the result
   console.log(result);
@@ -127,7 +132,12 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await discountsCreate(janiPayments);
+  const res = await discountsCreate(janiPayments, {
+    status: "active",
+    amount: 4865.89,
+    currencyCode: "NZD",
+    type: "percentage",
+  });
 
   if (!res.ok) {
     throw res.error;
@@ -260,6 +270,7 @@ const janiPayments = new JaniPayments({
 async function run() {
   const result = await janiPayments.discounts.update({
     discountId: "<id>",
+    requestBody: {},
   });
 
   // Handle the result
@@ -289,6 +300,7 @@ const janiPayments = new JaniPaymentsCore({
 async function run() {
   const res = await discountsUpdate(janiPayments, {
     discountId: "<id>",
+    requestBody: {},
   });
 
   if (!res.ok) {

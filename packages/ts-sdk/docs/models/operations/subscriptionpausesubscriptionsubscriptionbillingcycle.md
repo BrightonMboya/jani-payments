@@ -7,7 +7,7 @@ import { SubscriptionPauseSubscriptionSubscriptionBillingCycle } from "jani-paym
 
 let value: SubscriptionPauseSubscriptionSubscriptionBillingCycle = {
   interval: "week",
-  frequency: 7781.72,
+  frequency: 4833.94,
 };
 ```
 

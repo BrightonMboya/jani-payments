@@ -28,14 +28,14 @@ export type AddressesUpdateRequestBody = {
    */
   customData?: AddressesUpdateCustomData | undefined;
   city?: string | null | undefined;
-  status?: AddressesUpdateStatus | null | undefined;
+  status?: AddressesUpdateStatus | undefined;
   customerId?: string | null | undefined;
 };
 
 export type AddressesUpdateRequest = {
   customerId: string;
   addressId: string;
-  requestBody?: AddressesUpdateRequestBody | undefined;
+  requestBody: AddressesUpdateRequestBody;
 };
 
 /**
@@ -63,7 +63,7 @@ export type AddressesUpdateResponseBody = {
    */
   customData: AddressesUpdateAddressesCustomData;
   city?: string | null | undefined;
-  status?: AddressesUpdateAddressesStatus | null | undefined;
+  status: AddressesUpdateAddressesStatus;
   createdAt: string;
   updatedAt: string;
   customerId?: string | null | undefined;
@@ -148,7 +148,7 @@ export const AddressesUpdateRequestBody$inboundSchema: z.ZodType<
   first_line: z.nullable(z.string()).optional(),
   custom_data: z.lazy(() => AddressesUpdateCustomData$inboundSchema).optional(),
   city: z.nullable(z.string()).optional(),
-  status: z.nullable(AddressesUpdateStatus$inboundSchema).optional(),
+  status: AddressesUpdateStatus$inboundSchema.optional(),
   customer_id: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -164,7 +164,7 @@ export type AddressesUpdateRequestBody$Outbound = {
   first_line?: string | null | undefined;
   custom_data?: AddressesUpdateCustomData$Outbound | undefined;
   city?: string | null | undefined;
-  status?: string | null | undefined;
+  status?: string | undefined;
   customer_id?: string | null | undefined;
 };
 
@@ -178,7 +178,7 @@ export const AddressesUpdateRequestBody$outboundSchema: z.ZodType<
   firstLine: z.nullable(z.string()).optional(),
   customData: z.lazy(() => AddressesUpdateCustomData$outboundSchema).optional(),
   city: z.nullable(z.string()).optional(),
-  status: z.nullable(AddressesUpdateStatus$outboundSchema).optional(),
+  status: AddressesUpdateStatus$outboundSchema.optional(),
   customerId: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -227,8 +227,7 @@ export const AddressesUpdateRequest$inboundSchema: z.ZodType<
 > = z.object({
   customer_id: z.string(),
   address_id: z.string(),
-  RequestBody: z.lazy(() => AddressesUpdateRequestBody$inboundSchema)
-    .optional(),
+  RequestBody: z.lazy(() => AddressesUpdateRequestBody$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "customer_id": "customerId",
@@ -241,7 +240,7 @@ export const AddressesUpdateRequest$inboundSchema: z.ZodType<
 export type AddressesUpdateRequest$Outbound = {
   customer_id: string;
   address_id: string;
-  RequestBody?: AddressesUpdateRequestBody$Outbound | undefined;
+  RequestBody: AddressesUpdateRequestBody$Outbound;
 };
 
 /** @internal */
@@ -252,8 +251,7 @@ export const AddressesUpdateRequest$outboundSchema: z.ZodType<
 > = z.object({
   customerId: z.string(),
   addressId: z.string(),
-  requestBody: z.lazy(() => AddressesUpdateRequestBody$outboundSchema)
-    .optional(),
+  requestBody: z.lazy(() => AddressesUpdateRequestBody$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     customerId: "customer_id",
@@ -377,7 +375,7 @@ export const AddressesUpdateResponseBody$inboundSchema: z.ZodType<
   first_line: z.nullable(z.string()).optional(),
   custom_data: z.lazy(() => AddressesUpdateAddressesCustomData$inboundSchema),
   city: z.nullable(z.string()).optional(),
-  status: z.nullable(AddressesUpdateAddressesStatus$inboundSchema).optional(),
+  status: AddressesUpdateAddressesStatus$inboundSchema,
   created_at: z.string(),
   updated_at: z.string(),
   customer_id: z.nullable(z.string()).optional(),
@@ -398,7 +396,7 @@ export type AddressesUpdateResponseBody$Outbound = {
   first_line?: string | null | undefined;
   custom_data: AddressesUpdateAddressesCustomData$Outbound;
   city?: string | null | undefined;
-  status?: string | null | undefined;
+  status: string;
   created_at: string;
   updated_at: string;
   customer_id?: string | null | undefined;
@@ -415,7 +413,7 @@ export const AddressesUpdateResponseBody$outboundSchema: z.ZodType<
   firstLine: z.nullable(z.string()).optional(),
   customData: z.lazy(() => AddressesUpdateAddressesCustomData$outboundSchema),
   city: z.nullable(z.string()).optional(),
-  status: z.nullable(AddressesUpdateAddressesStatus$outboundSchema).optional(),
+  status: AddressesUpdateAddressesStatus$outboundSchema,
   createdAt: z.string(),
   updatedAt: z.string(),
   customerId: z.nullable(z.string()).optional(),

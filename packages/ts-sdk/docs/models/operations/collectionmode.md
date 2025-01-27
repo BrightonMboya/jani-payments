@@ -5,7 +5,7 @@
 ```typescript
 import { CollectionMode } from "jani-payments/models/operations";
 
-let value: CollectionMode = "manual";
+let value: CollectionMode = "automatic";
 ```
 
 ## Values

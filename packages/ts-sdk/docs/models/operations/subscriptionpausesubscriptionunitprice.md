@@ -6,8 +6,8 @@
 import { SubscriptionPauseSubscriptionUnitPrice } from "jani-payments/models/operations";
 
 let value: SubscriptionPauseSubscriptionUnitPrice = {
-  amount: 8428.55,
-  currencyCode: "SZL",
+  amount: 3774.06,
+  currencyCode: "SYP",
 };
 ```
 

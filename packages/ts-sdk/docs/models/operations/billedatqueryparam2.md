@@ -6,8 +6,8 @@
 import { BilledAtQueryParam2 } from "jani-payments/models/operations";
 
 let value: BilledAtQueryParam2 = {
-  operator: "GTE",
-  value: new Date("2024-10-23T05:48:28.761Z"),
+  operator: "GT",
+  value: new Date("2023-09-10T16:56:49.935Z"),
 };
 ```
 

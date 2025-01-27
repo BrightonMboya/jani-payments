@@ -25,7 +25,7 @@ import { Result } from "../types/fp.js";
 
 export async function discountsCreate(
   client: JaniPaymentsCore,
-  request?: operations.DiscountCreateRequestBody | undefined,
+  request: operations.DiscountCreateRequestBody,
   options?: RequestOptions,
 ): Promise<
   Result<
@@ -42,19 +42,14 @@ export async function discountsCreate(
 > {
   const parsed = safeParse(
     request,
-    (value) =>
-      operations.DiscountCreateRequestBody$outboundSchema.optional().parse(
-        value,
-      ),
+    (value) => operations.DiscountCreateRequestBody$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return parsed;
   }
   const payload = parsed.value;
-  const body = payload === undefined
-    ? null
-    : encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON("body", payload, { explode: true });
 
   const path = pathToFunc("/discounts")();
 

@@ -6,8 +6,8 @@
 import { Meta } from "jani-payments/models/operations";
 
 let value: Meta = {
-  total: 1183.49,
-  perPage: 251.9,
+  total: 4934.07,
+  perPage: 6570.44,
   nextCursor: "<value>",
 };
 ```

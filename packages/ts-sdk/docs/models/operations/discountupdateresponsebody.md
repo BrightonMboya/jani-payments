@@ -9,12 +9,13 @@ import { DiscountUpdateResponseBody } from "jani-payments/models/operations";
 
 let value: DiscountUpdateResponseBody = {
   id: "<id>",
-  amount: 9903.45,
-  currencyCode: "ISK",
-  type: "flat",
+  status: "active",
+  amount: 9894.1,
+  currencyCode: "BAM",
+  type: "flat_per_seat",
   customData: {},
-  createdAt: "1726591714778",
-  updatedAt: "1737939686528",
+  createdAt: "1715544181598",
+  updatedAt: "1737919705202",
   restrictedTo: [
     "<value>",
   ],
@@ -26,7 +27,7 @@ let value: DiscountUpdateResponseBody = {
 | Field                                                                                                        | Type                                                                                                         | Required                                                                                                     | Description                                                                                                  |
 | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
 | `id`                                                                                                         | *string*                                                                                                     | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
-| `status`                                                                                                     | [operations.DiscountUpdateDiscountsStatus](../../models/operations/discountupdatediscountsstatus.md)         | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
+| `status`                                                                                                     | [operations.DiscountUpdateDiscountsStatus](../../models/operations/discountupdatediscountsstatus.md)         | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
 | `description`                                                                                                | *string*                                                                                                     | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
 | `enabledForCheckout`                                                                                         | *boolean*                                                                                                    | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
 | `amount`                                                                                                     | *number*                                                                                                     | :heavy_check_mark:                                                                                           | N/A                                                                                                          |

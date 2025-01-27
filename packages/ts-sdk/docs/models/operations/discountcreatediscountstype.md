@@ -5,7 +5,7 @@
 ```typescript
 import { DiscountCreateDiscountsType } from "jani-payments/models/operations";
 
-let value: DiscountCreateDiscountsType = "flat_per_seat";
+let value: DiscountCreateDiscountsType = "flat";
 ```
 
 ## Values

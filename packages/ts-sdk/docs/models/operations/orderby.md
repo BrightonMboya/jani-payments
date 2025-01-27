@@ -6,8 +6,8 @@
 import { OrderBy } from "jani-payments/models/operations";
 
 let value: OrderBy = {
-  field: "id",
-  direction: "ASC",
+  field: "created_at",
+  direction: "DESC",
 };
 ```
 

@@ -5,7 +5,7 @@
 ```typescript
 import { Provider } from "jani-payments/models/operations";
 
-let value: Provider = "FLUTTERWAVE";
+let value: Provider = "AIRTEL";
 ```
 
 ## Values

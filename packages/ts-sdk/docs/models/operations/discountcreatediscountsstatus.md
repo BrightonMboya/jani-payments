@@ -5,7 +5,7 @@
 ```typescript
 import { DiscountCreateDiscountsStatus } from "jani-payments/models/operations";
 
-let value: DiscountCreateDiscountsStatus = "archived";
+let value: DiscountCreateDiscountsStatus = "active";
 ```
 
 ## Values

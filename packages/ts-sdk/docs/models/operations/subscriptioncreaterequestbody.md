@@ -7,7 +7,7 @@ import { SubscriptionCreateRequestBody } from "jani-payments/models/operations";
 
 let value: SubscriptionCreateRequestBody = {
   status: "paused",
-  currencyCode: "EGP",
+  currencyCode: "AZN",
   customerId: "<id>",
   addressId: "<id>",
   items: [
@@ -18,8 +18,8 @@ let value: SubscriptionCreateRequestBody = {
   ],
   billingDetails: {
     paymentTerms: {
-      paymentInterval: "day",
-      paymentFrequency: 599.44,
+      paymentInterval: "month",
+      paymentFrequency: 4776.46,
     },
     enableCheckout: false,
     additionalInformation: "<value>",

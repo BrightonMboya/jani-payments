@@ -26,6 +26,7 @@ export const create_transaction = createRoute({
           schema: createTransactionSchema,
         },
       },
+      required: true,
     },
   },
   responses: {
@@ -92,6 +93,7 @@ export const update_transaction = createRoute({
           schema: updateTransactionSchema,
         },
       },
+      required: true,
     },
   },
   responses: {

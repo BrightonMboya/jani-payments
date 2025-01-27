@@ -7,9 +7,9 @@ import { One } from "jani-payments/models/operations";
 
 let value: One = {
   paymentMethod: "MOBILE_MONEY",
-  paymentProvider: "FLUTTERWAVE",
-  amount: 8020.69,
-  currencyCode: "ILS",
+  paymentProvider: "DPO",
+  amount: 9983.55,
+  currencyCode: "TOP",
   mobileNetwork: "<value>",
   phoneSuffix: "<value>",
 };

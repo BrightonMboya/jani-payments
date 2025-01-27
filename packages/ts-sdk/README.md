@@ -204,10 +204,10 @@ run();
 
 ### [transactions](docs/sdks/transactions/README.md)
 
-* [getTransactions](docs/sdks/transactions/README.md#gettransactions)
-* [postTransactions](docs/sdks/transactions/README.md#posttransactions)
-* [getTransactionTransactionId](docs/sdks/transactions/README.md#gettransactiontransactionid)
-* [patchTransactionTransactionId](docs/sdks/transactions/README.md#patchtransactiontransactionid)
+* [list](docs/sdks/transactions/README.md#list)
+* [create](docs/sdks/transactions/README.md#create)
+* [get](docs/sdks/transactions/README.md#get)
+* [update](docs/sdks/transactions/README.md#update)
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -255,10 +255,10 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`subscriptionPauseSubscription`](docs/sdks/subscription/README.md#pausesubscription)
 - [`subscriptionResumeSubscription`](docs/sdks/subscription/README.md#resumesubscription)
 - [`subscriptionUpdateSubscription`](docs/sdks/subscription/README.md#updatesubscription)
-- [`transactionsGetTransactions`](docs/sdks/transactions/README.md#gettransactions)
-- [`transactionsGetTransactionTransactionId`](docs/sdks/transactions/README.md#gettransactiontransactionid)
-- [`transactionsPatchTransactionTransactionId`](docs/sdks/transactions/README.md#patchtransactiontransactionid)
-- [`transactionsPostTransactions`](docs/sdks/transactions/README.md#posttransactions)
+- [`transactionsCreate`](docs/sdks/transactions/README.md#create)
+- [`transactionsGet`](docs/sdks/transactions/README.md#get)
+- [`transactionsList`](docs/sdks/transactions/README.md#list)
+- [`transactionsUpdate`](docs/sdks/transactions/README.md#update)
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->

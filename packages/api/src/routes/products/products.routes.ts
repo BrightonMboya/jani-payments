@@ -32,6 +32,7 @@ export const create = createRoute({
   "x-speakeasy-name-override": "create",
   request: {
     body: {
+      required: true,
       content: {
         "application/json": {
           schema: CreateProductsSchema,
@@ -51,7 +52,7 @@ export const get_product = createRoute({
   path: "/products/{product_id}",
   method: "get",
   operationId: "products:getProduct",
-   "x-speakeasy-name-override": "get",
+  "x-speakeasy-name-override": "get",
   tags,
   request: {
     params: z.object({
@@ -72,7 +73,7 @@ export const update_product = createRoute({
   method: "patch",
   tags,
   operationId: "products:update",
-   "x-speakeasy-name-override": "update",
+  "x-speakeasy-name-override": "update",
   request: {
     params: z.object({
       product_id: z.string(),
@@ -83,6 +84,7 @@ export const update_product = createRoute({
           schema: UpdateProductsSchema,
         },
       },
+      required: true,
     },
   },
   responses: {

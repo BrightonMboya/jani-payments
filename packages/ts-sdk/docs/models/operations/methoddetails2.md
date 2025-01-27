@@ -10,8 +10,8 @@ let value: MethodDetails2 = {
   details: {
     last4: "<value>",
     brand: "<value>",
-    expMonth: 4288.1,
-    expYear: 5551.94,
+    expMonth: 1631.81,
+    expYear: 6962.19,
     cardholderName: "<value>",
   },
 };
@@ -19,7 +19,7 @@ let value: MethodDetails2 = {
 
 ## Fields
 
-| Field                                                                                                                          | Type                                                                                                                           | Required                                                                                                                       | Description                                                                                                                    |
-| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| `paymentMethod`                                                                                                                | [operations.PostTransactionsMethodDetailsPaymentMethod](../../models/operations/posttransactionsmethoddetailspaymentmethod.md) | :heavy_check_mark:                                                                                                             | N/A                                                                                                                            |
-| `details`                                                                                                                      | [operations.PostTransactionsMethodDetailsDetails](../../models/operations/posttransactionsmethoddetailsdetails.md)             | :heavy_check_mark:                                                                                                             | N/A                                                                                                                            |
+| Field                                                                                                                              | Type                                                                                                                               | Required                                                                                                                           | Description                                                                                                                        |
+| ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `paymentMethod`                                                                                                                    | [operations.TransactionsCreateMethodDetailsPaymentMethod](../../models/operations/transactionscreatemethoddetailspaymentmethod.md) | :heavy_check_mark:                                                                                                                 | N/A                                                                                                                                |
+| `details`                                                                                                                          | [operations.TransactionsCreateMethodDetailsDetails](../../models/operations/transactionscreatemethoddetailsdetails.md)             | :heavy_check_mark:                                                                                                                 | N/A                                                                                                                                |

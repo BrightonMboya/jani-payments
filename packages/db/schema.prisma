@@ -255,7 +255,7 @@ enum Discount_type {
 
 model Discounts {
   id                      String            @id
-  status                  Entity_Status?    @default(active)
+  status                  Entity_Status    @default(active)
   description             String?
   enabled_for_checkout    Boolean?
   amount                  Decimal
@@ -289,7 +289,7 @@ model Customers {
   id            String          @id
   email         String          @unique
   name          String
-  status        Entity_Status?  @default(active)
+  status        Entity_Status  @default(active)
   description   String?
   custom_data   Json?
   created_at    DateTime
@@ -307,7 +307,7 @@ model Addresses {
   first_line    String?
   custom_data   Json?
   city          String?
-  status        Entity_Status?  @default(active)
+  status        Entity_Status  @default(active)
   created_at    DateTime        @default(now())
   updated_at    DateTime
   Customers     Customers?      @relation(fields: [customer_id], references: [id])

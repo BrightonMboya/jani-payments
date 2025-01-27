@@ -10,7 +10,7 @@ const jsonSchema: z.ZodSchema<Json> = z.lazy(() => z.union([literalSchema, z.arr
 
 export const DiscountsModel = z.object({
   id: z.string(),
-  status: z.nativeEnum(Entity_Status).nullish(),
+  status: z.nativeEnum(Entity_Status),
   description: z.string().nullish(),
   enabled_for_checkout: z.boolean().nullish(),
   amount: z.number(),

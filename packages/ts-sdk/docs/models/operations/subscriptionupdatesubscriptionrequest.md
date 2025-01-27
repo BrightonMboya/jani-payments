@@ -7,6 +7,14 @@ import { SubscriptionUpdateSubscriptionRequest } from "jani-payments/models/oper
 
 let value: SubscriptionUpdateSubscriptionRequest = {
   subscriptionId: "<id>",
+  requestBody: {
+    billingDetails: {},
+    items: [
+      {
+        priceId: "<id>",
+      },
+    ],
+  },
 };
 ```
 
@@ -15,4 +23,4 @@ let value: SubscriptionUpdateSubscriptionRequest = {
 | Field                                                                                                                        | Type                                                                                                                         | Required                                                                                                                     | Description                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `subscriptionId`                                                                                                             | *string*                                                                                                                     | :heavy_check_mark:                                                                                                           | N/A                                                                                                                          |
-| `requestBody`                                                                                                                | [operations.SubscriptionUpdateSubscriptionRequestBody](../../models/operations/subscriptionupdatesubscriptionrequestbody.md) | :heavy_minus_sign:                                                                                                           | N/A                                                                                                                          |
+| `requestBody`                                                                                                                | [operations.SubscriptionUpdateSubscriptionRequestBody](../../models/operations/subscriptionupdatesubscriptionrequestbody.md) | :heavy_check_mark:                                                                                                           | N/A                                                                                                                          |

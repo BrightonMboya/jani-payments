@@ -36,7 +36,7 @@ export type AddressesGetResponseBody = {
    */
   customData: AddressesGetCustomData;
   city?: string | null | undefined;
-  status?: AddressesGetStatus | null | undefined;
+  status: AddressesGetStatus;
   createdAt: string;
   updatedAt: string;
   customerId?: string | null | undefined;
@@ -184,7 +184,7 @@ export const AddressesGetResponseBody$inboundSchema: z.ZodType<
   first_line: z.nullable(z.string()).optional(),
   custom_data: z.lazy(() => AddressesGetCustomData$inboundSchema),
   city: z.nullable(z.string()).optional(),
-  status: z.nullable(AddressesGetStatus$inboundSchema).optional(),
+  status: AddressesGetStatus$inboundSchema,
   created_at: z.string(),
   updated_at: z.string(),
   customer_id: z.nullable(z.string()).optional(),
@@ -205,7 +205,7 @@ export type AddressesGetResponseBody$Outbound = {
   first_line?: string | null | undefined;
   custom_data: AddressesGetCustomData$Outbound;
   city?: string | null | undefined;
-  status?: string | null | undefined;
+  status: string;
   created_at: string;
   updated_at: string;
   customer_id?: string | null | undefined;
@@ -222,7 +222,7 @@ export const AddressesGetResponseBody$outboundSchema: z.ZodType<
   firstLine: z.nullable(z.string()).optional(),
   customData: z.lazy(() => AddressesGetCustomData$outboundSchema),
   city: z.nullable(z.string()).optional(),
-  status: z.nullable(AddressesGetStatus$outboundSchema).optional(),
+  status: AddressesGetStatus$outboundSchema,
   createdAt: z.string(),
   updatedAt: z.string(),
   customerId: z.nullable(z.string()).optional(),

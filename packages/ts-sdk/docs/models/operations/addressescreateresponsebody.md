@@ -10,8 +10,9 @@ import { AddressesCreateResponseBody } from "jani-payments/models/operations";
 let value: AddressesCreateResponseBody = {
   id: "<id>",
   customData: {},
-  createdAt: "1715681276965",
-  updatedAt: "1737910487976",
+  status: "active",
+  createdAt: "1720812133181",
+  updatedAt: "1737933554587",
 };
 ```
 
@@ -24,7 +25,7 @@ let value: AddressesCreateResponseBody = {
 | `firstLine`                                                                                                    | *string*                                                                                                       | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |
 | `customData`                                                                                                   | [operations.AddressesCreateAddressesCustomData](../../models/operations/addressescreateaddressescustomdata.md) | :heavy_check_mark:                                                                                             | Any valid JSON value                                                                                           |
 | `city`                                                                                                         | *string*                                                                                                       | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |
-| `status`                                                                                                       | [operations.AddressesCreateAddressesStatus](../../models/operations/addressescreateaddressesstatus.md)         | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |
+| `status`                                                                                                       | [operations.AddressesCreateAddressesStatus](../../models/operations/addressescreateaddressesstatus.md)         | :heavy_check_mark:                                                                                             | N/A                                                                                                            |
 | `createdAt`                                                                                                    | *string*                                                                                                       | :heavy_check_mark:                                                                                             | N/A                                                                                                            |
 | `updatedAt`                                                                                                    | *string*                                                                                                       | :heavy_check_mark:                                                                                             | N/A                                                                                                            |
 | `customerId`                                                                                                   | *string*                                                                                                       | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |

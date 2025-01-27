@@ -100,7 +100,11 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.products.create();
+  const result = await janiPayments.products.create({
+    name: "<value>",
+    description: "yuck vice between gee ugh ha",
+    status: "archived",
+  });
 
   // Handle the result
   console.log(result);
@@ -127,7 +131,11 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await productsCreate(janiPayments);
+  const res = await productsCreate(janiPayments, {
+    name: "<value>",
+    description: "yuck vice between gee ugh ha",
+    status: "archived",
+  });
 
   if (!res.ok) {
     throw res.error;
@@ -259,6 +267,7 @@ const janiPayments = new JaniPayments({
 async function run() {
   const result = await janiPayments.products.update({
     productId: "<id>",
+    requestBody: {},
   });
 
   // Handle the result
@@ -288,6 +297,7 @@ const janiPayments = new JaniPaymentsCore({
 async function run() {
   const res = await productsUpdate(janiPayments, {
     productId: "<id>",
+    requestBody: {},
   });
 
   if (!res.ok) {

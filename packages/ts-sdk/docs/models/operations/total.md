@@ -6,9 +6,9 @@
 import { Total } from "jani-payments/models/operations";
 
 let value: Total = {
-  subtotal: 7719.31,
-  discount: 4130.86,
-  grandTotal: 7100.59,
+  subtotal: 7689.2,
+  discount: 8565.68,
+  grandTotal: 7203.19,
 };
 ```
 

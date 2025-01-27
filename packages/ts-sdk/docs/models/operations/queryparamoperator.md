@@ -5,7 +5,7 @@
 ```typescript
 import { QueryParamOperator } from "jani-payments/models/operations";
 
-let value: QueryParamOperator = "LT";
+let value: QueryParamOperator = "LTE";
 ```
 
 ## Values

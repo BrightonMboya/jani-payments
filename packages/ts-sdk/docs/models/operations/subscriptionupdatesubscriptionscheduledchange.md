@@ -10,7 +10,7 @@ let value: SubscriptionUpdateSubscriptionScheduledChange = {
   subscriptionId: "<id>",
   action: "pause",
   effectiveAt: "<value>",
-  status: "scheduled",
+  status: "completed",
 };
 ```
 

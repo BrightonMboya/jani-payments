@@ -79,7 +79,7 @@ export type PricesUpdateRequestBody = {
 
 export type PricesUpdateRequest = {
   priceId: string;
-  requestBody?: PricesUpdateRequestBody | undefined;
+  requestBody: PricesUpdateRequestBody;
 };
 
 export const PricesUpdatePricesType = {
@@ -584,7 +584,7 @@ export const PricesUpdateRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   price_id: z.string(),
-  RequestBody: z.lazy(() => PricesUpdateRequestBody$inboundSchema).optional(),
+  RequestBody: z.lazy(() => PricesUpdateRequestBody$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "price_id": "priceId",
@@ -595,7 +595,7 @@ export const PricesUpdateRequest$inboundSchema: z.ZodType<
 /** @internal */
 export type PricesUpdateRequest$Outbound = {
   price_id: string;
-  RequestBody?: PricesUpdateRequestBody$Outbound | undefined;
+  RequestBody: PricesUpdateRequestBody$Outbound;
 };
 
 /** @internal */
@@ -605,7 +605,7 @@ export const PricesUpdateRequest$outboundSchema: z.ZodType<
   PricesUpdateRequest
 > = z.object({
   priceId: z.string(),
-  requestBody: z.lazy(() => PricesUpdateRequestBody$outboundSchema).optional(),
+  requestBody: z.lazy(() => PricesUpdateRequestBody$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     priceId: "price_id",

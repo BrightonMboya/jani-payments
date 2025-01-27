@@ -7,24 +7,24 @@ import { SubscriptionCreatePrice } from "jani-payments/models/operations";
 
 let value: SubscriptionCreatePrice = {
   productId: "<id>",
-  type: "standard",
+  type: "custom",
   name: "<value>",
   billingCycle: {
-    interval: "week",
-    frequency: 2384.13,
+    interval: "year",
+    frequency: 8897.94,
   },
   trialPeriod: {
-    interval: "month",
-    frequency: 3679.27,
+    interval: "year",
+    frequency: 6982.49,
   },
   unitPrice: {
-    amount: 4565.2,
-    currencyCode: "GYD",
+    amount: 3354.98,
+    currencyCode: "BYN",
   },
-  status: "archived",
+  status: "active",
   id: "<id>",
-  createdAt: "1710655870582",
-  updatedAt: "1737905688560",
+  createdAt: "1714077858964",
+  updatedAt: "1737936195750",
 };
 ```
 

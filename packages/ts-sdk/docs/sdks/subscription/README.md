@@ -103,7 +103,27 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.subscription.create();
+  const result = await janiPayments.subscription.create({
+    status: "past_due",
+    currencyCode: "NZD",
+    customerId: "<id>",
+    addressId: "<id>",
+    items: [
+      {
+        priceId: "<id>",
+        quantity: "<value>",
+      },
+    ],
+    billingDetails: {
+      paymentTerms: {
+        paymentInterval: "day",
+        paymentFrequency: 690.25,
+      },
+      enableCheckout: false,
+      additionalInformation: "<value>",
+      purchaseOrderNumber: "<value>",
+    },
+  });
 
   // Handle the result
   console.log(result);
@@ -130,7 +150,27 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await subscriptionCreate(janiPayments);
+  const res = await subscriptionCreate(janiPayments, {
+    status: "past_due",
+    currencyCode: "NZD",
+    customerId: "<id>",
+    addressId: "<id>",
+    items: [
+      {
+        priceId: "<id>",
+        quantity: "<value>",
+      },
+    ],
+    billingDetails: {
+      paymentTerms: {
+        paymentInterval: "day",
+        paymentFrequency: 690.25,
+      },
+      enableCheckout: false,
+      additionalInformation: "<value>",
+      purchaseOrderNumber: "<value>",
+    },
+  });
 
   if (!res.ok) {
     throw res.error;
@@ -182,6 +222,9 @@ const janiPayments = new JaniPayments({
 async function run() {
   const result = await janiPayments.subscription.cancelSubscription({
     subscriptionId: "<id>",
+    requestBody: {
+      effectiveFrom: "next_billing_period",
+    },
   });
 
   // Handle the result
@@ -211,6 +254,9 @@ const janiPayments = new JaniPaymentsCore({
 async function run() {
   const res = await subscriptionCancelSubscription(janiPayments, {
     subscriptionId: "<id>",
+    requestBody: {
+      effectiveFrom: "next_billing_period",
+    },
   });
 
   if (!res.ok) {
@@ -264,6 +310,10 @@ const janiPayments = new JaniPayments({
 async function run() {
   const result = await janiPayments.subscription.pauseSubscription({
     subscriptionId: "<id>",
+    requestBody: {
+      effectiveFrom: "next_billing_period",
+      onResume: "start_new_billing_period",
+    },
   });
 
   // Handle the result
@@ -293,6 +343,10 @@ const janiPayments = new JaniPaymentsCore({
 async function run() {
   const res = await subscriptionPauseSubscription(janiPayments, {
     subscriptionId: "<id>",
+    requestBody: {
+      effectiveFrom: "next_billing_period",
+      onResume: "start_new_billing_period",
+    },
   });
 
   if (!res.ok) {
@@ -511,6 +565,20 @@ const janiPayments = new JaniPayments({
 async function run() {
   const result = await janiPayments.subscription.updateSubscription({
     subscriptionId: "<id>",
+    requestBody: {
+      billingDetails: {},
+      items: [
+        {
+          priceId: "<id>",
+        },
+        {
+          priceId: "<id>",
+        },
+        {
+          priceId: "<id>",
+        },
+      ],
+    },
   });
 
   // Handle the result
@@ -540,6 +608,20 @@ const janiPayments = new JaniPaymentsCore({
 async function run() {
   const res = await subscriptionUpdateSubscription(janiPayments, {
     subscriptionId: "<id>",
+    requestBody: {
+      billingDetails: {},
+      items: [
+        {
+          priceId: "<id>",
+        },
+        {
+          priceId: "<id>",
+        },
+        {
+          priceId: "<id>",
+        },
+      ],
+    },
   });
 
   if (!res.ok) {

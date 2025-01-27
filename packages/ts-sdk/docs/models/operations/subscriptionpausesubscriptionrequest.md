@@ -7,6 +7,9 @@ import { SubscriptionPauseSubscriptionRequest } from "jani-payments/models/opera
 
 let value: SubscriptionPauseSubscriptionRequest = {
   subscriptionId: "<id>",
+  requestBody: {
+    onResume: "continue_existing_billing_period",
+  },
 };
 ```
 
@@ -15,4 +18,4 @@ let value: SubscriptionPauseSubscriptionRequest = {
 | Field                                                                                                                      | Type                                                                                                                       | Required                                                                                                                   | Description                                                                                                                |
 | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `subscriptionId`                                                                                                           | *string*                                                                                                                   | :heavy_check_mark:                                                                                                         | N/A                                                                                                                        |
-| `requestBody`                                                                                                              | [operations.SubscriptionPauseSubscriptionRequestBody](../../models/operations/subscriptionpausesubscriptionrequestbody.md) | :heavy_minus_sign:                                                                                                         | N/A                                                                                                                        |
+| `requestBody`                                                                                                              | [operations.SubscriptionPauseSubscriptionRequestBody](../../models/operations/subscriptionpausesubscriptionrequestbody.md) | :heavy_check_mark:                                                                                                         | N/A                                                                                                                        |

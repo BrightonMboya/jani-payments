@@ -9,11 +9,12 @@ import { CustomersCreateResponseBody } from "jani-payments/models/operations";
 
 let value: CustomersCreateResponseBody = {
   id: "<id>",
-  email: "Rasheed.Wisozk-Ullrich99@yahoo.com",
+  email: "Benjamin73@gmail.com",
   name: "<value>",
+  status: "active",
   customData: {},
-  createdAt: "1709787581044",
-  updatedAt: "1737979486005",
+  createdAt: "1718403184797",
+  updatedAt: "1737931185717",
 };
 ```
 
@@ -24,7 +25,7 @@ let value: CustomersCreateResponseBody = {
 | `id`                                                                                                           | *string*                                                                                                       | :heavy_check_mark:                                                                                             | N/A                                                                                                            |
 | `email`                                                                                                        | *string*                                                                                                       | :heavy_check_mark:                                                                                             | N/A                                                                                                            |
 | `name`                                                                                                         | *string*                                                                                                       | :heavy_check_mark:                                                                                             | N/A                                                                                                            |
-| `status`                                                                                                       | [operations.CustomersCreateCustomersStatus](../../models/operations/customerscreatecustomersstatus.md)         | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |
+| `status`                                                                                                       | [operations.CustomersCreateCustomersStatus](../../models/operations/customerscreatecustomersstatus.md)         | :heavy_check_mark:                                                                                             | N/A                                                                                                            |
 | `description`                                                                                                  | *string*                                                                                                       | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |
 | `customData`                                                                                                   | [operations.CustomersCreateCustomersCustomData](../../models/operations/customerscreatecustomerscustomdata.md) | :heavy_check_mark:                                                                                             | Any valid JSON value                                                                                           |
 | `createdAt`                                                                                                    | *string*                                                                                                       | :heavy_check_mark:                                                                                             | N/A                                                                                                            |

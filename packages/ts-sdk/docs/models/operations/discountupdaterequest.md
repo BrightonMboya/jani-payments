@@ -7,6 +7,7 @@ import { DiscountUpdateRequest } from "jani-payments/models/operations";
 
 let value: DiscountUpdateRequest = {
   discountId: "<id>",
+  requestBody: {},
 };
 ```
 
@@ -15,4 +16,4 @@ let value: DiscountUpdateRequest = {
 | Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | `discountId`                                                                                 | *string*                                                                                     | :heavy_check_mark:                                                                           | N/A                                                                                          |
-| `requestBody`                                                                                | [operations.DiscountUpdateRequestBody](../../models/operations/discountupdaterequestbody.md) | :heavy_minus_sign:                                                                           | N/A                                                                                          |
+| `requestBody`                                                                                | [operations.DiscountUpdateRequestBody](../../models/operations/discountupdaterequestbody.md) | :heavy_check_mark:                                                                           | N/A                                                                                          |

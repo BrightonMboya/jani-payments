@@ -5,7 +5,7 @@
 ```typescript
 import { OnResume } from "jani-payments/models/operations";
 
-let value: OnResume = "start_new_billing_period";
+let value: OnResume = "continue_existing_billing_period";
 ```
 
 ## Values

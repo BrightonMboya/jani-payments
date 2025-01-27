@@ -23,7 +23,7 @@ export type CustomersUpdateCustomData = {};
 export type CustomersUpdateRequestBody = {
   email?: string | undefined;
   name?: string | undefined;
-  status?: CustomersUpdateStatus | null | undefined;
+  status?: CustomersUpdateStatus | undefined;
   description?: string | null | undefined;
   /**
    * Any valid JSON value
@@ -33,7 +33,7 @@ export type CustomersUpdateRequestBody = {
 
 export type CustomersUpdateRequest = {
   customerId: string;
-  requestBody?: CustomersUpdateRequestBody | undefined;
+  requestBody: CustomersUpdateRequestBody;
 };
 
 export const CustomersUpdateCustomersStatus = {
@@ -56,7 +56,7 @@ export type CustomersUpdateResponseBody = {
   id: string;
   email: string;
   name: string;
-  status?: CustomersUpdateCustomersStatus | null | undefined;
+  status: CustomersUpdateCustomersStatus;
   description?: string | null | undefined;
   /**
    * Any valid JSON value
@@ -143,7 +143,7 @@ export const CustomersUpdateRequestBody$inboundSchema: z.ZodType<
 > = z.object({
   email: z.string().optional(),
   name: z.string().optional(),
-  status: z.nullable(CustomersUpdateStatus$inboundSchema).optional(),
+  status: CustomersUpdateStatus$inboundSchema.optional(),
   description: z.nullable(z.string()).optional(),
   custom_data: z.lazy(() => CustomersUpdateCustomData$inboundSchema).optional(),
 }).transform((v) => {
@@ -156,7 +156,7 @@ export const CustomersUpdateRequestBody$inboundSchema: z.ZodType<
 export type CustomersUpdateRequestBody$Outbound = {
   email?: string | undefined;
   name?: string | undefined;
-  status?: string | null | undefined;
+  status?: string | undefined;
   description?: string | null | undefined;
   custom_data?: CustomersUpdateCustomData$Outbound | undefined;
 };
@@ -169,7 +169,7 @@ export const CustomersUpdateRequestBody$outboundSchema: z.ZodType<
 > = z.object({
   email: z.string().optional(),
   name: z.string().optional(),
-  status: z.nullable(CustomersUpdateStatus$outboundSchema).optional(),
+  status: CustomersUpdateStatus$outboundSchema.optional(),
   description: z.nullable(z.string()).optional(),
   customData: z.lazy(() => CustomersUpdateCustomData$outboundSchema).optional(),
 }).transform((v) => {
@@ -216,8 +216,7 @@ export const CustomersUpdateRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   customer_id: z.string(),
-  RequestBody: z.lazy(() => CustomersUpdateRequestBody$inboundSchema)
-    .optional(),
+  RequestBody: z.lazy(() => CustomersUpdateRequestBody$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "customer_id": "customerId",
@@ -228,7 +227,7 @@ export const CustomersUpdateRequest$inboundSchema: z.ZodType<
 /** @internal */
 export type CustomersUpdateRequest$Outbound = {
   customer_id: string;
-  RequestBody?: CustomersUpdateRequestBody$Outbound | undefined;
+  RequestBody: CustomersUpdateRequestBody$Outbound;
 };
 
 /** @internal */
@@ -238,8 +237,7 @@ export const CustomersUpdateRequest$outboundSchema: z.ZodType<
   CustomersUpdateRequest
 > = z.object({
   customerId: z.string(),
-  requestBody: z.lazy(() => CustomersUpdateRequestBody$outboundSchema)
-    .optional(),
+  requestBody: z.lazy(() => CustomersUpdateRequestBody$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     customerId: "customer_id",
@@ -360,7 +358,7 @@ export const CustomersUpdateResponseBody$inboundSchema: z.ZodType<
   id: z.string(),
   email: z.string(),
   name: z.string(),
-  status: z.nullable(CustomersUpdateCustomersStatus$inboundSchema).optional(),
+  status: CustomersUpdateCustomersStatus$inboundSchema,
   description: z.nullable(z.string()).optional(),
   custom_data: z.lazy(() => CustomersUpdateCustomersCustomData$inboundSchema),
   created_at: z.string(),
@@ -378,7 +376,7 @@ export type CustomersUpdateResponseBody$Outbound = {
   id: string;
   email: string;
   name: string;
-  status?: string | null | undefined;
+  status: string;
   description?: string | null | undefined;
   custom_data: CustomersUpdateCustomersCustomData$Outbound;
   created_at: string;
@@ -394,7 +392,7 @@ export const CustomersUpdateResponseBody$outboundSchema: z.ZodType<
   id: z.string(),
   email: z.string(),
   name: z.string(),
-  status: z.nullable(CustomersUpdateCustomersStatus$outboundSchema).optional(),
+  status: CustomersUpdateCustomersStatus$outboundSchema,
   description: z.nullable(z.string()).optional(),
   customData: z.lazy(() => CustomersUpdateCustomersCustomData$outboundSchema),
   createdAt: z.string(),

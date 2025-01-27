@@ -10,8 +10,9 @@ import { AddressesGetResponseBody } from "jani-payments/models/operations";
 let value: AddressesGetResponseBody = {
   id: "<id>",
   customData: {},
-  createdAt: "1710588064825",
-  updatedAt: "1737949519868",
+  status: "archived",
+  createdAt: "1716237416364",
+  updatedAt: "1737931076785",
 };
 ```
 
@@ -24,7 +25,7 @@ let value: AddressesGetResponseBody = {
 | `firstLine`                                                                            | *string*                                                                               | :heavy_minus_sign:                                                                     | N/A                                                                                    |
 | `customData`                                                                           | [operations.AddressesGetCustomData](../../models/operations/addressesgetcustomdata.md) | :heavy_check_mark:                                                                     | Any valid JSON value                                                                   |
 | `city`                                                                                 | *string*                                                                               | :heavy_minus_sign:                                                                     | N/A                                                                                    |
-| `status`                                                                               | [operations.AddressesGetStatus](../../models/operations/addressesgetstatus.md)         | :heavy_minus_sign:                                                                     | N/A                                                                                    |
+| `status`                                                                               | [operations.AddressesGetStatus](../../models/operations/addressesgetstatus.md)         | :heavy_check_mark:                                                                     | N/A                                                                                    |
 | `createdAt`                                                                            | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
 | `updatedAt`                                                                            | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
 | `customerId`                                                                           | *string*                                                                               | :heavy_minus_sign:                                                                     | N/A                                                                                    |

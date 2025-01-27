@@ -6,8 +6,8 @@
 import { SubscriptionListUnitPrice } from "jani-payments/models/operations";
 
 let value: SubscriptionListUnitPrice = {
-  amount: 3335.07,
-  currencyCode: "VUV",
+  amount: 2826.99,
+  currencyCode: "ANG",
 };
 ```
 

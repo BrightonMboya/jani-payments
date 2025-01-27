@@ -21,7 +21,7 @@ export class Discounts extends ClientSDK {
   }
 
   async create(
-    request?: operations.DiscountCreateRequestBody | undefined,
+    request: operations.DiscountCreateRequestBody,
     options?: RequestOptions,
   ): Promise<operations.DiscountCreateResponseBody> {
     return unwrapAsync(discountsCreate(

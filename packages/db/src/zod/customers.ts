@@ -12,7 +12,7 @@ export const CustomersModel = z.object({
   id: z.string(),
   email: z.string(),
   name: z.string(),
-  status: z.nativeEnum(Entity_Status).nullish(),
+  status: z.nativeEnum(Entity_Status),
   description: z.string().nullish(),
   custom_data: jsonSchema,
   created_at: z.date(),

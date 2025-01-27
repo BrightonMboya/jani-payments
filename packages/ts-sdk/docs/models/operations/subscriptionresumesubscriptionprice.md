@@ -10,21 +10,21 @@ let value: SubscriptionResumeSubscriptionPrice = {
   type: "standard",
   name: "<value>",
   billingCycle: {
-    interval: "week",
-    frequency: 4468.77,
+    interval: "year",
+    frequency: 6277.35,
   },
   trialPeriod: {
     interval: "week",
-    frequency: 3573.47,
+    frequency: 4166.92,
   },
   unitPrice: {
-    amount: 9149.71,
-    currencyCode: "SAR",
+    amount: 8108.39,
+    currencyCode: "HNL",
   },
-  status: "archived",
+  status: "active",
   id: "<id>",
-  createdAt: "1715590435243",
-  updatedAt: "1737947238504",
+  createdAt: "1708321955466",
+  updatedAt: "1737974535153",
 };
 ```
 

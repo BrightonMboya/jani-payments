@@ -100,7 +100,24 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.prices.create();
+  const result = await janiPayments.prices.create({
+    productId: "<id>",
+    type: "standard",
+    name: "<value>",
+    billingCycle: {
+      interval: "month",
+      frequency: 4174.58,
+    },
+    trialPeriod: {
+      interval: "day",
+      frequency: 690.25,
+    },
+    unitPrice: {
+      amount: 7964.74,
+      currencyCode: "XOF",
+    },
+    status: "active",
+  });
 
   // Handle the result
   console.log(result);
@@ -127,7 +144,24 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await pricesCreate(janiPayments);
+  const res = await pricesCreate(janiPayments, {
+    productId: "<id>",
+    type: "standard",
+    name: "<value>",
+    billingCycle: {
+      interval: "month",
+      frequency: 4174.58,
+    },
+    trialPeriod: {
+      interval: "day",
+      frequency: 690.25,
+    },
+    unitPrice: {
+      amount: 7964.74,
+      currencyCode: "XOF",
+    },
+    status: "active",
+  });
 
   if (!res.ok) {
     throw res.error;
@@ -260,6 +294,7 @@ const janiPayments = new JaniPayments({
 async function run() {
   const result = await janiPayments.prices.update({
     priceId: "<id>",
+    requestBody: {},
   });
 
   // Handle the result
@@ -289,6 +324,7 @@ const janiPayments = new JaniPaymentsCore({
 async function run() {
   const res = await pricesUpdate(janiPayments, {
     priceId: "<id>",
+    requestBody: {},
   });
 
   if (!res.ok) {

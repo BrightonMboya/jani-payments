@@ -47,6 +47,7 @@ export const create = createRoute({
           schema: CreateAddressSchema,
         },
       },
+      required: true,
     },
   },
   responses: {
@@ -95,6 +96,7 @@ export const update_address = createRoute({
           schema: UpdateAddressSchema,
         },
       },
+      required: true,
     },
   },
   responses: {

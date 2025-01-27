@@ -5,7 +5,7 @@
 ```typescript
 import { Operator } from "jani-payments/models/operations";
 
-let value: Operator = "GTE";
+let value: Operator = "LT";
 ```
 
 ## Values

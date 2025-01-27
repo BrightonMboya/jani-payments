@@ -5,12 +5,12 @@
 
 ### Available Operations
 
-* [getTransactions](#gettransactions)
-* [postTransactions](#posttransactions)
-* [getTransactionTransactionId](#gettransactiontransactionid)
-* [patchTransactionTransactionId](#patchtransactiontransactionid)
+* [list](#list)
+* [create](#create)
+* [get](#get)
+* [update](#update)
 
-## getTransactions
+## list
 
 ### Example Usage
 
@@ -25,7 +25,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.transactions.getTransactions({
+  const result = await janiPayments.transactions.list({
     perPage: 30,
   });
 
@@ -42,7 +42,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { transactionsGetTransactions } from "jani-payments/funcs/transactionsGetTransactions.js";
+import { transactionsList } from "jani-payments/funcs/transactionsList.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -54,7 +54,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await transactionsGetTransactions(janiPayments, {
+  const res = await transactionsList(janiPayments, {
     perPage: 30,
   });
 
@@ -75,14 +75,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetTransactionsRequest](../../models/operations/gettransactionsrequest.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.TransactionsListRequest](../../models/operations/transactionslistrequest.md)                                                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetTransactionsResponseBody](../../models/operations/gettransactionsresponsebody.md)\>**
+**Promise\<[operations.TransactionsListResponseBody](../../models/operations/transactionslistresponsebody.md)\>**
 
 ### Errors
 
@@ -90,7 +90,7 @@ run();
 | --------------- | --------------- | --------------- |
 | errors.APIError | 4XX, 5XX        | \*/\*           |
 
-## postTransactions
+## create
 
 ### Example Usage
 
@@ -105,85 +105,25 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.transactions.postTransactions();
-
-  // Handle the result
-  console.log(result);
-}
-
-run();
-```
-
-### Standalone function
-
-The standalone function version of this method:
-
-```typescript
-import { JaniPaymentsCore } from "jani-payments/core.js";
-import { transactionsPostTransactions } from "jani-payments/funcs/transactionsPostTransactions.js";
-
-// Use `JaniPaymentsCore` for best tree-shaking performance.
-// You can create one instance of it to use across an application.
-const janiPayments = new JaniPaymentsCore({
-  security: {
-    bearer: process.env["JANIPAYMENTS_BEARER"] ?? "",
-    organizationId: process.env["JANIPAYMENTS_ORGANIZATION_ID"] ?? "",
-  },
-});
-
-async function run() {
-  const res = await transactionsPostTransactions(janiPayments);
-
-  if (!res.ok) {
-    throw res.error;
-  }
-
-  const { value: result } = res;
-
-  // Handle the result
-  console.log(result);
-}
-
-run();
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PostTransactionsRequestBody](../../models/operations/posttransactionsrequestbody.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
-| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
-
-### Response
-
-**Promise\<[operations.PostTransactionsResponseBody](../../models/operations/posttransactionsresponsebody.md)\>**
-
-### Errors
-
-| Error Type                          | Status Code                         | Content Type                        |
-| ----------------------------------- | ----------------------------------- | ----------------------------------- |
-| errors.PostTransactionsResponseBody | 404                                 | application/json                    |
-| errors.APIError                     | 4XX, 5XX                            | \*/\*                               |
-
-## getTransactionTransactionId
-
-### Example Usage
-
-```typescript
-import { JaniPayments } from "jani-payments";
-
-const janiPayments = new JaniPayments({
-  security: {
-    bearer: process.env["JANIPAYMENTS_BEARER"] ?? "",
-    organizationId: process.env["JANIPAYMENTS_ORGANIZATION_ID"] ?? "",
-  },
-});
-
-async function run() {
-  const result = await janiPayments.transactions.getTransactionTransactionId({
-    transactionId: "<id>",
+  const result = await janiPayments.transactions.create({
+    items: [
+      {
+        priceId: "<id>",
+        quantity: 6384.24,
+      },
+    ],
+    status: "billed",
+    customerId: "<id>",
+    addressId: "<id>",
+    currencyCode: "BSD",
+    paymentDetails: {
+      paymentMethod: "MOBILE_MONEY",
+      paymentProvider: "ORANGE",
+      amount: 9510.62,
+      currencyCode: "AED",
+      mobileNetwork: "<value>",
+      phoneSuffix: "<value>",
+    },
   });
 
   // Handle the result
@@ -199,7 +139,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { transactionsGetTransactionTransactionId } from "jani-payments/funcs/transactionsGetTransactionTransactionId.js";
+import { transactionsCreate } from "jani-payments/funcs/transactionsCreate.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -211,8 +151,25 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await transactionsGetTransactionTransactionId(janiPayments, {
-    transactionId: "<id>",
+  const res = await transactionsCreate(janiPayments, {
+    items: [
+      {
+        priceId: "<id>",
+        quantity: 6384.24,
+      },
+    ],
+    status: "billed",
+    customerId: "<id>",
+    addressId: "<id>",
+    currencyCode: "BSD",
+    paymentDetails: {
+      paymentMethod: "MOBILE_MONEY",
+      paymentProvider: "ORANGE",
+      amount: 9510.62,
+      currencyCode: "AED",
+      mobileNetwork: "<value>",
+      phoneSuffix: "<value>",
+    },
   });
 
   if (!res.ok) {
@@ -232,23 +189,23 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetTransactionTransactionIdRequest](../../models/operations/gettransactiontransactionidrequest.md)                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.TransactionsCreateRequestBody](../../models/operations/transactionscreaterequestbody.md)                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetTransactionTransactionIdResponseBody](../../models/operations/gettransactiontransactionidresponsebody.md)\>**
+**Promise\<[operations.TransactionsCreateResponseBody](../../models/operations/transactionscreateresponsebody.md)\>**
 
 ### Errors
 
-| Error Type                                     | Status Code                                    | Content Type                                   |
-| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| errors.GetTransactionTransactionIdResponseBody | 404                                            | application/json                               |
-| errors.APIError                                | 4XX, 5XX                                       | \*/\*                                          |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| errors.TransactionsCreateResponseBody | 404                                   | application/json                      |
+| errors.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## patchTransactionTransactionId
+## get
 
 ### Example Usage
 
@@ -263,7 +220,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.transactions.patchTransactionTransactionId({
+  const result = await janiPayments.transactions.get({
     transactionId: "<id>",
   });
 
@@ -280,7 +237,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { transactionsPatchTransactionTransactionId } from "jani-payments/funcs/transactionsPatchTransactionTransactionId.js";
+import { transactionsGet } from "jani-payments/funcs/transactionsGet.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -292,7 +249,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await transactionsPatchTransactionTransactionId(janiPayments, {
+  const res = await transactionsGet(janiPayments, {
     transactionId: "<id>",
   });
 
@@ -313,18 +270,105 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PatchTransactionTransactionIdRequest](../../models/operations/patchtransactiontransactionidrequest.md)                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.TransactionsGetRequest](../../models/operations/transactionsgetrequest.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PatchTransactionTransactionIdResponseBody](../../models/operations/patchtransactiontransactionidresponsebody.md)\>**
+**Promise\<[operations.TransactionsGetResponseBody](../../models/operations/transactionsgetresponsebody.md)\>**
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| errors.PatchTransactionTransactionIdResponseBody | 404                                              | application/json                                 |
-| errors.APIError                                  | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.TransactionsGetResponseBody | 404                                | application/json                   |
+| errors.APIError                    | 4XX, 5XX                           | \*/\*                              |
+
+## update
+
+### Example Usage
+
+```typescript
+import { JaniPayments } from "jani-payments";
+
+const janiPayments = new JaniPayments({
+  security: {
+    bearer: process.env["JANIPAYMENTS_BEARER"] ?? "",
+    organizationId: process.env["JANIPAYMENTS_ORGANIZATION_ID"] ?? "",
+  },
+});
+
+async function run() {
+  const result = await janiPayments.transactions.update({
+    transactionId: "<id>",
+    requestBody: {
+      status: "cancelled",
+    },
+  });
+
+  // Handle the result
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { JaniPaymentsCore } from "jani-payments/core.js";
+import { transactionsUpdate } from "jani-payments/funcs/transactionsUpdate.js";
+
+// Use `JaniPaymentsCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const janiPayments = new JaniPaymentsCore({
+  security: {
+    bearer: process.env["JANIPAYMENTS_BEARER"] ?? "",
+    organizationId: process.env["JANIPAYMENTS_ORGANIZATION_ID"] ?? "",
+  },
+});
+
+async function run() {
+  const res = await transactionsUpdate(janiPayments, {
+    transactionId: "<id>",
+    requestBody: {
+      status: "cancelled",
+    },
+  });
+
+  if (!res.ok) {
+    throw res.error;
+  }
+
+  const { value: result } = res;
+
+  // Handle the result
+  console.log(result);
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.TransactionsUpdateRequest](../../models/operations/transactionsupdaterequest.md)                                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.TransactionsUpdateResponseBody](../../models/operations/transactionsupdateresponsebody.md)\>**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| errors.TransactionsUpdateResponseBody | 404                                   | application/json                      |
+| errors.APIError                       | 4XX, 5XX                              | \*/\*                                 |

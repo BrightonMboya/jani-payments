@@ -25,8 +25,8 @@ let value: PricesGetPriceResponseBody = {
   },
   status: "active",
   id: "<id>",
-  createdAt: "1736608934474",
-  updatedAt: "1737913492478",
+  createdAt: "1736610456720",
+  updatedAt: "1737915014724",
 };
 ```
 

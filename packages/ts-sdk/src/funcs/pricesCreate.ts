@@ -25,7 +25,7 @@ import { Result } from "../types/fp.js";
 
 export async function pricesCreate(
   client: JaniPaymentsCore,
-  request?: operations.PricesCreateRequestBody | undefined,
+  request: operations.PricesCreateRequestBody,
   options?: RequestOptions,
 ): Promise<
   Result<
@@ -42,17 +42,14 @@ export async function pricesCreate(
 > {
   const parsed = safeParse(
     request,
-    (value) =>
-      operations.PricesCreateRequestBody$outboundSchema.optional().parse(value),
+    (value) => operations.PricesCreateRequestBody$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return parsed;
   }
   const payload = parsed.value;
-  const body = payload === undefined
-    ? null
-    : encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON("body", payload, { explode: true });
 
   const path = pathToFunc("/prices")();
 

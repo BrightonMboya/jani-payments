@@ -6,7 +6,7 @@
 import { SubscriptionPauseSubscriptionSubscriptionResponse200Status } from "jani-payments/models/operations";
 
 let value: SubscriptionPauseSubscriptionSubscriptionResponse200Status =
-  "active";
+  "archived";
 ```
 
 ## Values

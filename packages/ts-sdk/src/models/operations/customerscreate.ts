@@ -23,7 +23,7 @@ export type CustomersCreateCustomData = {};
 export type CustomersCreateRequestBody = {
   email: string;
   name: string;
-  status?: CustomersCreateStatus | null | undefined;
+  status: CustomersCreateStatus;
   description?: string | null | undefined;
   /**
    * Any valid JSON value
@@ -51,7 +51,7 @@ export type CustomersCreateResponseBody = {
   id: string;
   email: string;
   name: string;
-  status?: CustomersCreateCustomersStatus | null | undefined;
+  status: CustomersCreateCustomersStatus;
   description?: string | null | undefined;
   /**
    * Any valid JSON value
@@ -138,7 +138,7 @@ export const CustomersCreateRequestBody$inboundSchema: z.ZodType<
 > = z.object({
   email: z.string(),
   name: z.string(),
-  status: z.nullable(CustomersCreateStatus$inboundSchema).optional(),
+  status: CustomersCreateStatus$inboundSchema,
   description: z.nullable(z.string()).optional(),
   custom_data: z.lazy(() => CustomersCreateCustomData$inboundSchema).optional(),
 }).transform((v) => {
@@ -151,7 +151,7 @@ export const CustomersCreateRequestBody$inboundSchema: z.ZodType<
 export type CustomersCreateRequestBody$Outbound = {
   email: string;
   name: string;
-  status?: string | null | undefined;
+  status: string;
   description?: string | null | undefined;
   custom_data?: CustomersCreateCustomData$Outbound | undefined;
 };
@@ -164,7 +164,7 @@ export const CustomersCreateRequestBody$outboundSchema: z.ZodType<
 > = z.object({
   email: z.string(),
   name: z.string(),
-  status: z.nullable(CustomersCreateStatus$outboundSchema).optional(),
+  status: CustomersCreateStatus$outboundSchema,
   description: z.nullable(z.string()).optional(),
   customData: z.lazy(() => CustomersCreateCustomData$outboundSchema).optional(),
 }).transform((v) => {
@@ -286,7 +286,7 @@ export const CustomersCreateResponseBody$inboundSchema: z.ZodType<
   id: z.string(),
   email: z.string(),
   name: z.string(),
-  status: z.nullable(CustomersCreateCustomersStatus$inboundSchema).optional(),
+  status: CustomersCreateCustomersStatus$inboundSchema,
   description: z.nullable(z.string()).optional(),
   custom_data: z.lazy(() => CustomersCreateCustomersCustomData$inboundSchema),
   created_at: z.string(),
@@ -304,7 +304,7 @@ export type CustomersCreateResponseBody$Outbound = {
   id: string;
   email: string;
   name: string;
-  status?: string | null | undefined;
+  status: string;
   description?: string | null | undefined;
   custom_data: CustomersCreateCustomersCustomData$Outbound;
   created_at: string;
@@ -320,7 +320,7 @@ export const CustomersCreateResponseBody$outboundSchema: z.ZodType<
   id: z.string(),
   email: z.string(),
   name: z.string(),
-  status: z.nullable(CustomersCreateCustomersStatus$outboundSchema).optional(),
+  status: CustomersCreateCustomersStatus$outboundSchema,
   description: z.nullable(z.string()).optional(),
   customData: z.lazy(() => CustomersCreateCustomersCustomData$outboundSchema),
   createdAt: z.string(),

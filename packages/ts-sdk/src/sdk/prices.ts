@@ -21,7 +21,7 @@ export class Prices extends ClientSDK {
   }
 
   async create(
-    request?: operations.PricesCreateRequestBody | undefined,
+    request: operations.PricesCreateRequestBody,
     options?: RequestOptions,
   ): Promise<operations.PricesCreateResponseBody> {
     return unwrapAsync(pricesCreate(

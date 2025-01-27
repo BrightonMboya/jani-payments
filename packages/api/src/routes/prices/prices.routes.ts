@@ -46,6 +46,7 @@ export const create_prices = createRoute({
           schema: CreatePricesSchema,
         },
       },
+      required: true,
     },
   },
   responses: {
@@ -95,6 +96,7 @@ export const update_price = createRoute({
           schema: UpdatePricesSchema,
         },
       },
+      required: true,
     },
   },
   tags,

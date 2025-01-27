@@ -5,7 +5,7 @@
 ```typescript
 import { SubscriptionCreateAction } from "jani-payments/models/operations";
 
-let value: SubscriptionCreateAction = "cancel";
+let value: SubscriptionCreateAction = "resume";
 ```
 
 ## Values

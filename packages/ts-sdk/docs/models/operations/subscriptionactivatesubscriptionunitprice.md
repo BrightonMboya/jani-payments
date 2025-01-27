@@ -6,8 +6,8 @@
 import { SubscriptionActivateSubscriptionUnitPrice } from "jani-payments/models/operations";
 
 let value: SubscriptionActivateSubscriptionUnitPrice = {
-  amount: 8536.06,
-  currencyCode: "UGX",
+  amount: 8052.64,
+  currencyCode: "RWF",
 };
 ```
 

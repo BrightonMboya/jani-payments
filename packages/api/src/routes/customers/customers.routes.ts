@@ -37,7 +37,7 @@ export const create = createRoute({
   method: "post",
   tags,
   operationId: "customers:create",
-   "x-speakeasy-name-override": "create",
+  "x-speakeasy-name-override": "create",
   request: {
     body: {
       content: {
@@ -45,6 +45,7 @@ export const create = createRoute({
           schema: CreateCustomerSchema,
         },
       },
+      required: true,
     },
   },
   responses: {
@@ -84,7 +85,7 @@ export const update_customer = createRoute({
   method: "patch",
   tags,
   operationId: "customers:update",
-   "x-speakeasy-name-override": "update",
+  "x-speakeasy-name-override": "update",
   request: {
     params: z.object({
       customer_id: z.string(),
@@ -95,6 +96,7 @@ export const update_customer = createRoute({
           schema: UpdateCustomerSchema,
         },
       },
+      required: true,
     },
   },
   responses: {

@@ -29,7 +29,7 @@ export type DiscountListCustomData = {};
 
 export type DiscountListResponseBody = {
   id: string;
-  status?: DiscountListStatus | null | undefined;
+  status: DiscountListStatus;
   description?: string | null | undefined;
   enabledForCheckout?: boolean | null | undefined;
   amount: number;
@@ -146,7 +146,7 @@ export const DiscountListResponseBody$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: z.string(),
-  status: z.nullable(DiscountListStatus$inboundSchema).optional(),
+  status: DiscountListStatus$inboundSchema,
   description: z.nullable(z.string()).optional(),
   enabled_for_checkout: z.nullable(z.boolean()).optional(),
   amount: z.number(),
@@ -179,7 +179,7 @@ export const DiscountListResponseBody$inboundSchema: z.ZodType<
 /** @internal */
 export type DiscountListResponseBody$Outbound = {
   id: string;
-  status?: string | null | undefined;
+  status: string;
   description?: string | null | undefined;
   enabled_for_checkout?: boolean | null | undefined;
   amount: number;
@@ -203,7 +203,7 @@ export const DiscountListResponseBody$outboundSchema: z.ZodType<
   DiscountListResponseBody
 > = z.object({
   id: z.string(),
-  status: z.nullable(DiscountListStatus$outboundSchema).optional(),
+  status: DiscountListStatus$outboundSchema,
   description: z.nullable(z.string()).optional(),
   enabledForCheckout: z.nullable(z.boolean()).optional(),
   amount: z.number(),

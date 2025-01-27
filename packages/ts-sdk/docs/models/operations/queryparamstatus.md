@@ -5,7 +5,7 @@
 ```typescript
 import { QueryParamStatus } from "jani-payments/models/operations";
 
-let value: QueryParamStatus = "billed";
+let value: QueryParamStatus = "cancelled";
 ```
 
 ## Values

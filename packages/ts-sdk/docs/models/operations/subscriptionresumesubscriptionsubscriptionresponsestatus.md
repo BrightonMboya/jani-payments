@@ -5,8 +5,7 @@
 ```typescript
 import { SubscriptionResumeSubscriptionSubscriptionResponseStatus } from "jani-payments/models/operations";
 
-let value: SubscriptionResumeSubscriptionSubscriptionResponseStatus =
-  "archived";
+let value: SubscriptionResumeSubscriptionSubscriptionResponseStatus = "active";
 ```
 
 ## Values

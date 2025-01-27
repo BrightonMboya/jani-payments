@@ -21,7 +21,7 @@ export class Customers extends ClientSDK {
   }
 
   async create(
-    request?: operations.CustomersCreateRequestBody | undefined,
+    request: operations.CustomersCreateRequestBody,
     options?: RequestOptions,
   ): Promise<operations.CustomersCreateResponseBody> {
     return unwrapAsync(customersCreate(

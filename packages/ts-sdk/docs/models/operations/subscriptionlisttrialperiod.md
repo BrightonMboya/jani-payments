@@ -6,8 +6,8 @@
 import { SubscriptionListTrialPeriod } from "jani-payments/models/operations";
 
 let value: SubscriptionListTrialPeriod = {
-  interval: "month",
-  frequency: 7505.95,
+  interval: "year",
+  frequency: 5436.78,
 };
 ```
 

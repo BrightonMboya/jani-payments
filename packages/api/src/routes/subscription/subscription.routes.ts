@@ -1,7 +1,7 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import * as HttpsStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
-import { SubscriptionsModel } from "@repo/db/zod/subscriptions.ts";
+
 import {
   cancelSubscriptionSchema,
   createSubscriptionSchema,
@@ -27,6 +27,7 @@ export const create_subscription = createRoute({
           schema: createSubscriptionSchema,
         },
       },
+      required: true,
     },
   },
   responses: {
@@ -68,6 +69,7 @@ export const cancel_subscription = createRoute({
           schema: cancelSubscriptionSchema,
         },
       },
+      required: true,
     },
   },
   responses: {
@@ -100,6 +102,7 @@ export const pause_subscription = createRoute({
           schema: pauseSubscriptionSchema,
         },
       },
+      required: true,
     },
   },
   responses: {
@@ -183,6 +186,7 @@ export const update_subscription = createRoute({
           schema: updateSubscriptionSchema,
         },
       },
+      required: true,
     },
   },
   responses: {

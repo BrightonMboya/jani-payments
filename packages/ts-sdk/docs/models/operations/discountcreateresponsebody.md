@@ -9,12 +9,13 @@ import { DiscountCreateResponseBody } from "jani-payments/models/operations";
 
 let value: DiscountCreateResponseBody = {
   id: "<id>",
-  amount: 4541.62,
-  currencyCode: "GTQ",
+  status: "active",
+  amount: 6144.65,
+  currencyCode: "AOA",
   type: "flat",
   customData: {},
-  createdAt: "1725825482983",
-  updatedAt: "1737900182225",
+  createdAt: "1719971748329",
+  updatedAt: "1737904728384",
   restrictedTo: [
     "<value>",
   ],
@@ -26,7 +27,7 @@ let value: DiscountCreateResponseBody = {
 | Field                                                                                                        | Type                                                                                                         | Required                                                                                                     | Description                                                                                                  |
 | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
 | `id`                                                                                                         | *string*                                                                                                     | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
-| `status`                                                                                                     | [operations.DiscountCreateDiscountsStatus](../../models/operations/discountcreatediscountsstatus.md)         | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
+| `status`                                                                                                     | [operations.DiscountCreateDiscountsStatus](../../models/operations/discountcreatediscountsstatus.md)         | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
 | `description`                                                                                                | *string*                                                                                                     | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
 | `enabledForCheckout`                                                                                         | *boolean*                                                                                                    | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
 | `amount`                                                                                                     | *number*                                                                                                     | :heavy_check_mark:                                                                                           | N/A                                                                                                          |

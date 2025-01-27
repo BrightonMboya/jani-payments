@@ -6,7 +6,7 @@
 import { SubscriptionResumeSubscriptionBillingCycle } from "jani-payments/models/operations";
 
 let value: SubscriptionResumeSubscriptionBillingCycle = {
-  frequency: 483518,
+  frequency: 731744,
   interval: "<value>",
 };
 ```

@@ -195,7 +195,7 @@ export type SubscriptionListSubscriptionCustomData = {};
 
 export type SubscriptionListDiscount = {
   id: string;
-  status?: SubscriptionListSubscriptionResponseStatus | null | undefined;
+  status: SubscriptionListSubscriptionResponseStatus;
   description?: string | null | undefined;
   enabledForCheckout?: boolean | null | undefined;
   amount: number;
@@ -1476,8 +1476,7 @@ export const SubscriptionListDiscount$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: z.string(),
-  status: z.nullable(SubscriptionListSubscriptionResponseStatus$inboundSchema)
-    .optional(),
+  status: SubscriptionListSubscriptionResponseStatus$inboundSchema,
   description: z.nullable(z.string()).optional(),
   enabled_for_checkout: z.nullable(z.boolean()).optional(),
   amount: z.number(),
@@ -1512,7 +1511,7 @@ export const SubscriptionListDiscount$inboundSchema: z.ZodType<
 /** @internal */
 export type SubscriptionListDiscount$Outbound = {
   id: string;
-  status?: string | null | undefined;
+  status: string;
   description?: string | null | undefined;
   enabled_for_checkout?: boolean | null | undefined;
   amount: number;
@@ -1536,8 +1535,7 @@ export const SubscriptionListDiscount$outboundSchema: z.ZodType<
   SubscriptionListDiscount
 > = z.object({
   id: z.string(),
-  status: z.nullable(SubscriptionListSubscriptionResponseStatus$outboundSchema)
-    .optional(),
+  status: SubscriptionListSubscriptionResponseStatus$outboundSchema,
   description: z.nullable(z.string()).optional(),
   enabledForCheckout: z.nullable(z.boolean()).optional(),
   amount: z.number(),

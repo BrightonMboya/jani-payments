@@ -31,7 +31,7 @@ export type SubscriptionPauseSubscriptionRequestBody = {
 
 export type SubscriptionPauseSubscriptionRequest = {
   subscriptionId: string;
-  requestBody?: SubscriptionPauseSubscriptionRequestBody | undefined;
+  requestBody: SubscriptionPauseSubscriptionRequestBody;
 };
 
 export const SubscriptionPauseSubscriptionInterval = {
@@ -225,10 +225,7 @@ export type SubscriptionPauseSubscriptionSubscriptionCustomData = {};
 
 export type SubscriptionPauseSubscriptionDiscount = {
   id: string;
-  status?:
-    | SubscriptionPauseSubscriptionSubscriptionResponseStatus
-    | null
-    | undefined;
+  status: SubscriptionPauseSubscriptionSubscriptionResponseStatus;
   description?: string | null | undefined;
   enabledForCheckout?: boolean | null | undefined;
   amount: number;
@@ -420,7 +417,7 @@ export const SubscriptionPauseSubscriptionRequest$inboundSchema: z.ZodType<
   subscription_id: z.string(),
   RequestBody: z.lazy(() =>
     SubscriptionPauseSubscriptionRequestBody$inboundSchema
-  ).optional(),
+  ),
 }).transform((v) => {
   return remap$(v, {
     "subscription_id": "subscriptionId",
@@ -431,7 +428,7 @@ export const SubscriptionPauseSubscriptionRequest$inboundSchema: z.ZodType<
 /** @internal */
 export type SubscriptionPauseSubscriptionRequest$Outbound = {
   subscription_id: string;
-  RequestBody?: SubscriptionPauseSubscriptionRequestBody$Outbound | undefined;
+  RequestBody: SubscriptionPauseSubscriptionRequestBody$Outbound;
 };
 
 /** @internal */
@@ -443,7 +440,7 @@ export const SubscriptionPauseSubscriptionRequest$outboundSchema: z.ZodType<
   subscriptionId: z.string(),
   requestBody: z.lazy(() =>
     SubscriptionPauseSubscriptionRequestBody$outboundSchema
-  ).optional(),
+  ),
 }).transform((v) => {
   return remap$(v, {
     subscriptionId: "subscription_id",
@@ -1863,9 +1860,7 @@ export const SubscriptionPauseSubscriptionDiscount$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: z.string(),
-  status: z.nullable(
-    SubscriptionPauseSubscriptionSubscriptionResponseStatus$inboundSchema,
-  ).optional(),
+  status: SubscriptionPauseSubscriptionSubscriptionResponseStatus$inboundSchema,
   description: z.nullable(z.string()).optional(),
   enabled_for_checkout: z.nullable(z.boolean()).optional(),
   amount: z.number(),
@@ -1900,7 +1895,7 @@ export const SubscriptionPauseSubscriptionDiscount$inboundSchema: z.ZodType<
 /** @internal */
 export type SubscriptionPauseSubscriptionDiscount$Outbound = {
   id: string;
-  status?: string | null | undefined;
+  status: string;
   description?: string | null | undefined;
   enabled_for_checkout?: boolean | null | undefined;
   amount: number;
@@ -1924,9 +1919,8 @@ export const SubscriptionPauseSubscriptionDiscount$outboundSchema: z.ZodType<
   SubscriptionPauseSubscriptionDiscount
 > = z.object({
   id: z.string(),
-  status: z.nullable(
+  status:
     SubscriptionPauseSubscriptionSubscriptionResponseStatus$outboundSchema,
-  ).optional(),
   description: z.nullable(z.string()).optional(),
   enabledForCheckout: z.nullable(z.boolean()).optional(),
   amount: z.number(),

@@ -7,12 +7,13 @@ import { DiscountListResponseBody } from "jani-payments/models/operations";
 
 let value: DiscountListResponseBody = {
   id: "<id>",
-  amount: 8490.39,
-  currencyCode: "AOA",
-  type: "flat_per_seat",
+  status: "archived",
+  amount: 333.04,
+  currencyCode: "XPF",
+  type: "percentage",
   customData: {},
-  createdAt: "1717654636251",
-  updatedAt: "1737928143719",
+  createdAt: "1717698354979",
+  updatedAt: "1737900257606",
   restrictedTo: [
     "<value>",
   ],
@@ -24,7 +25,7 @@ let value: DiscountListResponseBody = {
 | Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            |
 | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | `id`                                                                                   | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
-| `status`                                                                               | [operations.DiscountListStatus](../../models/operations/discountliststatus.md)         | :heavy_minus_sign:                                                                     | N/A                                                                                    |
+| `status`                                                                               | [operations.DiscountListStatus](../../models/operations/discountliststatus.md)         | :heavy_check_mark:                                                                     | N/A                                                                                    |
 | `description`                                                                          | *string*                                                                               | :heavy_minus_sign:                                                                     | N/A                                                                                    |
 | `enabledForCheckout`                                                                   | *boolean*                                                                              | :heavy_minus_sign:                                                                     | N/A                                                                                    |
 | `amount`                                                                               | *number*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |

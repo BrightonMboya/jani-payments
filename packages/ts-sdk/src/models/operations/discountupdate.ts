@@ -28,7 +28,7 @@ export type DiscountUpdateType = ClosedEnum<typeof DiscountUpdateType>;
 export type DiscountUpdateCustomData = {};
 
 export type DiscountUpdateRequestBody = {
-  status?: DiscountUpdateStatus | null | undefined;
+  status?: DiscountUpdateStatus | undefined;
   description?: string | null | undefined;
   enabledForCheckout?: boolean | null | undefined;
   amount?: number | undefined;
@@ -47,7 +47,7 @@ export type DiscountUpdateRequestBody = {
 
 export type DiscountUpdateRequest = {
   discountId: string;
-  requestBody?: DiscountUpdateRequestBody | undefined;
+  requestBody: DiscountUpdateRequestBody;
 };
 
 export const DiscountUpdateDiscountsStatus = {
@@ -77,7 +77,7 @@ export type DiscountUpdateDiscountsCustomData = {};
  */
 export type DiscountUpdateResponseBody = {
   id: string;
-  status?: DiscountUpdateDiscountsStatus | null | undefined;
+  status: DiscountUpdateDiscountsStatus;
   description?: string | null | undefined;
   enabledForCheckout?: boolean | null | undefined;
   amount: number;
@@ -193,7 +193,7 @@ export const DiscountUpdateRequestBody$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  status: z.nullable(DiscountUpdateStatus$inboundSchema).optional(),
+  status: DiscountUpdateStatus$inboundSchema.optional(),
   description: z.nullable(z.string()).optional(),
   enabled_for_checkout: z.nullable(z.boolean()).optional(),
   amount: z.number().optional(),
@@ -219,7 +219,7 @@ export const DiscountUpdateRequestBody$inboundSchema: z.ZodType<
 
 /** @internal */
 export type DiscountUpdateRequestBody$Outbound = {
-  status?: string | null | undefined;
+  status?: string | undefined;
   description?: string | null | undefined;
   enabled_for_checkout?: boolean | null | undefined;
   amount?: number | undefined;
@@ -239,7 +239,7 @@ export const DiscountUpdateRequestBody$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   DiscountUpdateRequestBody
 > = z.object({
-  status: z.nullable(DiscountUpdateStatus$outboundSchema).optional(),
+  status: DiscountUpdateStatus$outboundSchema.optional(),
   description: z.nullable(z.string()).optional(),
   enabledForCheckout: z.nullable(z.boolean()).optional(),
   amount: z.number().optional(),
@@ -301,7 +301,7 @@ export const DiscountUpdateRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   discount_id: z.string(),
-  RequestBody: z.lazy(() => DiscountUpdateRequestBody$inboundSchema).optional(),
+  RequestBody: z.lazy(() => DiscountUpdateRequestBody$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "discount_id": "discountId",
@@ -312,7 +312,7 @@ export const DiscountUpdateRequest$inboundSchema: z.ZodType<
 /** @internal */
 export type DiscountUpdateRequest$Outbound = {
   discount_id: string;
-  RequestBody?: DiscountUpdateRequestBody$Outbound | undefined;
+  RequestBody: DiscountUpdateRequestBody$Outbound;
 };
 
 /** @internal */
@@ -322,8 +322,7 @@ export const DiscountUpdateRequest$outboundSchema: z.ZodType<
   DiscountUpdateRequest
 > = z.object({
   discountId: z.string(),
-  requestBody: z.lazy(() => DiscountUpdateRequestBody$outboundSchema)
-    .optional(),
+  requestBody: z.lazy(() => DiscountUpdateRequestBody$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     discountId: "discount_id",
@@ -462,7 +461,7 @@ export const DiscountUpdateResponseBody$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: z.string(),
-  status: z.nullable(DiscountUpdateDiscountsStatus$inboundSchema).optional(),
+  status: DiscountUpdateDiscountsStatus$inboundSchema,
   description: z.nullable(z.string()).optional(),
   enabled_for_checkout: z.nullable(z.boolean()).optional(),
   amount: z.number(),
@@ -495,7 +494,7 @@ export const DiscountUpdateResponseBody$inboundSchema: z.ZodType<
 /** @internal */
 export type DiscountUpdateResponseBody$Outbound = {
   id: string;
-  status?: string | null | undefined;
+  status: string;
   description?: string | null | undefined;
   enabled_for_checkout?: boolean | null | undefined;
   amount: number;
@@ -519,7 +518,7 @@ export const DiscountUpdateResponseBody$outboundSchema: z.ZodType<
   DiscountUpdateResponseBody
 > = z.object({
   id: z.string(),
-  status: z.nullable(DiscountUpdateDiscountsStatus$outboundSchema).optional(),
+  status: DiscountUpdateDiscountsStatus$outboundSchema,
   description: z.nullable(z.string()).optional(),
   enabledForCheckout: z.nullable(z.boolean()).optional(),
   amount: z.number(),

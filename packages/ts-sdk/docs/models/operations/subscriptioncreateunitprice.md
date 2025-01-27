@@ -6,8 +6,8 @@
 import { SubscriptionCreateUnitPrice } from "jani-payments/models/operations";
 
 let value: SubscriptionCreateUnitPrice = {
-  amount: 6803.49,
-  currencyCode: "AZN",
+  amount: 3518.93,
+  currencyCode: "RWF",
 };
 ```
 

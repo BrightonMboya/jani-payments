@@ -5,7 +5,7 @@
 ```typescript
 import { SubscriptionCancelSubscriptionType } from "jani-payments/models/operations";
 
-let value: SubscriptionCancelSubscriptionType = "flat_per_seat";
+let value: SubscriptionCancelSubscriptionType = "flat";
 ```
 
 ## Values

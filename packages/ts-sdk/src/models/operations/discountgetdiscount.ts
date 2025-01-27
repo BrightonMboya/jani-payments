@@ -40,7 +40,7 @@ export type DiscountGetDiscountCustomData = {};
  */
 export type DiscountGetDiscountResponseBody = {
   id: string;
-  status?: DiscountGetDiscountStatus | null | undefined;
+  status: DiscountGetDiscountStatus;
   description?: string | null | undefined;
   enabledForCheckout?: boolean | null | undefined;
   amount: number;
@@ -221,7 +221,7 @@ export const DiscountGetDiscountResponseBody$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: z.string(),
-  status: z.nullable(DiscountGetDiscountStatus$inboundSchema).optional(),
+  status: DiscountGetDiscountStatus$inboundSchema,
   description: z.nullable(z.string()).optional(),
   enabled_for_checkout: z.nullable(z.boolean()).optional(),
   amount: z.number(),
@@ -254,7 +254,7 @@ export const DiscountGetDiscountResponseBody$inboundSchema: z.ZodType<
 /** @internal */
 export type DiscountGetDiscountResponseBody$Outbound = {
   id: string;
-  status?: string | null | undefined;
+  status: string;
   description?: string | null | undefined;
   enabled_for_checkout?: boolean | null | undefined;
   amount: number;
@@ -278,7 +278,7 @@ export const DiscountGetDiscountResponseBody$outboundSchema: z.ZodType<
   DiscountGetDiscountResponseBody
 > = z.object({
   id: z.string(),
-  status: z.nullable(DiscountGetDiscountStatus$outboundSchema).optional(),
+  status: DiscountGetDiscountStatus$outboundSchema,
   description: z.nullable(z.string()).optional(),
   enabledForCheckout: z.nullable(z.boolean()).optional(),
   amount: z.number(),

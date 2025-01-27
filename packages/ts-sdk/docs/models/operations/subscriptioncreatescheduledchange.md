@@ -8,9 +8,9 @@ import { SubscriptionCreateScheduledChange } from "jani-payments/models/operatio
 let value: SubscriptionCreateScheduledChange = {
   id: "<id>",
   subscriptionId: "<id>",
-  action: "cancel",
+  action: "resume",
   effectiveAt: "<value>",
-  status: "scheduled",
+  status: "completed",
 };
 ```
 

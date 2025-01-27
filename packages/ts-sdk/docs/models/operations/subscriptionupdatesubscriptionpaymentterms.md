@@ -6,8 +6,8 @@
 import { SubscriptionUpdateSubscriptionPaymentTerms } from "jani-payments/models/operations";
 
 let value: SubscriptionUpdateSubscriptionPaymentTerms = {
-  paymentInterval: "week",
-  paymentFrequency: 2543.82,
+  paymentInterval: "month",
+  paymentFrequency: 7049.48,
 };
 ```
 

@@ -5,7 +5,7 @@
 ```typescript
 import { SubscriptionPauseSubscriptionEffectiveFrom } from "jani-payments/models/operations";
 
-let value: SubscriptionPauseSubscriptionEffectiveFrom = "next_billing_period";
+let value: SubscriptionPauseSubscriptionEffectiveFrom = "immediately";
 ```
 
 ## Values

@@ -14,7 +14,7 @@ export const AddressesModel = z.object({
   first_line: z.string().nullish(),
   custom_data: jsonSchema,
   city: z.string().nullish(),
-  status: z.nativeEnum(Entity_Status).nullish(),
+  status: z.nativeEnum(Entity_Status),
   created_at: z.date(),
   updated_at: z.date(),
   customer_id: z.string().nullish(),

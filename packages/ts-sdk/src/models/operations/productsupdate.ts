@@ -32,7 +32,7 @@ export type ProductsUpdateRequestBody = {
 
 export type ProductsUpdateRequest = {
   productId: string;
-  requestBody?: ProductsUpdateRequestBody | undefined;
+  requestBody: ProductsUpdateRequestBody;
 };
 
 export const ProductsUpdateProductsStatus = {
@@ -211,7 +211,7 @@ export const ProductsUpdateRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   product_id: z.string(),
-  RequestBody: z.lazy(() => ProductsUpdateRequestBody$inboundSchema).optional(),
+  RequestBody: z.lazy(() => ProductsUpdateRequestBody$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "product_id": "productId",
@@ -222,7 +222,7 @@ export const ProductsUpdateRequest$inboundSchema: z.ZodType<
 /** @internal */
 export type ProductsUpdateRequest$Outbound = {
   product_id: string;
-  RequestBody?: ProductsUpdateRequestBody$Outbound | undefined;
+  RequestBody: ProductsUpdateRequestBody$Outbound;
 };
 
 /** @internal */
@@ -232,8 +232,7 @@ export const ProductsUpdateRequest$outboundSchema: z.ZodType<
   ProductsUpdateRequest
 > = z.object({
   productId: z.string(),
-  requestBody: z.lazy(() => ProductsUpdateRequestBody$outboundSchema)
-    .optional(),
+  requestBody: z.lazy(() => ProductsUpdateRequestBody$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     productId: "product_id",

@@ -5,7 +5,7 @@
 ```typescript
 import { PaymentProvider } from "jani-payments/models/operations";
 
-let value: PaymentProvider = "SELCOM";
+let value: PaymentProvider = "DPO";
 ```
 
 ## Values

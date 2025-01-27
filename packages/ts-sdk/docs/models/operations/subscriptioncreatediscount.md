@@ -7,12 +7,13 @@ import { SubscriptionCreateDiscount } from "jani-payments/models/operations";
 
 let value: SubscriptionCreateDiscount = {
   id: "<id>",
-  amount: 2419.01,
-  currencyCode: "KES",
-  type: "percentage",
+  status: "active",
+  amount: 4977.77,
+  currencyCode: "MVR",
+  type: "flat",
   customData: {},
-  createdAt: "1730827687006",
-  updatedAt: "1737980159075",
+  createdAt: "1711779632118",
+  updatedAt: "1737973114006",
   restrictedTo: [
     "<value>",
   ],
@@ -24,7 +25,7 @@ let value: SubscriptionCreateDiscount = {
 | Field                                                                                                                                    | Type                                                                                                                                     | Required                                                                                                                                 | Description                                                                                                                              |
 | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                                                                                                                                     | *string*                                                                                                                                 | :heavy_check_mark:                                                                                                                       | N/A                                                                                                                                      |
-| `status`                                                                                                                                 | [operations.SubscriptionCreateSubscriptionResponse200Status](../../models/operations/subscriptioncreatesubscriptionresponse200status.md) | :heavy_minus_sign:                                                                                                                       | N/A                                                                                                                                      |
+| `status`                                                                                                                                 | [operations.SubscriptionCreateSubscriptionResponse200Status](../../models/operations/subscriptioncreatesubscriptionresponse200status.md) | :heavy_check_mark:                                                                                                                       | N/A                                                                                                                                      |
 | `description`                                                                                                                            | *string*                                                                                                                                 | :heavy_minus_sign:                                                                                                                       | N/A                                                                                                                                      |
 | `enabledForCheckout`                                                                                                                     | *boolean*                                                                                                                                | :heavy_minus_sign:                                                                                                                       | N/A                                                                                                                                      |
 | `amount`                                                                                                                                 | *number*                                                                                                                                 | :heavy_check_mark:                                                                                                                       | N/A                                                                                                                                      |

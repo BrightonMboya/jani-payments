@@ -11,20 +11,20 @@ let value: SubscriptionListPrice = {
   name: "<value>",
   billingCycle: {
     interval: "week",
-    frequency: 4461.35,
+    frequency: 5305.37,
   },
   trialPeriod: {
-    interval: "day",
-    frequency: 3484.76,
+    interval: "year",
+    frequency: 894.94,
   },
   unitPrice: {
-    amount: 7400.98,
-    currencyCode: "PKR",
+    amount: 4059.42,
+    currencyCode: "AMD",
   },
-  status: "archived",
+  status: "active",
   id: "<id>",
-  createdAt: "1728854947734",
-  updatedAt: "1737915029937",
+  createdAt: "1726071925032",
+  updatedAt: "1737922958174",
 };
 ```
 

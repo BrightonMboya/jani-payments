@@ -5,7 +5,7 @@
 ```typescript
 import { DiscountGetDiscountType } from "jani-payments/models/operations";
 
-let value: DiscountGetDiscountType = "percentage";
+let value: DiscountGetDiscountType = "flat";
 ```
 
 ## Values

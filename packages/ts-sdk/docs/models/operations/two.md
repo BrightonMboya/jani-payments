@@ -7,13 +7,13 @@ import { Two } from "jani-payments/models/operations";
 
 let value: Two = {
   paymentMethod: "CARD",
-  paymentProvider: "MPESA",
-  amount: 2913.89,
-  currencyCode: "AOA",
+  paymentProvider: "PAYSTACK",
+  amount: 2982.46,
+  currencyCode: "TTD",
   cardLast4: "<value>",
   cardBrand: "<value>",
-  cardExpMonth: 956545,
-  cardExpYear: 667169,
+  cardExpMonth: 586277,
+  cardExpYear: 348665,
   cardHolderName: "<value>",
 };
 ```

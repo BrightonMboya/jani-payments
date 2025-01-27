@@ -5,7 +5,7 @@
 ```typescript
 import { SubscriptionCancelSubscriptionSubscriptionResponseInterval } from "jani-payments/models/operations";
 
-let value: SubscriptionCancelSubscriptionSubscriptionResponseInterval = "year";
+let value: SubscriptionCancelSubscriptionSubscriptionResponseInterval = "day";
 ```
 
 ## Values

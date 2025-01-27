@@ -6,9 +6,10 @@
 import { DiscountCreateRequestBody } from "jani-payments/models/operations";
 
 let value: DiscountCreateRequestBody = {
-  amount: 4012.59,
-  currencyCode: "WST",
-  type: "flat",
+  status: "archived",
+  amount: 996.15,
+  currencyCode: "XCD",
+  type: "flat_per_seat",
 };
 ```
 
@@ -16,7 +17,7 @@ let value: DiscountCreateRequestBody = {
 
 | Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| `status`                                                                                   | [operations.DiscountCreateStatus](../../models/operations/discountcreatestatus.md)         | :heavy_minus_sign:                                                                         | N/A                                                                                        |
+| `status`                                                                                   | [operations.DiscountCreateStatus](../../models/operations/discountcreatestatus.md)         | :heavy_check_mark:                                                                         | N/A                                                                                        |
 | `description`                                                                              | *string*                                                                                   | :heavy_minus_sign:                                                                         | N/A                                                                                        |
 | `enabledForCheckout`                                                                       | *boolean*                                                                                  | :heavy_minus_sign:                                                                         | N/A                                                                                        |
 | `amount`                                                                                   | *number*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
