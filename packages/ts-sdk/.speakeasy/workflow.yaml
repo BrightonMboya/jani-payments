@@ -14,6 +14,9 @@ targets:
     jani-payments:
         target: typescript
         source: JANI Payments
+        publish:
+            npm:
+                token: $npm_token
         codeSamples:
             registry:
                 location: registry.speakeasyapi.dev/jani-payments/billing/jani-payments-typescript-code-samples
