@@ -20,5 +20,5 @@ bus.subscribe("MySubscriber", {
     },
   },
   link: [secrets.DATABASE_URL],
-  copyFiles: [{ from: "./packages/db/src/client/" }],
+  // copyFiles: [{ from: "./packages/db/src/client/" }],
 });
