@@ -5,12 +5,12 @@
 
 ### Available Operations
 
-* [getProducts](#getproducts)
-* [postProducts](#postproducts)
-* [getProductsProductId](#getproductsproductid)
-* [patchProductsProductId](#patchproductsproductid)
+* [list](#list)
+* [create](#create)
+* [get](#get)
+* [update](#update)
 
-## getProducts
+## list
 
 ### Example Usage
 
@@ -25,7 +25,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.products.getProducts();
+  const result = await janiPayments.products.list();
 
   // Handle the result
   console.log(result);
@@ -40,7 +40,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { productsGetProducts } from "jani-payments/funcs/productsGetProducts.js";
+import { productsList } from "jani-payments/funcs/productsList.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -52,7 +52,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await productsGetProducts(janiPayments);
+  const res = await productsList(janiPayments);
 
   if (!res.ok) {
     throw res.error;
@@ -85,7 +85,7 @@ run();
 | --------------- | --------------- | --------------- |
 | errors.APIError | 4XX, 5XX        | \*/\*           |
 
-## postProducts
+## create
 
 ### Example Usage
 
@@ -100,7 +100,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.products.postProducts();
+  const result = await janiPayments.products.create();
 
   // Handle the result
   console.log(result);
@@ -115,7 +115,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { productsPostProducts } from "jani-payments/funcs/productsPostProducts.js";
+import { productsCreate } from "jani-payments/funcs/productsCreate.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -127,7 +127,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await productsPostProducts(janiPayments);
+  const res = await productsCreate(janiPayments);
 
   if (!res.ok) {
     throw res.error;
@@ -146,14 +146,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PostProductsRequestBody](../../models/operations/postproductsrequestbody.md)                                                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.ProductsCreateRequestBody](../../models/operations/productscreaterequestbody.md)                                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PostProductsResponseBody](../../models/operations/postproductsresponsebody.md)\>**
+**Promise\<[operations.ProductsCreateResponseBody](../../models/operations/productscreateresponsebody.md)\>**
 
 ### Errors
 
@@ -161,7 +161,7 @@ run();
 | --------------- | --------------- | --------------- |
 | errors.APIError | 4XX, 5XX        | \*/\*           |
 
-## getProductsProductId
+## get
 
 ### Example Usage
 
@@ -176,7 +176,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.products.getProductsProductId({
+  const result = await janiPayments.products.get({
     productId: "<id>",
   });
 
@@ -193,7 +193,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { productsGetProductsProductId } from "jani-payments/funcs/productsGetProductsProductId.js";
+import { productsGet } from "jani-payments/funcs/productsGet.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -205,7 +205,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await productsGetProductsProductId(janiPayments, {
+  const res = await productsGet(janiPayments, {
     productId: "<id>",
   });
 
@@ -226,23 +226,23 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetProductsProductIdRequest](../../models/operations/getproductsproductidrequest.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.ProductsGetProductRequest](../../models/operations/productsgetproductrequest.md)                                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetProductsProductIdResponseBody](../../models/operations/getproductsproductidresponsebody.md)\>**
+**Promise\<[operations.ProductsGetProductResponseBody](../../models/operations/productsgetproductresponsebody.md)\>**
 
 ### Errors
 
-| Error Type                              | Status Code                             | Content Type                            |
-| --------------------------------------- | --------------------------------------- | --------------------------------------- |
-| errors.GetProductsProductIdResponseBody | 404                                     | application/json                        |
-| errors.APIError                         | 4XX, 5XX                                | \*/\*                                   |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| errors.ProductsGetProductResponseBody | 404                                   | application/json                      |
+| errors.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## patchProductsProductId
+## update
 
 ### Example Usage
 
@@ -257,7 +257,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.products.patchProductsProductId({
+  const result = await janiPayments.products.update({
     productId: "<id>",
   });
 
@@ -274,7 +274,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { productsPatchProductsProductId } from "jani-payments/funcs/productsPatchProductsProductId.js";
+import { productsUpdate } from "jani-payments/funcs/productsUpdate.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -286,7 +286,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await productsPatchProductsProductId(janiPayments, {
+  const res = await productsUpdate(janiPayments, {
     productId: "<id>",
   });
 
@@ -307,19 +307,19 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PatchProductsProductIdRequest](../../models/operations/patchproductsproductidrequest.md)                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.ProductsUpdateRequest](../../models/operations/productsupdaterequest.md)                                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PatchProductsProductIdResponseBody](../../models/operations/patchproductsproductidresponsebody.md)\>**
+**Promise\<[operations.ProductsUpdateResponseBody](../../models/operations/productsupdateresponsebody.md)\>**
 
 ### Errors
 
-| Error Type                                        | Status Code                                       | Content Type                                      |
-| ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
-| errors.PatchProductsProductIdResponseBody         | 400                                               | application/json                                  |
-| errors.PatchProductsProductIdProductsResponseBody | 404                                               | application/json                                  |
-| errors.APIError                                   | 4XX, 5XX                                          | \*/\*                                             |
+| Error Type                                | Status Code                               | Content Type                              |
+| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
+| errors.ProductsUpdateResponseBody         | 400                                       | application/json                          |
+| errors.ProductsUpdateProductsResponseBody | 404                                       | application/json                          |
+| errors.APIError                           | 4XX, 5XX                                  | \*/\*                                     |

@@ -24,8 +24,8 @@ let value: GetTransactionsItems = {
     },
     status: "active",
     id: "<id>",
-    createdAt: "1724532688142",
-    updatedAt: "1737975446814",
+    createdAt: "1724537081615",
+    updatedAt: "1737979840287",
   },
   quantity: 9792.87,
   product: {
@@ -33,8 +33,8 @@ let value: GetTransactionsItems = {
     name: "<value>",
     description: "materialise lined brr airmail if while unless after vainly",
     status: "active",
-    createdAt: "1724040021844",
-    updatedAt: "1737977813992",
+    createdAt: "1724044415318",
+    updatedAt: "1737982207466",
     customData: {},
   },
 };

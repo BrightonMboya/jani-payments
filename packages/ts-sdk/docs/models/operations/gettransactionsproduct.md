@@ -11,8 +11,8 @@ let value: GetTransactionsProduct = {
   description:
     "transcend since while sermon huzzah close convection aha shark nimble",
   status: "active",
-  createdAt: "1736574904449",
-  updatedAt: "1737944625633",
+  createdAt: "1736579297923",
+  updatedAt: "1737949019107",
   customData: {},
 };
 ```

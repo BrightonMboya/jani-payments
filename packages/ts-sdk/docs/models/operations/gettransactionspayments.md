@@ -10,7 +10,7 @@ let value: GetTransactionsPayments = {
   status: "FAILED",
   paymentMethod: "BANK_TRANSFER",
   provider: "TIGO",
-  createdAt: "1731079028505",
+  createdAt: "1731083421978",
   providerReference: "<value>",
   providerMetadata: {},
   methodDetails: {

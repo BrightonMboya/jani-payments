@@ -10,7 +10,7 @@ let value: PatchTransactionTransactionIdPayments = {
   status: "PENDING",
   paymentMethod: "CARD",
   provider: "ORANGE",
-  createdAt: "1715554295733",
+  createdAt: "1715558689344",
   providerReference: "<value>",
   providerMetadata: {},
   methodDetails: {

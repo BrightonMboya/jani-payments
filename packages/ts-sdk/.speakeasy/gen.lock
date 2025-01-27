@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 27ae388e-35d6-43c6-b833-15618389804d
 management:
-  docChecksum: 1186243b642c552336bbd60b7cecd958
+  docChecksum: 54868deda1c18fb5395a40f472aef2c6
   docVersion: 1.0.0
-  speakeasyVersion: 1.476.1
+  speakeasyVersion: 1.476.2
   generationVersion: 2.495.1
-  releaseVersion: 0.0.1
-  configChecksum: 5c97dad0a6f5808bbb628921512a5417
+  releaseVersion: 0.1.5
+  configChecksum: 3b105f456334781be9a01ed0897d8a6a
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -19,6 +19,7 @@ features:
     globalSecurity: 2.82.12
     globalSecurityCallbacks: 0.1.0
     globalServerURLs: 2.82.4
+    nameOverrides: 2.81.2
     nullables: 0.1.0
     responseFormat: 0.2.3
     retries: 2.83.0
@@ -36,38 +37,60 @@ generatedFiles:
   - USAGE.md
   - docs/lib/utils/retryconfig.md
   - docs/models/components/security.md
-  - docs/models/errors/getaddressesaddressidresponsebody.md
-  - docs/models/errors/getcustomerscustomeridresponsebody.md
-  - docs/models/errors/getdiscountsdiscountidresponsebody.md
-  - docs/models/errors/getpricespriceidresponsebody.md
-  - docs/models/errors/getproductsproductidresponsebody.md
+  - docs/models/errors/addressescreateresponsebody.md
+  - docs/models/errors/addressesgetresponsebody.md
+  - docs/models/errors/addressesupdateresponsebody.md
+  - docs/models/errors/customerscreateresponsebody.md
+  - docs/models/errors/customersgetresponsebody.md
+  - docs/models/errors/customersupdateresponsebody.md
+  - docs/models/errors/discountcreateresponsebody.md
+  - docs/models/errors/discountgetdiscountresponsebody.md
+  - docs/models/errors/discountupdateresponsebody.md
   - docs/models/errors/gettransactiontransactionidresponsebody.md
-  - docs/models/errors/patchcustomerscustomeridaddressesaddressidresponsebody.md
-  - docs/models/errors/patchcustomerscustomeridresponsebody.md
-  - docs/models/errors/patchdiscountsdiscountidresponsebody.md
-  - docs/models/errors/patchpricespriceidresponsebody.md
-  - docs/models/errors/patchproductsproductidproductsresponsebody.md
-  - docs/models/errors/patchproductsproductidresponsebody.md
-  - docs/models/errors/patchsubscriptionsubscriptionidresponsebody.md
-  - docs/models/errors/patchsubscriptionsubscriptionidsubscriptionresponsebody.md
   - docs/models/errors/patchtransactiontransactionidresponsebody.md
-  - docs/models/errors/postcustomerscustomeridaddressesresponsebody.md
-  - docs/models/errors/postcustomersresponsebody.md
-  - docs/models/errors/postdiscountsresponsebody.md
-  - docs/models/errors/postpricesresponsebody.md
-  - docs/models/errors/postsubscriptionresponsebody.md
-  - docs/models/errors/postsubscriptionsubscriptionidactivateresponsebody.md
-  - docs/models/errors/postsubscriptionsubscriptionidactivatesubscriptionresponsebody.md
-  - docs/models/errors/postsubscriptionsubscriptionidcancelresponsebody.md
-  - docs/models/errors/postsubscriptionsubscriptionidcancelsubscriptionresponsebody.md
-  - docs/models/errors/postsubscriptionsubscriptionidpauseresponsebody.md
-  - docs/models/errors/postsubscriptionsubscriptionidpausesubscriptionresponsebody.md
-  - docs/models/errors/postsubscriptionsubscriptionidpausesubscriptionresponseresponsebody.md
-  - docs/models/errors/postsubscriptionsubscriptionidresumeresponsebody.md
-  - docs/models/errors/postsubscriptionsubscriptionidresumesubscriptionresponsebody.md
   - docs/models/errors/posttransactionsresponsebody.md
+  - docs/models/errors/pricescreateresponsebody.md
+  - docs/models/errors/pricesgetpriceresponsebody.md
+  - docs/models/errors/pricesupdateresponsebody.md
+  - docs/models/errors/productsgetproductresponsebody.md
+  - docs/models/errors/productsupdateproductsresponsebody.md
+  - docs/models/errors/productsupdateresponsebody.md
+  - docs/models/errors/subscriptionactivatesubscriptionresponsebody.md
+  - docs/models/errors/subscriptionactivatesubscriptionsubscriptionresponsebody.md
+  - docs/models/errors/subscriptioncancelsubscriptionresponsebody.md
+  - docs/models/errors/subscriptioncancelsubscriptionsubscriptionresponsebody.md
+  - docs/models/errors/subscriptioncreateresponsebody.md
+  - docs/models/errors/subscriptionpausesubscriptionresponsebody.md
+  - docs/models/errors/subscriptionpausesubscriptionsubscriptionresponsebody.md
+  - docs/models/errors/subscriptionpausesubscriptionsubscriptionresponseresponsebody.md
+  - docs/models/errors/subscriptionresumesubscriptionresponsebody.md
+  - docs/models/errors/subscriptionresumesubscriptionsubscriptionresponsebody.md
+  - docs/models/errors/subscriptionupdatesubscriptionresponsebody.md
+  - docs/models/errors/subscriptionupdatesubscriptionsubscriptionresponsebody.md
   - docs/models/operations/action.md
   - docs/models/operations/address.md
+  - docs/models/operations/addressescreateaddressescustomdata.md
+  - docs/models/operations/addressescreateaddressesstatus.md
+  - docs/models/operations/addressescreatecustomdata.md
+  - docs/models/operations/addressescreaterequest.md
+  - docs/models/operations/addressescreaterequestbody.md
+  - docs/models/operations/addressescreateresponsebody.md
+  - docs/models/operations/addressescreatestatus.md
+  - docs/models/operations/addressesgetcustomdata.md
+  - docs/models/operations/addressesgetrequest.md
+  - docs/models/operations/addressesgetresponsebody.md
+  - docs/models/operations/addressesgetstatus.md
+  - docs/models/operations/addresseslistcustomdata.md
+  - docs/models/operations/addresseslistrequest.md
+  - docs/models/operations/addresseslistresponsebody.md
+  - docs/models/operations/addressesliststatus.md
+  - docs/models/operations/addressesupdateaddressescustomdata.md
+  - docs/models/operations/addressesupdateaddressesstatus.md
+  - docs/models/operations/addressesupdatecustomdata.md
+  - docs/models/operations/addressesupdaterequest.md
+  - docs/models/operations/addressesupdaterequestbody.md
+  - docs/models/operations/addressesupdateresponsebody.md
+  - docs/models/operations/addressesupdatestatus.md
   - docs/models/operations/billedat.md
   - docs/models/operations/billedatqueryparam2.md
   - docs/models/operations/billingcycle.md
@@ -77,88 +100,58 @@ generatedFiles:
   - docs/models/operations/currentbillingperiod.md
   - docs/models/operations/customdata.md
   - docs/models/operations/customer.md
+  - docs/models/operations/customerscreatecustomdata.md
+  - docs/models/operations/customerscreatecustomerscustomdata.md
+  - docs/models/operations/customerscreatecustomersstatus.md
+  - docs/models/operations/customerscreaterequestbody.md
+  - docs/models/operations/customerscreateresponsebody.md
+  - docs/models/operations/customerscreatestatus.md
+  - docs/models/operations/customersgetcustomdata.md
+  - docs/models/operations/customersgetrequest.md
+  - docs/models/operations/customersgetresponsebody.md
+  - docs/models/operations/customersgetstatus.md
+  - docs/models/operations/customerslistcustomdata.md
+  - docs/models/operations/customerslistresponsebody.md
+  - docs/models/operations/customersliststatus.md
+  - docs/models/operations/customersupdatecustomdata.md
+  - docs/models/operations/customersupdatecustomerscustomdata.md
+  - docs/models/operations/customersupdatecustomersstatus.md
+  - docs/models/operations/customersupdaterequest.md
+  - docs/models/operations/customersupdaterequestbody.md
+  - docs/models/operations/customersupdateresponsebody.md
+  - docs/models/operations/customersupdatestatus.md
   - docs/models/operations/data.md
   - docs/models/operations/details.md
   - docs/models/operations/direction.md
   - docs/models/operations/discount.md
+  - docs/models/operations/discountcreatecustomdata.md
+  - docs/models/operations/discountcreatediscountscustomdata.md
+  - docs/models/operations/discountcreatediscountsstatus.md
+  - docs/models/operations/discountcreatediscountstype.md
+  - docs/models/operations/discountcreaterequestbody.md
+  - docs/models/operations/discountcreateresponsebody.md
+  - docs/models/operations/discountcreatestatus.md
+  - docs/models/operations/discountcreatetype.md
+  - docs/models/operations/discountgetdiscountcustomdata.md
+  - docs/models/operations/discountgetdiscountrequest.md
+  - docs/models/operations/discountgetdiscountresponsebody.md
+  - docs/models/operations/discountgetdiscountstatus.md
+  - docs/models/operations/discountgetdiscounttype.md
+  - docs/models/operations/discountlistcustomdata.md
+  - docs/models/operations/discountlistresponsebody.md
+  - docs/models/operations/discountliststatus.md
+  - docs/models/operations/discountlisttype.md
+  - docs/models/operations/discountupdatecustomdata.md
+  - docs/models/operations/discountupdatediscountscustomdata.md
+  - docs/models/operations/discountupdatediscountsstatus.md
+  - docs/models/operations/discountupdatediscountstype.md
+  - docs/models/operations/discountupdaterequest.md
+  - docs/models/operations/discountupdaterequestbody.md
+  - docs/models/operations/discountupdateresponsebody.md
+  - docs/models/operations/discountupdatestatus.md
+  - docs/models/operations/discountupdatetype.md
   - docs/models/operations/effectivefrom.md
   - docs/models/operations/field.md
-  - docs/models/operations/getaddressesaddressidcustomdata.md
-  - docs/models/operations/getaddressesaddressidrequest.md
-  - docs/models/operations/getaddressesaddressidresponsebody.md
-  - docs/models/operations/getaddressesaddressidstatus.md
-  - docs/models/operations/getcustomerscustomdata.md
-  - docs/models/operations/getcustomerscustomeridaddressescustomdata.md
-  - docs/models/operations/getcustomerscustomeridaddressesrequest.md
-  - docs/models/operations/getcustomerscustomeridaddressesresponsebody.md
-  - docs/models/operations/getcustomerscustomeridaddressesstatus.md
-  - docs/models/operations/getcustomerscustomeridcustomdata.md
-  - docs/models/operations/getcustomerscustomeridrequest.md
-  - docs/models/operations/getcustomerscustomeridresponsebody.md
-  - docs/models/operations/getcustomerscustomeridstatus.md
-  - docs/models/operations/getcustomersresponsebody.md
-  - docs/models/operations/getcustomersstatus.md
-  - docs/models/operations/getdiscountscustomdata.md
-  - docs/models/operations/getdiscountsdiscountidcustomdata.md
-  - docs/models/operations/getdiscountsdiscountidrequest.md
-  - docs/models/operations/getdiscountsdiscountidresponsebody.md
-  - docs/models/operations/getdiscountsdiscountidstatus.md
-  - docs/models/operations/getdiscountsdiscountidtype.md
-  - docs/models/operations/getdiscountsresponsebody.md
-  - docs/models/operations/getdiscountsstatus.md
-  - docs/models/operations/getdiscountstype.md
-  - docs/models/operations/getpricesbillingcycle.md
-  - docs/models/operations/getpricescustomdata.md
-  - docs/models/operations/getpricesinterval.md
-  - docs/models/operations/getpricespriceidbillingcycle.md
-  - docs/models/operations/getpricespriceidcustomdata.md
-  - docs/models/operations/getpricespriceidinterval.md
-  - docs/models/operations/getpricespriceidpricesinterval.md
-  - docs/models/operations/getpricespriceidrequest.md
-  - docs/models/operations/getpricespriceidresponsebody.md
-  - docs/models/operations/getpricespriceidstatus.md
-  - docs/models/operations/getpricespriceidtrialperiod.md
-  - docs/models/operations/getpricespriceidtype.md
-  - docs/models/operations/getpricespriceidunitprice.md
-  - docs/models/operations/getpricespricesinterval.md
-  - docs/models/operations/getpricesresponsebody.md
-  - docs/models/operations/getpricesstatus.md
-  - docs/models/operations/getpricestrialperiod.md
-  - docs/models/operations/getpricestype.md
-  - docs/models/operations/getpricesunitprice.md
-  - docs/models/operations/getproductscustomdata.md
-  - docs/models/operations/getproductsproductidcustomdata.md
-  - docs/models/operations/getproductsproductidrequest.md
-  - docs/models/operations/getproductsproductidresponsebody.md
-  - docs/models/operations/getproductsproductidstatus.md
-  - docs/models/operations/getproductsstatus.md
-  - docs/models/operations/getsubscriptionaction.md
-  - docs/models/operations/getsubscriptionbillingcycle.md
-  - docs/models/operations/getsubscriptionbillingdetails.md
-  - docs/models/operations/getsubscriptioncurrentbillingperiod.md
-  - docs/models/operations/getsubscriptioncustomdata.md
-  - docs/models/operations/getsubscriptiondata.md
-  - docs/models/operations/getsubscriptiondiscount.md
-  - docs/models/operations/getsubscriptioninterval.md
-  - docs/models/operations/getsubscriptionitems.md
-  - docs/models/operations/getsubscriptionmanagementurls.md
-  - docs/models/operations/getsubscriptionpaymentterms.md
-  - docs/models/operations/getsubscriptionprice.md
-  - docs/models/operations/getsubscriptionresponsebody.md
-  - docs/models/operations/getsubscriptionscheduledchange.md
-  - docs/models/operations/getsubscriptionstatus.md
-  - docs/models/operations/getsubscriptionsubscriptionbillingcycle.md
-  - docs/models/operations/getsubscriptionsubscriptioncustomdata.md
-  - docs/models/operations/getsubscriptionsubscriptioninterval.md
-  - docs/models/operations/getsubscriptionsubscriptionresponse200status.md
-  - docs/models/operations/getsubscriptionsubscriptionresponsecustomdata.md
-  - docs/models/operations/getsubscriptionsubscriptionresponseinterval.md
-  - docs/models/operations/getsubscriptionsubscriptionresponsestatus.md
-  - docs/models/operations/getsubscriptionsubscriptionstatus.md
-  - docs/models/operations/getsubscriptionsubscriptiontype.md
-  - docs/models/operations/getsubscriptiontrialperiod.md
-  - docs/models/operations/getsubscriptiontype.md
-  - docs/models/operations/getsubscriptionunitprice.md
   - docs/models/operations/gettransactionsaddress.md
   - docs/models/operations/gettransactionsbillingcycle.md
   - docs/models/operations/gettransactionscollectionmode.md
@@ -267,90 +260,6 @@ generatedFiles:
   - docs/models/operations/onresume.md
   - docs/models/operations/operator.md
   - docs/models/operations/orderby.md
-  - docs/models/operations/patchcustomerscustomeridaddressesaddressidaddressescustomdata.md
-  - docs/models/operations/patchcustomerscustomeridaddressesaddressidaddressesstatus.md
-  - docs/models/operations/patchcustomerscustomeridaddressesaddressidcustomdata.md
-  - docs/models/operations/patchcustomerscustomeridaddressesaddressidrequest.md
-  - docs/models/operations/patchcustomerscustomeridaddressesaddressidrequestbody.md
-  - docs/models/operations/patchcustomerscustomeridaddressesaddressidresponsebody.md
-  - docs/models/operations/patchcustomerscustomeridaddressesaddressidstatus.md
-  - docs/models/operations/patchcustomerscustomeridcustomdata.md
-  - docs/models/operations/patchcustomerscustomeridcustomerscustomdata.md
-  - docs/models/operations/patchcustomerscustomeridcustomersstatus.md
-  - docs/models/operations/patchcustomerscustomeridrequest.md
-  - docs/models/operations/patchcustomerscustomeridrequestbody.md
-  - docs/models/operations/patchcustomerscustomeridresponsebody.md
-  - docs/models/operations/patchcustomerscustomeridstatus.md
-  - docs/models/operations/patchdiscountsdiscountidcustomdata.md
-  - docs/models/operations/patchdiscountsdiscountiddiscountscustomdata.md
-  - docs/models/operations/patchdiscountsdiscountiddiscountsstatus.md
-  - docs/models/operations/patchdiscountsdiscountiddiscountstype.md
-  - docs/models/operations/patchdiscountsdiscountidrequest.md
-  - docs/models/operations/patchdiscountsdiscountidrequestbody.md
-  - docs/models/operations/patchdiscountsdiscountidresponsebody.md
-  - docs/models/operations/patchdiscountsdiscountidstatus.md
-  - docs/models/operations/patchdiscountsdiscountidtype.md
-  - docs/models/operations/patchpricespriceidbillingcycle.md
-  - docs/models/operations/patchpricespriceidcustomdata.md
-  - docs/models/operations/patchpricespriceidinterval.md
-  - docs/models/operations/patchpricespriceidpricesbillingcycle.md
-  - docs/models/operations/patchpricespriceidpricescustomdata.md
-  - docs/models/operations/patchpricespriceidpricesinterval.md
-  - docs/models/operations/patchpricespriceidpricesresponse200interval.md
-  - docs/models/operations/patchpricespriceidpricesresponseinterval.md
-  - docs/models/operations/patchpricespriceidpricesstatus.md
-  - docs/models/operations/patchpricespriceidpricestrialperiod.md
-  - docs/models/operations/patchpricespriceidpricestype.md
-  - docs/models/operations/patchpricespriceidpricesunitprice.md
-  - docs/models/operations/patchpricespriceidrequest.md
-  - docs/models/operations/patchpricespriceidrequestbody.md
-  - docs/models/operations/patchpricespriceidresponsebody.md
-  - docs/models/operations/patchpricespriceidstatus.md
-  - docs/models/operations/patchpricespriceidtrialperiod.md
-  - docs/models/operations/patchpricespriceidtype.md
-  - docs/models/operations/patchpricespriceidunitprice.md
-  - docs/models/operations/patchproductsproductidcustomdata.md
-  - docs/models/operations/patchproductsproductidproductscustomdata.md
-  - docs/models/operations/patchproductsproductidproductsstatus.md
-  - docs/models/operations/patchproductsproductidrequest.md
-  - docs/models/operations/patchproductsproductidrequestbody.md
-  - docs/models/operations/patchproductsproductidresponsebody.md
-  - docs/models/operations/patchproductsproductidstatus.md
-  - docs/models/operations/patchsubscriptionsubscriptionidaction.md
-  - docs/models/operations/patchsubscriptionsubscriptionidbillingcycle.md
-  - docs/models/operations/patchsubscriptionsubscriptionidbillingdetails.md
-  - docs/models/operations/patchsubscriptionsubscriptionidcurrentbillingperiod.md
-  - docs/models/operations/patchsubscriptionsubscriptionidcustomdata.md
-  - docs/models/operations/patchsubscriptionsubscriptioniddata.md
-  - docs/models/operations/patchsubscriptionsubscriptioniddiscount.md
-  - docs/models/operations/patchsubscriptionsubscriptionideffectivefrom.md
-  - docs/models/operations/patchsubscriptionsubscriptionidinterval.md
-  - docs/models/operations/patchsubscriptionsubscriptioniditems.md
-  - docs/models/operations/patchsubscriptionsubscriptionidmanagementurls.md
-  - docs/models/operations/patchsubscriptionsubscriptionidpaymentinterval.md
-  - docs/models/operations/patchsubscriptionsubscriptionidpaymentterms.md
-  - docs/models/operations/patchsubscriptionsubscriptionidprice.md
-  - docs/models/operations/patchsubscriptionsubscriptionidrequest.md
-  - docs/models/operations/patchsubscriptionsubscriptionidrequestbody.md
-  - docs/models/operations/patchsubscriptionsubscriptionidresponsebody.md
-  - docs/models/operations/patchsubscriptionsubscriptionidscheduledchange.md
-  - docs/models/operations/patchsubscriptionsubscriptionidstatus.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptionbillingcycle.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptionbillingdetails.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptioncustomdata.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptioninterval.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptionitems.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptionpaymentterms.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptionresponse200customdata.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptionresponse200status.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptionresponsecustomdata.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptionresponseinterval.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptionresponsestatus.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptionstatus.md
-  - docs/models/operations/patchsubscriptionsubscriptionidsubscriptiontype.md
-  - docs/models/operations/patchsubscriptionsubscriptionidtrialperiod.md
-  - docs/models/operations/patchsubscriptionsubscriptionidtype.md
-  - docs/models/operations/patchsubscriptionsubscriptionidunitprice.md
   - docs/models/operations/patchtransactiontransactionidaddress.md
   - docs/models/operations/patchtransactiontransactionidbillingcycle.md
   - docs/models/operations/patchtransactiontransactionidcollectionmode.md
@@ -407,185 +316,6 @@ generatedFiles:
   - docs/models/operations/paymentprovider.md
   - docs/models/operations/payments.md
   - docs/models/operations/paymentterms.md
-  - docs/models/operations/postcustomerscustomdata.md
-  - docs/models/operations/postcustomerscustomeridaddressesaddressescustomdata.md
-  - docs/models/operations/postcustomerscustomeridaddressesaddressesstatus.md
-  - docs/models/operations/postcustomerscustomeridaddressescustomdata.md
-  - docs/models/operations/postcustomerscustomeridaddressesrequest.md
-  - docs/models/operations/postcustomerscustomeridaddressesrequestbody.md
-  - docs/models/operations/postcustomerscustomeridaddressesresponsebody.md
-  - docs/models/operations/postcustomerscustomeridaddressesstatus.md
-  - docs/models/operations/postcustomerscustomerscustomdata.md
-  - docs/models/operations/postcustomerscustomersstatus.md
-  - docs/models/operations/postcustomersrequestbody.md
-  - docs/models/operations/postcustomersresponsebody.md
-  - docs/models/operations/postcustomersstatus.md
-  - docs/models/operations/postdiscountscustomdata.md
-  - docs/models/operations/postdiscountsdiscountscustomdata.md
-  - docs/models/operations/postdiscountsdiscountsstatus.md
-  - docs/models/operations/postdiscountsdiscountstype.md
-  - docs/models/operations/postdiscountsrequestbody.md
-  - docs/models/operations/postdiscountsresponsebody.md
-  - docs/models/operations/postdiscountsstatus.md
-  - docs/models/operations/postdiscountstype.md
-  - docs/models/operations/postpricesbillingcycle.md
-  - docs/models/operations/postpricescustomdata.md
-  - docs/models/operations/postpricesinterval.md
-  - docs/models/operations/postpricespricescustomdata.md
-  - docs/models/operations/postpricespricesinterval.md
-  - docs/models/operations/postpricespricesresponseinterval.md
-  - docs/models/operations/postpricespricesstatus.md
-  - docs/models/operations/postpricesrequestbody.md
-  - docs/models/operations/postpricesresponsebody.md
-  - docs/models/operations/postpricesstatus.md
-  - docs/models/operations/postpricestrialperiod.md
-  - docs/models/operations/postpricestype.md
-  - docs/models/operations/postpricesunitprice.md
-  - docs/models/operations/postproductscustomdata.md
-  - docs/models/operations/postproductsrequestbody.md
-  - docs/models/operations/postproductsresponsebody.md
-  - docs/models/operations/postproductsstatus.md
-  - docs/models/operations/postsubscriptionbillingcycle.md
-  - docs/models/operations/postsubscriptionbillingdetails.md
-  - docs/models/operations/postsubscriptioncurrentbillingperiod.md
-  - docs/models/operations/postsubscriptioncustomdata.md
-  - docs/models/operations/postsubscriptiondiscount.md
-  - docs/models/operations/postsubscriptioninterval.md
-  - docs/models/operations/postsubscriptionitems.md
-  - docs/models/operations/postsubscriptionmanagementurls.md
-  - docs/models/operations/postsubscriptionpaymentterms.md
-  - docs/models/operations/postsubscriptionprice.md
-  - docs/models/operations/postsubscriptionrequestbody.md
-  - docs/models/operations/postsubscriptionresponsebody.md
-  - docs/models/operations/postsubscriptionstatus.md
-  - docs/models/operations/postsubscriptionsubscriptionbillingcycle.md
-  - docs/models/operations/postsubscriptionsubscriptioncustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivateaction.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatebillingcycle.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatebillingdetails.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatecurrentbillingperiod.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatecustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatedata.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatediscount.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivateinterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivateitems.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatemanagementurls.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatepaymentterms.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivateprice.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivaterequest.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivateresponsebody.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatescheduledchange.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatestatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatesubscriptionbillingcycle.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatesubscriptioncustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatesubscriptioninterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatesubscriptionresponse200status.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatesubscriptionresponsecustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatesubscriptionresponseinterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatesubscriptionresponsestatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatesubscriptionstatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatesubscriptiontype.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatetrialperiod.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivatetype.md
-  - docs/models/operations/postsubscriptionsubscriptionidactivateunitprice.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelaction.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelbillingcycle.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelbillingdetails.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelcurrentbillingperiod.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelcustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidcanceldata.md
-  - docs/models/operations/postsubscriptionsubscriptionidcanceldiscount.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelinterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelitems.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelmanagementurls.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelpaymentterms.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelprice.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelrequest.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelrequestbody.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelresponsebody.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelscheduledchange.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelstatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelsubscriptionbillingcycle.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelsubscriptioncustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelsubscriptioninterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelsubscriptionresponse200status.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelsubscriptionresponsecustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelsubscriptionresponseinterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelsubscriptionresponsestatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelsubscriptionstatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelsubscriptiontype.md
-  - docs/models/operations/postsubscriptionsubscriptionidcanceltrialperiod.md
-  - docs/models/operations/postsubscriptionsubscriptionidcanceltype.md
-  - docs/models/operations/postsubscriptionsubscriptionidcancelunitprice.md
-  - docs/models/operations/postsubscriptionsubscriptionidpauseaction.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausebillingcycle.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausebillingdetails.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausecurrentbillingperiod.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausecustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausedata.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausediscount.md
-  - docs/models/operations/postsubscriptionsubscriptionidpauseeffectivefrom.md
-  - docs/models/operations/postsubscriptionsubscriptionidpauseinterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidpauseitems.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausemanagementurls.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausepaymentterms.md
-  - docs/models/operations/postsubscriptionsubscriptionidpauseprice.md
-  - docs/models/operations/postsubscriptionsubscriptionidpauserequest.md
-  - docs/models/operations/postsubscriptionsubscriptionidpauserequestbody.md
-  - docs/models/operations/postsubscriptionsubscriptionidpauseresponsebody.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausescheduledchange.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausestatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausesubscriptionbillingcycle.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausesubscriptioncustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausesubscriptioninterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausesubscriptionresponse200status.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausesubscriptionresponsecustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausesubscriptionresponseinterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausesubscriptionresponsestatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausesubscriptionstatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausesubscriptiontype.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausetrialperiod.md
-  - docs/models/operations/postsubscriptionsubscriptionidpausetype.md
-  - docs/models/operations/postsubscriptionsubscriptionidpauseunitprice.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumeaction.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumebillingcycle.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumebillingdetails.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumecurrentbillingperiod.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumecustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumedata.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumediscount.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumeinterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumeitems.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumemanagementurls.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumepaymentterms.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumeprice.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumerequest.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumeresponsebody.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumescheduledchange.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumestatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumesubscriptionbillingcycle.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumesubscriptioncustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumesubscriptioninterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumesubscriptionresponse200status.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumesubscriptionresponsecustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumesubscriptionresponseinterval.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumesubscriptionresponsestatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumesubscriptionstatus.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumesubscriptiontype.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumetrialperiod.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumetype.md
-  - docs/models/operations/postsubscriptionsubscriptionidresumeunitprice.md
-  - docs/models/operations/postsubscriptionsubscriptioninterval.md
-  - docs/models/operations/postsubscriptionsubscriptionresponse200applicationjsonstatus.md
-  - docs/models/operations/postsubscriptionsubscriptionresponse200status.md
-  - docs/models/operations/postsubscriptionsubscriptionresponsecustomdata.md
-  - docs/models/operations/postsubscriptionsubscriptionresponseinterval.md
-  - docs/models/operations/postsubscriptionsubscriptionresponsestatus.md
-  - docs/models/operations/postsubscriptionsubscriptionstatus.md
-  - docs/models/operations/postsubscriptionsubscriptiontype.md
-  - docs/models/operations/postsubscriptiontrialperiod.md
-  - docs/models/operations/postsubscriptiontype.md
-  - docs/models/operations/postsubscriptionunitprice.md
   - docs/models/operations/posttransactionsbillingcycle.md
   - docs/models/operations/posttransactionscollectionmode.md
   - docs/models/operations/posttransactionscurrentbillingperiod.md
@@ -625,7 +355,75 @@ generatedFiles:
   - docs/models/operations/posttransactionstype.md
   - docs/models/operations/posttransactionsunitprice.md
   - docs/models/operations/price.md
+  - docs/models/operations/pricescreatebillingcycle.md
+  - docs/models/operations/pricescreatecustomdata.md
+  - docs/models/operations/pricescreateinterval.md
+  - docs/models/operations/pricescreatepricescustomdata.md
+  - docs/models/operations/pricescreatepricesinterval.md
+  - docs/models/operations/pricescreatepricesresponseinterval.md
+  - docs/models/operations/pricescreatepricesstatus.md
+  - docs/models/operations/pricescreaterequestbody.md
+  - docs/models/operations/pricescreateresponsebody.md
+  - docs/models/operations/pricescreatestatus.md
+  - docs/models/operations/pricescreatetrialperiod.md
+  - docs/models/operations/pricescreatetype.md
+  - docs/models/operations/pricescreateunitprice.md
+  - docs/models/operations/pricesgetpricebillingcycle.md
+  - docs/models/operations/pricesgetpricecustomdata.md
+  - docs/models/operations/pricesgetpriceinterval.md
+  - docs/models/operations/pricesgetpricepricesinterval.md
+  - docs/models/operations/pricesgetpricerequest.md
+  - docs/models/operations/pricesgetpriceresponsebody.md
+  - docs/models/operations/pricesgetpricestatus.md
+  - docs/models/operations/pricesgetpricetrialperiod.md
+  - docs/models/operations/pricesgetpricetype.md
+  - docs/models/operations/pricesgetpriceunitprice.md
+  - docs/models/operations/priceslistbillingcycle.md
+  - docs/models/operations/priceslistcustomdata.md
+  - docs/models/operations/priceslistinterval.md
+  - docs/models/operations/priceslistpricesinterval.md
+  - docs/models/operations/priceslistresponsebody.md
+  - docs/models/operations/pricesliststatus.md
+  - docs/models/operations/priceslisttrialperiod.md
+  - docs/models/operations/priceslisttype.md
+  - docs/models/operations/priceslistunitprice.md
+  - docs/models/operations/pricesupdatebillingcycle.md
+  - docs/models/operations/pricesupdatecustomdata.md
+  - docs/models/operations/pricesupdateinterval.md
+  - docs/models/operations/pricesupdatepricesbillingcycle.md
+  - docs/models/operations/pricesupdatepricescustomdata.md
+  - docs/models/operations/pricesupdatepricesinterval.md
+  - docs/models/operations/pricesupdatepricesresponse200interval.md
+  - docs/models/operations/pricesupdatepricesresponseinterval.md
+  - docs/models/operations/pricesupdatepricesstatus.md
+  - docs/models/operations/pricesupdatepricestrialperiod.md
+  - docs/models/operations/pricesupdatepricestype.md
+  - docs/models/operations/pricesupdatepricesunitprice.md
+  - docs/models/operations/pricesupdaterequest.md
+  - docs/models/operations/pricesupdaterequestbody.md
+  - docs/models/operations/pricesupdateresponsebody.md
+  - docs/models/operations/pricesupdatestatus.md
+  - docs/models/operations/pricesupdatetrialperiod.md
+  - docs/models/operations/pricesupdatetype.md
+  - docs/models/operations/pricesupdateunitprice.md
   - docs/models/operations/product.md
+  - docs/models/operations/productscreatecustomdata.md
+  - docs/models/operations/productscreaterequestbody.md
+  - docs/models/operations/productscreateresponsebody.md
+  - docs/models/operations/productscreatestatus.md
+  - docs/models/operations/productsgetproductcustomdata.md
+  - docs/models/operations/productsgetproductrequest.md
+  - docs/models/operations/productsgetproductresponsebody.md
+  - docs/models/operations/productsgetproductstatus.md
+  - docs/models/operations/productslistcustomdata.md
+  - docs/models/operations/productsliststatus.md
+  - docs/models/operations/productsupdatecustomdata.md
+  - docs/models/operations/productsupdateproductscustomdata.md
+  - docs/models/operations/productsupdateproductsstatus.md
+  - docs/models/operations/productsupdaterequest.md
+  - docs/models/operations/productsupdaterequestbody.md
+  - docs/models/operations/productsupdateresponsebody.md
+  - docs/models/operations/productsupdatestatus.md
   - docs/models/operations/provider.md
   - docs/models/operations/providermetadata.md
   - docs/models/operations/queryparam2.md
@@ -635,8 +433,211 @@ generatedFiles:
   - docs/models/operations/responsebody.md
   - docs/models/operations/scheduledchange.md
   - docs/models/operations/status.md
+  - docs/models/operations/subscriptionactivatesubscriptionaction.md
+  - docs/models/operations/subscriptionactivatesubscriptionbillingcycle.md
+  - docs/models/operations/subscriptionactivatesubscriptionbillingdetails.md
+  - docs/models/operations/subscriptionactivatesubscriptioncurrentbillingperiod.md
+  - docs/models/operations/subscriptionactivatesubscriptioncustomdata.md
+  - docs/models/operations/subscriptionactivatesubscriptiondata.md
+  - docs/models/operations/subscriptionactivatesubscriptiondiscount.md
+  - docs/models/operations/subscriptionactivatesubscriptioninterval.md
+  - docs/models/operations/subscriptionactivatesubscriptionitems.md
+  - docs/models/operations/subscriptionactivatesubscriptionmanagementurls.md
+  - docs/models/operations/subscriptionactivatesubscriptionpaymentterms.md
+  - docs/models/operations/subscriptionactivatesubscriptionprice.md
+  - docs/models/operations/subscriptionactivatesubscriptionrequest.md
+  - docs/models/operations/subscriptionactivatesubscriptionresponsebody.md
+  - docs/models/operations/subscriptionactivatesubscriptionscheduledchange.md
+  - docs/models/operations/subscriptionactivatesubscriptionstatus.md
+  - docs/models/operations/subscriptionactivatesubscriptionsubscriptionbillingcycle.md
+  - docs/models/operations/subscriptionactivatesubscriptionsubscriptioncustomdata.md
+  - docs/models/operations/subscriptionactivatesubscriptionsubscriptioninterval.md
+  - docs/models/operations/subscriptionactivatesubscriptionsubscriptionresponse200status.md
+  - docs/models/operations/subscriptionactivatesubscriptionsubscriptionresponsecustomdata.md
+  - docs/models/operations/subscriptionactivatesubscriptionsubscriptionresponseinterval.md
+  - docs/models/operations/subscriptionactivatesubscriptionsubscriptionresponsestatus.md
+  - docs/models/operations/subscriptionactivatesubscriptionsubscriptionstatus.md
+  - docs/models/operations/subscriptionactivatesubscriptionsubscriptiontype.md
+  - docs/models/operations/subscriptionactivatesubscriptiontrialperiod.md
+  - docs/models/operations/subscriptionactivatesubscriptiontype.md
+  - docs/models/operations/subscriptionactivatesubscriptionunitprice.md
+  - docs/models/operations/subscriptioncancelsubscriptionaction.md
+  - docs/models/operations/subscriptioncancelsubscriptionbillingcycle.md
+  - docs/models/operations/subscriptioncancelsubscriptionbillingdetails.md
+  - docs/models/operations/subscriptioncancelsubscriptioncurrentbillingperiod.md
+  - docs/models/operations/subscriptioncancelsubscriptioncustomdata.md
+  - docs/models/operations/subscriptioncancelsubscriptiondata.md
+  - docs/models/operations/subscriptioncancelsubscriptiondiscount.md
+  - docs/models/operations/subscriptioncancelsubscriptioninterval.md
+  - docs/models/operations/subscriptioncancelsubscriptionitems.md
+  - docs/models/operations/subscriptioncancelsubscriptionmanagementurls.md
+  - docs/models/operations/subscriptioncancelsubscriptionpaymentterms.md
+  - docs/models/operations/subscriptioncancelsubscriptionprice.md
+  - docs/models/operations/subscriptioncancelsubscriptionrequest.md
+  - docs/models/operations/subscriptioncancelsubscriptionrequestbody.md
+  - docs/models/operations/subscriptioncancelsubscriptionresponsebody.md
+  - docs/models/operations/subscriptioncancelsubscriptionscheduledchange.md
+  - docs/models/operations/subscriptioncancelsubscriptionstatus.md
+  - docs/models/operations/subscriptioncancelsubscriptionsubscriptionbillingcycle.md
+  - docs/models/operations/subscriptioncancelsubscriptionsubscriptioncustomdata.md
+  - docs/models/operations/subscriptioncancelsubscriptionsubscriptioninterval.md
+  - docs/models/operations/subscriptioncancelsubscriptionsubscriptionresponse200status.md
+  - docs/models/operations/subscriptioncancelsubscriptionsubscriptionresponsecustomdata.md
+  - docs/models/operations/subscriptioncancelsubscriptionsubscriptionresponseinterval.md
+  - docs/models/operations/subscriptioncancelsubscriptionsubscriptionresponsestatus.md
+  - docs/models/operations/subscriptioncancelsubscriptionsubscriptionstatus.md
+  - docs/models/operations/subscriptioncancelsubscriptionsubscriptiontype.md
+  - docs/models/operations/subscriptioncancelsubscriptiontrialperiod.md
+  - docs/models/operations/subscriptioncancelsubscriptiontype.md
+  - docs/models/operations/subscriptioncancelsubscriptionunitprice.md
+  - docs/models/operations/subscriptioncreateaction.md
+  - docs/models/operations/subscriptioncreatebillingcycle.md
+  - docs/models/operations/subscriptioncreatebillingdetails.md
+  - docs/models/operations/subscriptioncreatecurrentbillingperiod.md
+  - docs/models/operations/subscriptioncreatecustomdata.md
+  - docs/models/operations/subscriptioncreatedata.md
+  - docs/models/operations/subscriptioncreatediscount.md
+  - docs/models/operations/subscriptioncreateinterval.md
+  - docs/models/operations/subscriptioncreateitems.md
+  - docs/models/operations/subscriptioncreatemanagementurls.md
+  - docs/models/operations/subscriptioncreatepaymentterms.md
+  - docs/models/operations/subscriptioncreateprice.md
+  - docs/models/operations/subscriptioncreaterequestbody.md
+  - docs/models/operations/subscriptioncreateresponsebody.md
+  - docs/models/operations/subscriptioncreatescheduledchange.md
+  - docs/models/operations/subscriptioncreatestatus.md
+  - docs/models/operations/subscriptioncreatesubscriptionbillingcycle.md
+  - docs/models/operations/subscriptioncreatesubscriptioncustomdata.md
+  - docs/models/operations/subscriptioncreatesubscriptioninterval.md
+  - docs/models/operations/subscriptioncreatesubscriptionresponse200applicationjsonstatus.md
+  - docs/models/operations/subscriptioncreatesubscriptionresponse200status.md
+  - docs/models/operations/subscriptioncreatesubscriptionresponsecustomdata.md
+  - docs/models/operations/subscriptioncreatesubscriptionresponseinterval.md
+  - docs/models/operations/subscriptioncreatesubscriptionresponsestatus.md
+  - docs/models/operations/subscriptioncreatesubscriptionstatus.md
+  - docs/models/operations/subscriptioncreatesubscriptiontype.md
+  - docs/models/operations/subscriptioncreatetrialperiod.md
+  - docs/models/operations/subscriptioncreatetype.md
+  - docs/models/operations/subscriptioncreateunitprice.md
   - docs/models/operations/subscriptionid.md
   - docs/models/operations/subscriptionidqueryparam2.md
+  - docs/models/operations/subscriptionlistbillingcycle.md
+  - docs/models/operations/subscriptionlistbillingdetails.md
+  - docs/models/operations/subscriptionlistcurrentbillingperiod.md
+  - docs/models/operations/subscriptionlistcustomdata.md
+  - docs/models/operations/subscriptionlistdiscount.md
+  - docs/models/operations/subscriptionlistinterval.md
+  - docs/models/operations/subscriptionlistitems.md
+  - docs/models/operations/subscriptionlistmanagementurls.md
+  - docs/models/operations/subscriptionlistpaymentterms.md
+  - docs/models/operations/subscriptionlistprice.md
+  - docs/models/operations/subscriptionlistresponsebody.md
+  - docs/models/operations/subscriptionliststatus.md
+  - docs/models/operations/subscriptionlistsubscriptionbillingcycle.md
+  - docs/models/operations/subscriptionlistsubscriptioncustomdata.md
+  - docs/models/operations/subscriptionlistsubscriptioninterval.md
+  - docs/models/operations/subscriptionlistsubscriptionresponse200status.md
+  - docs/models/operations/subscriptionlistsubscriptionresponsecustomdata.md
+  - docs/models/operations/subscriptionlistsubscriptionresponseinterval.md
+  - docs/models/operations/subscriptionlistsubscriptionresponsestatus.md
+  - docs/models/operations/subscriptionlistsubscriptionstatus.md
+  - docs/models/operations/subscriptionlistsubscriptiontype.md
+  - docs/models/operations/subscriptionlisttrialperiod.md
+  - docs/models/operations/subscriptionlisttype.md
+  - docs/models/operations/subscriptionlistunitprice.md
+  - docs/models/operations/subscriptionpausesubscriptionaction.md
+  - docs/models/operations/subscriptionpausesubscriptionbillingcycle.md
+  - docs/models/operations/subscriptionpausesubscriptionbillingdetails.md
+  - docs/models/operations/subscriptionpausesubscriptioncurrentbillingperiod.md
+  - docs/models/operations/subscriptionpausesubscriptioncustomdata.md
+  - docs/models/operations/subscriptionpausesubscriptiondata.md
+  - docs/models/operations/subscriptionpausesubscriptiondiscount.md
+  - docs/models/operations/subscriptionpausesubscriptioneffectivefrom.md
+  - docs/models/operations/subscriptionpausesubscriptioninterval.md
+  - docs/models/operations/subscriptionpausesubscriptionitems.md
+  - docs/models/operations/subscriptionpausesubscriptionmanagementurls.md
+  - docs/models/operations/subscriptionpausesubscriptionpaymentterms.md
+  - docs/models/operations/subscriptionpausesubscriptionprice.md
+  - docs/models/operations/subscriptionpausesubscriptionrequest.md
+  - docs/models/operations/subscriptionpausesubscriptionrequestbody.md
+  - docs/models/operations/subscriptionpausesubscriptionresponsebody.md
+  - docs/models/operations/subscriptionpausesubscriptionscheduledchange.md
+  - docs/models/operations/subscriptionpausesubscriptionstatus.md
+  - docs/models/operations/subscriptionpausesubscriptionsubscriptionbillingcycle.md
+  - docs/models/operations/subscriptionpausesubscriptionsubscriptioncustomdata.md
+  - docs/models/operations/subscriptionpausesubscriptionsubscriptioninterval.md
+  - docs/models/operations/subscriptionpausesubscriptionsubscriptionresponse200status.md
+  - docs/models/operations/subscriptionpausesubscriptionsubscriptionresponsecustomdata.md
+  - docs/models/operations/subscriptionpausesubscriptionsubscriptionresponseinterval.md
+  - docs/models/operations/subscriptionpausesubscriptionsubscriptionresponsestatus.md
+  - docs/models/operations/subscriptionpausesubscriptionsubscriptionstatus.md
+  - docs/models/operations/subscriptionpausesubscriptionsubscriptiontype.md
+  - docs/models/operations/subscriptionpausesubscriptiontrialperiod.md
+  - docs/models/operations/subscriptionpausesubscriptiontype.md
+  - docs/models/operations/subscriptionpausesubscriptionunitprice.md
+  - docs/models/operations/subscriptionresumesubscriptionaction.md
+  - docs/models/operations/subscriptionresumesubscriptionbillingcycle.md
+  - docs/models/operations/subscriptionresumesubscriptionbillingdetails.md
+  - docs/models/operations/subscriptionresumesubscriptioncurrentbillingperiod.md
+  - docs/models/operations/subscriptionresumesubscriptioncustomdata.md
+  - docs/models/operations/subscriptionresumesubscriptiondata.md
+  - docs/models/operations/subscriptionresumesubscriptiondiscount.md
+  - docs/models/operations/subscriptionresumesubscriptioninterval.md
+  - docs/models/operations/subscriptionresumesubscriptionitems.md
+  - docs/models/operations/subscriptionresumesubscriptionmanagementurls.md
+  - docs/models/operations/subscriptionresumesubscriptionpaymentterms.md
+  - docs/models/operations/subscriptionresumesubscriptionprice.md
+  - docs/models/operations/subscriptionresumesubscriptionrequest.md
+  - docs/models/operations/subscriptionresumesubscriptionresponsebody.md
+  - docs/models/operations/subscriptionresumesubscriptionscheduledchange.md
+  - docs/models/operations/subscriptionresumesubscriptionstatus.md
+  - docs/models/operations/subscriptionresumesubscriptionsubscriptionbillingcycle.md
+  - docs/models/operations/subscriptionresumesubscriptionsubscriptioncustomdata.md
+  - docs/models/operations/subscriptionresumesubscriptionsubscriptioninterval.md
+  - docs/models/operations/subscriptionresumesubscriptionsubscriptionresponse200status.md
+  - docs/models/operations/subscriptionresumesubscriptionsubscriptionresponsecustomdata.md
+  - docs/models/operations/subscriptionresumesubscriptionsubscriptionresponseinterval.md
+  - docs/models/operations/subscriptionresumesubscriptionsubscriptionresponsestatus.md
+  - docs/models/operations/subscriptionresumesubscriptionsubscriptionstatus.md
+  - docs/models/operations/subscriptionresumesubscriptionsubscriptiontype.md
+  - docs/models/operations/subscriptionresumesubscriptiontrialperiod.md
+  - docs/models/operations/subscriptionresumesubscriptiontype.md
+  - docs/models/operations/subscriptionresumesubscriptionunitprice.md
+  - docs/models/operations/subscriptionupdatesubscriptionaction.md
+  - docs/models/operations/subscriptionupdatesubscriptionbillingcycle.md
+  - docs/models/operations/subscriptionupdatesubscriptionbillingdetails.md
+  - docs/models/operations/subscriptionupdatesubscriptioncurrentbillingperiod.md
+  - docs/models/operations/subscriptionupdatesubscriptioncustomdata.md
+  - docs/models/operations/subscriptionupdatesubscriptiondata.md
+  - docs/models/operations/subscriptionupdatesubscriptiondiscount.md
+  - docs/models/operations/subscriptionupdatesubscriptioneffectivefrom.md
+  - docs/models/operations/subscriptionupdatesubscriptioninterval.md
+  - docs/models/operations/subscriptionupdatesubscriptionitems.md
+  - docs/models/operations/subscriptionupdatesubscriptionmanagementurls.md
+  - docs/models/operations/subscriptionupdatesubscriptionpaymentinterval.md
+  - docs/models/operations/subscriptionupdatesubscriptionpaymentterms.md
+  - docs/models/operations/subscriptionupdatesubscriptionprice.md
+  - docs/models/operations/subscriptionupdatesubscriptionrequest.md
+  - docs/models/operations/subscriptionupdatesubscriptionrequestbody.md
+  - docs/models/operations/subscriptionupdatesubscriptionresponsebody.md
+  - docs/models/operations/subscriptionupdatesubscriptionscheduledchange.md
+  - docs/models/operations/subscriptionupdatesubscriptionstatus.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptionbillingcycle.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptionbillingdetails.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptioncustomdata.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptioninterval.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptionitems.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptionpaymentterms.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptionresponse200customdata.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptionresponse200status.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptionresponsecustomdata.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptionresponseinterval.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptionresponsestatus.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptionstatus.md
+  - docs/models/operations/subscriptionupdatesubscriptionsubscriptiontype.md
+  - docs/models/operations/subscriptionupdatesubscriptiontrialperiod.md
+  - docs/models/operations/subscriptionupdatesubscriptiontype.md
+  - docs/models/operations/subscriptionupdatesubscriptionunitprice.md
   - docs/models/operations/three.md
   - docs/models/operations/total.md
   - docs/models/operations/trialperiod.md
@@ -659,34 +660,34 @@ generatedFiles:
   - jsr.json
   - package.json
   - src/core.ts
-  - src/funcs/addressesGetAddressesAddressId.ts
-  - src/funcs/addressesGetCustomersCustomerIdAddresses.ts
-  - src/funcs/addressesPatchCustomersCustomerIdAddressesAddressId.ts
-  - src/funcs/addressesPostCustomersCustomerIdAddresses.ts
-  - src/funcs/customersGetCustomers.ts
-  - src/funcs/customersGetCustomersCustomerId.ts
-  - src/funcs/customersPatchCustomersCustomerId.ts
-  - src/funcs/customersPostCustomers.ts
+  - src/funcs/addressesCreate.ts
+  - src/funcs/addressesGet.ts
+  - src/funcs/addressesList.ts
+  - src/funcs/addressesUpdate.ts
+  - src/funcs/customersCreate.ts
+  - src/funcs/customersGet.ts
+  - src/funcs/customersList.ts
+  - src/funcs/customersUpdate.ts
   - src/funcs/developerToolsPostApiKeys.ts
-  - src/funcs/discountsGetDiscounts.ts
-  - src/funcs/discountsGetDiscountsDiscountId.ts
-  - src/funcs/discountsPatchDiscountsDiscountId.ts
-  - src/funcs/discountsPostDiscounts.ts
-  - src/funcs/pricesGetPrices.ts
-  - src/funcs/pricesGetPricesPriceId.ts
-  - src/funcs/pricesPatchPricesPriceId.ts
-  - src/funcs/pricesPostPrices.ts
-  - src/funcs/productsGetProducts.ts
-  - src/funcs/productsGetProductsProductId.ts
-  - src/funcs/productsPatchProductsProductId.ts
-  - src/funcs/productsPostProducts.ts
-  - src/funcs/subscriptionGetSubscription.ts
-  - src/funcs/subscriptionPatchSubscriptionSubscriptionId.ts
-  - src/funcs/subscriptionPostSubscription.ts
-  - src/funcs/subscriptionPostSubscriptionSubscriptionIdActivate.ts
-  - src/funcs/subscriptionPostSubscriptionSubscriptionIdCancel.ts
-  - src/funcs/subscriptionPostSubscriptionSubscriptionIdPause.ts
-  - src/funcs/subscriptionPostSubscriptionSubscriptionIdResume.ts
+  - src/funcs/discountsCreate.ts
+  - src/funcs/discountsGet.ts
+  - src/funcs/discountsList.ts
+  - src/funcs/discountsUpdate.ts
+  - src/funcs/pricesCreate.ts
+  - src/funcs/pricesGet.ts
+  - src/funcs/pricesList.ts
+  - src/funcs/pricesUpdate.ts
+  - src/funcs/productsCreate.ts
+  - src/funcs/productsGet.ts
+  - src/funcs/productsList.ts
+  - src/funcs/productsUpdate.ts
+  - src/funcs/subscriptionActivateSubscription.ts
+  - src/funcs/subscriptionCancelSubscription.ts
+  - src/funcs/subscriptionCreate.ts
+  - src/funcs/subscriptionList.ts
+  - src/funcs/subscriptionPauseSubscription.ts
+  - src/funcs/subscriptionResumeSubscription.ts
+  - src/funcs/subscriptionUpdateSubscription.ts
   - src/funcs/transactionsGetTransactionTransactionId.ts
   - src/funcs/transactionsGetTransactions.ts
   - src/funcs/transactionsPatchTransactionTransactionId.ts
@@ -713,65 +714,65 @@ generatedFiles:
   - src/lib/url.ts
   - src/models/components/index.ts
   - src/models/components/security.ts
+  - src/models/errors/addressescreate.ts
+  - src/models/errors/addressesget.ts
+  - src/models/errors/addressesupdate.ts
   - src/models/errors/apierror.ts
-  - src/models/errors/getaddressesaddressid.ts
-  - src/models/errors/getcustomerscustomerid.ts
-  - src/models/errors/getdiscountsdiscountid.ts
-  - src/models/errors/getpricespriceid.ts
-  - src/models/errors/getproductsproductid.ts
+  - src/models/errors/customerscreate.ts
+  - src/models/errors/customersget.ts
+  - src/models/errors/customersupdate.ts
+  - src/models/errors/discountcreate.ts
+  - src/models/errors/discountgetdiscount.ts
+  - src/models/errors/discountupdate.ts
   - src/models/errors/gettransactiontransactionid.ts
   - src/models/errors/httpclienterrors.ts
   - src/models/errors/index.ts
-  - src/models/errors/patchcustomerscustomerid.ts
-  - src/models/errors/patchcustomerscustomeridaddressesaddressid.ts
-  - src/models/errors/patchdiscountsdiscountid.ts
-  - src/models/errors/patchpricespriceid.ts
-  - src/models/errors/patchproductsproductid.ts
-  - src/models/errors/patchsubscriptionsubscriptionid.ts
   - src/models/errors/patchtransactiontransactionid.ts
-  - src/models/errors/postcustomers.ts
-  - src/models/errors/postcustomerscustomeridaddresses.ts
-  - src/models/errors/postdiscounts.ts
-  - src/models/errors/postprices.ts
-  - src/models/errors/postsubscription.ts
-  - src/models/errors/postsubscriptionsubscriptionidactivate.ts
-  - src/models/errors/postsubscriptionsubscriptionidcancel.ts
-  - src/models/errors/postsubscriptionsubscriptionidpause.ts
-  - src/models/errors/postsubscriptionsubscriptionidresume.ts
   - src/models/errors/posttransactions.ts
+  - src/models/errors/pricescreate.ts
+  - src/models/errors/pricesgetprice.ts
+  - src/models/errors/pricesupdate.ts
+  - src/models/errors/productsgetproduct.ts
+  - src/models/errors/productsupdate.ts
   - src/models/errors/sdkvalidationerror.ts
-  - src/models/operations/getaddressesaddressid.ts
-  - src/models/operations/getcustomers.ts
-  - src/models/operations/getcustomerscustomerid.ts
-  - src/models/operations/getcustomerscustomeridaddresses.ts
-  - src/models/operations/getdiscounts.ts
-  - src/models/operations/getdiscountsdiscountid.ts
-  - src/models/operations/getprices.ts
-  - src/models/operations/getpricespriceid.ts
-  - src/models/operations/getproducts.ts
-  - src/models/operations/getproductsproductid.ts
-  - src/models/operations/getsubscription.ts
+  - src/models/errors/subscriptionactivatesubscription.ts
+  - src/models/errors/subscriptioncancelsubscription.ts
+  - src/models/errors/subscriptioncreate.ts
+  - src/models/errors/subscriptionpausesubscription.ts
+  - src/models/errors/subscriptionresumesubscription.ts
+  - src/models/errors/subscriptionupdatesubscription.ts
+  - src/models/operations/addressescreate.ts
+  - src/models/operations/addressesget.ts
+  - src/models/operations/addresseslist.ts
+  - src/models/operations/addressesupdate.ts
+  - src/models/operations/customerscreate.ts
+  - src/models/operations/customersget.ts
+  - src/models/operations/customerslist.ts
+  - src/models/operations/customersupdate.ts
+  - src/models/operations/discountcreate.ts
+  - src/models/operations/discountgetdiscount.ts
+  - src/models/operations/discountlist.ts
+  - src/models/operations/discountupdate.ts
   - src/models/operations/gettransactions.ts
   - src/models/operations/gettransactiontransactionid.ts
   - src/models/operations/index.ts
-  - src/models/operations/patchcustomerscustomerid.ts
-  - src/models/operations/patchcustomerscustomeridaddressesaddressid.ts
-  - src/models/operations/patchdiscountsdiscountid.ts
-  - src/models/operations/patchpricespriceid.ts
-  - src/models/operations/patchproductsproductid.ts
-  - src/models/operations/patchsubscriptionsubscriptionid.ts
   - src/models/operations/patchtransactiontransactionid.ts
-  - src/models/operations/postcustomers.ts
-  - src/models/operations/postcustomerscustomeridaddresses.ts
-  - src/models/operations/postdiscounts.ts
-  - src/models/operations/postprices.ts
-  - src/models/operations/postproducts.ts
-  - src/models/operations/postsubscription.ts
-  - src/models/operations/postsubscriptionsubscriptionidactivate.ts
-  - src/models/operations/postsubscriptionsubscriptionidcancel.ts
-  - src/models/operations/postsubscriptionsubscriptionidpause.ts
-  - src/models/operations/postsubscriptionsubscriptionidresume.ts
   - src/models/operations/posttransactions.ts
+  - src/models/operations/pricescreate.ts
+  - src/models/operations/pricesgetprice.ts
+  - src/models/operations/priceslist.ts
+  - src/models/operations/pricesupdate.ts
+  - src/models/operations/productscreate.ts
+  - src/models/operations/productsgetproduct.ts
+  - src/models/operations/productslist.ts
+  - src/models/operations/productsupdate.ts
+  - src/models/operations/subscriptionactivatesubscription.ts
+  - src/models/operations/subscriptioncancelsubscription.ts
+  - src/models/operations/subscriptioncreate.ts
+  - src/models/operations/subscriptionlist.ts
+  - src/models/operations/subscriptionpausesubscription.ts
+  - src/models/operations/subscriptionresumesubscription.ts
+  - src/models/operations/subscriptionupdatesubscription.ts
   - src/sdk/addresses.ts
   - src/sdk/customers.ts
   - src/sdk/developertools.ts
@@ -1073,5 +1074,378 @@ examples:
       responses:
         "200":
           application/json: "<value>"
+  getProduct:
+    speakeasy-default-get-product:
+      parameters:
+        path:
+          product_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "name": "<value>", "description": "oddly saw chap glorious parody", "status": "active", "createdAt": "1709487456629", "updatedAt": "1737970676993", "custom_data": {}}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  getPrice:
+    speakeasy-default-get-price:
+      parameters:
+        path:
+          price_id: "<id>"
+      responses:
+        "200":
+          application/json: {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 5133.4}, "trial_period": {"interval": "month", "frequency": 3477.46}, "unit_price": {"amount": 1563.02, "currency_code": "UYU"}, "status": "archived", "id": "<id>", "created_at": "1712341963385", "updated_at": "1737956220919"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  getDiscount:
+    speakeasy-default-get-discount:
+      parameters:
+        path:
+          discount_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "amount": 854.3, "currency_code": "MUR", "type": "percentage", "custom_data": {}, "created_at": "1712970594989", "updated_at": "1737955954588", "restricted_to": ["<value>", "<value>", "<value>"]}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  getCustomer:
+    speakeasy-default-get-customer:
+      parameters:
+        path:
+          customer_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "email": "Isadore_Cummings@yahoo.com", "name": "<value>", "custom_data": {}, "created_at": "1732974229959", "updated_at": "1737962932746"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  getAddress:
+    speakeasy-default-get-address:
+      parameters:
+        path:
+          address_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "custom_data": {}, "created_at": "1729778831148", "updated_at": "1737920668291"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  cancelSubscription:
+    speakeasy-default-cancel-subscription:
+      parameters:
+        path:
+          subscription_id: "<id>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "SZL", "created_at": "1727650328355", "updated_at": "1737895292274", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 901223, "interval": "<value>"}, "scheduled_change": [], "items": [{"status": "trialing", "price_id": "<id>", "quantity": 837093, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1728227576710", "updated_at": "1737966910887", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "year", "frequency": 3270.65}, "trial_period": {"interval": "month", "frequency": 9702.95}, "unit_price": {"amount": 8810.13, "currency_code": "BYN"}, "status": "archived", "id": "<id>", "created_at": "1734186328835", "updated_at": "1737899314968"}}, {"status": "active", "price_id": "<id>", "quantity": 882861, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1724949811449", "updated_at": "1737922178269", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "day", "frequency": 1238.81}, "trial_period": {"interval": "month", "frequency": 2339.68}, "unit_price": {"amount": 7126.69, "currency_code": "KGS"}, "status": "archived", "id": "<id>", "created_at": "1707239980531", "updated_at": "1737925292519"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  pauseSubscription:
+    speakeasy-default-pause-subscription:
+      parameters:
+        path:
+          subscription_id: "<id>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "NIO", "created_at": "1708715466944", "updated_at": "1737920518508", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 377193, "interval": "<value>"}, "scheduled_change": [{"id": "<id>", "subscription_id": "<id>", "action": "resume", "effective_at": "<value>", "status": "scheduled"}], "items": [{"status": "active", "price_id": "<id>", "quantity": 259592, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1708607345653", "updated_at": "1737948478278", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "year", "frequency": 8120.91}, "trial_period": {"interval": "week", "frequency": 5613.15}, "unit_price": {"amount": 5317.14, "currency_code": "ANG"}, "status": "active", "id": "<id>", "created_at": "1725777076836", "updated_at": "1737960307951"}}, {"status": "trialing", "price_id": "<id>", "quantity": 829880, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1727147305766", "updated_at": "1737953931883", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "week", "frequency": 9346.77}, "trial_period": {"interval": "year", "frequency": 1064.68}, "unit_price": {"amount": 3686.88, "currency_code": "JOD"}, "status": "archived", "id": "<id>", "created_at": "1724818116365", "updated_at": "1737918896752"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "409":
+          application/json: {"message": "<value>", "error": "<value>"}
+  resumeSubscription:
+    speakeasy-default-resume-subscription:
+      parameters:
+        path:
+          subscription_id: "<id>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "MNT", "created_at": "1728880008644", "updated_at": "1737959985234", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 879037, "interval": "<value>"}, "scheduled_change": [{"id": "<id>", "subscription_id": "<id>", "action": "cancel", "effective_at": "<value>", "status": "scheduled"}, {"id": "<id>", "subscription_id": "<id>", "action": "pause", "effective_at": "<value>", "status": "scheduled"}, {"id": "<id>", "subscription_id": "<id>", "action": "cancel", "effective_at": "<value>", "status": "scheduled"}], "items": [{"status": "active", "price_id": "<id>", "quantity": 802846, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1725166922257", "updated_at": "1737933626658", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "week", "frequency": 804.39}, "trial_period": {"interval": "day", "frequency": 3663.72}, "unit_price": {"amount": 5184.6, "currency_code": "ERN"}, "status": "archived", "id": "<id>", "created_at": "1735238395732", "updated_at": "1737928491425"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  activateSubscription:
+    speakeasy-default-activate-subscription:
+      parameters:
+        path:
+          subscription_id: "<id>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "ILS", "created_at": "1729038186114", "updated_at": "1737908040959", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 557829, "interval": "<value>"}, "scheduled_change": [{"id": "<id>", "subscription_id": "<id>", "action": "cancel", "effective_at": "<value>", "status": "scheduled"}, {"id": "<id>", "subscription_id": "<id>", "action": "pause", "effective_at": "<value>", "status": "scheduled"}, {"id": "<id>", "subscription_id": "<id>", "action": "pause", "effective_at": "<value>", "status": "scheduled"}], "items": [{"status": "trialing", "price_id": "<id>", "quantity": 285780, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1735138152572", "updated_at": "1737918372737", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "day", "frequency": 1544.86}, "trial_period": {"interval": "week", "frequency": 7011.09}, "unit_price": {"amount": 7612.79, "currency_code": "YER"}, "status": "archived", "id": "<id>", "created_at": "1710737568419", "updated_at": "1737965823029"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  updateSubscription:
+    speakeasy-default-update-subscription:
+      parameters:
+        path:
+          subscription_id: "<id>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "TWD", "created_at": "1708961096541", "updated_at": "1737941512140", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 862048, "interval": "<value>"}, "scheduled_change": [], "items": [{"status": "inactive", "price_id": "<id>", "quantity": 938269, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1726221897085", "updated_at": "1737953163800", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "day", "frequency": 9674.94}, "trial_period": {"interval": "week", "frequency": 6095.92}, "unit_price": {"amount": 1883.44, "currency_code": "SYP"}, "status": "archived", "id": "<id>", "created_at": "1729021167135", "updated_at": "1737915051269"}}, {"status": "trialing", "price_id": "<id>", "quantity": 355279, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1729573699057", "updated_at": "1737952175453", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 3505.73}, "trial_period": {"interval": "month", "frequency": 6748.19}, "unit_price": {"amount": 9743.82, "currency_code": "LRD"}, "status": "archived", "id": "<id>", "created_at": "1722091069287", "updated_at": "1737956979631"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  addresses:list:
+    speakeasy-default-addresses:list:
+      parameters:
+        path:
+          customer_id: "<id>"
+      responses:
+        "200":
+          application/json: [{"id": "<id>", "custom_data": {}, "created_at": "1729472473896", "updated_at": "1737915287109"}, {"id": "<id>", "custom_data": {}, "created_at": "1731853552205", "updated_at": "1737960429664"}]
+  addresses:create:
+    speakeasy-default-addresses:create:
+      parameters:
+        path:
+          customer_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "custom_data": {}, "created_at": "1736343892295", "updated_at": "1737957794979"}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+  addresses:getAddress:
+    speakeasy-default-addresses:get-address:
+      parameters:
+        path:
+          address_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "custom_data": {}, "created_at": "1710845136269", "updated_at": "1737929111062"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  addresses:update:
+    speakeasy-default-addresses:update:
+      parameters:
+        path:
+          customer_id: "<id>"
+          address_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "custom_data": {}, "created_at": "1736955142417", "updated_at": "1737901964936"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  get:
+    speakeasy-default-get:
+      parameters:
+        path:
+          address_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "custom_data": {}, "created_at": "1728532154099", "updated_at": "1737943911186"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  addresses:get:
+    speakeasy-default-addresses:get:
+      parameters:
+        path:
+          address_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "custom_data": {}, "created_at": "1728533189632", "updated_at": "1737944946720"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  customers:list:
+    speakeasy-default-customers:list:
+      responses:
+        "200":
+          application/json: [{"id": "<id>", "email": "Marie.Fay@yahoo.com", "name": "<value>", "custom_data": {}, "created_at": "1707001523630", "updated_at": "1737958863167"}, {"id": "<id>", "email": "Annetta_Langosh0@gmail.com", "name": "<value>", "custom_data": {}, "created_at": "1718044408431", "updated_at": "1737938768988"}, {"id": "<id>", "email": "Tommie.Terry5@gmail.com", "name": "<value>", "custom_data": {}, "created_at": "1733586952969", "updated_at": "1737898381750"}]
+  customers:create:
+    speakeasy-default-customers:create:
+      responses:
+        "200":
+          application/json: {"id": "<id>", "email": "Loyal79@yahoo.com", "name": "<value>", "custom_data": {}, "created_at": "1706449933802", "updated_at": "1737911466768"}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+  customers:get:
+    speakeasy-default-customers:get:
+      parameters:
+        path:
+          customer_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "email": "Keeley_Lebsack@hotmail.com", "name": "<value>", "custom_data": {}, "created_at": "1714734722774", "updated_at": "1737915245028"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  customers:update:
+    speakeasy-default-customers:update:
+      parameters:
+        path:
+          customer_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "email": "Lavern48@hotmail.com", "name": "<value>", "custom_data": {}, "created_at": "1708152107450", "updated_at": "1737974259246"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  prices:list:
+    speakeasy-default-prices:list:
+      responses:
+        "200":
+          application/json: [{"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 1777.06}, "trial_period": {"interval": "day", "frequency": 1528.37}, "unit_price": {"amount": 6355.32, "currency_code": "NZD"}, "status": "active", "id": "<id>", "created_at": "1729099803648", "updated_at": "1737904438362"}, {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 5098.83}, "trial_period": {"interval": "month", "frequency": 74.68}, "unit_price": {"amount": 546.07, "currency_code": "IDR"}, "status": "active", "id": "<id>", "created_at": "1708756705341", "updated_at": "1737977447601"}, {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "year", "frequency": 4900.78}, "trial_period": {"interval": "day", "frequency": 3225.96}, "unit_price": {"amount": 8605.96, "currency_code": "ALL"}, "status": "archived", "id": "<id>", "created_at": "1719830228035", "updated_at": "1737975918418"}]
+  prices:create:
+    speakeasy-default-prices:create:
+      responses:
+        "200":
+          application/json: {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 4174.58}, "trial_period": {"interval": "day", "frequency": 690.25}, "unit_price": {"amount": 7964.74, "currency_code": "XOF"}, "status": "active", "id": "<id>", "created_at": "1711799914452", "updated_at": "1737904768804"}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+  prices:getPrice:
+    speakeasy-default-prices:get-price:
+      parameters:
+        path:
+          price_id: "<id>"
+      responses:
+        "200":
+          application/json: {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 5442.21}, "trial_period": {"interval": "month", "frequency": 9699.61}, "unit_price": {"amount": 4580.49, "currency_code": "KMF"}, "status": "active", "id": "<id>", "created_at": "1713178991577", "updated_at": "1737977964458"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  prices:update:
+    speakeasy-default-prices:update:
+      parameters:
+        path:
+          price_id: "<id>"
+      responses:
+        "200":
+          application/json: {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 3446.2}, "trial_period": {"interval": "year", "frequency": 6276.9}, "unit_price": {"amount": 4888.52, "currency_code": "NAD"}, "status": "active", "id": "<id>", "created_at": "1734719425759", "updated_at": "1737935604492"}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+  discount:list:
+    speakeasy-default-discount:list:
+      responses:
+        "200":
+          application/json: [{"id": "<id>", "amount": 5472.72, "currency_code": "PKR", "type": "flat", "custom_data": {}, "created_at": "1713691742916", "updated_at": "1737910201022", "restricted_to": ["<value>", "<value>"]}, {"id": "<id>", "amount": 6393.87, "currency_code": "ALL", "type": "flat_per_seat", "custom_data": {}, "created_at": "1709163907755", "updated_at": "1737902914749", "restricted_to": ["<value>", "<value>"]}, {"id": "<id>", "amount": 5098.83, "currency_code": "NPR", "type": "flat", "custom_data": {}, "created_at": "1708169481572", "updated_at": "1737928768804", "restricted_to": ["<value>"]}]
+  discount:create:
+    speakeasy-default-discount:create:
+      responses:
+        "200":
+          application/json: {"id": "<id>", "amount": 4865.89, "currency_code": "NZD", "type": "percentage", "custom_data": {}, "created_at": "1710684733752", "updated_at": "1737902959776", "restricted_to": ["<value>", "<value>", "<value>"]}
+        "400":
+          application/json: {"error": "<value>", "message": "<value>"}
+  discount:getDiscount:
+    speakeasy-default-discount:get-discount:
+      parameters:
+        path:
+          discount_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "amount": 7003.47, "currency_code": "MOP", "type": "percentage", "custom_data": {}, "created_at": "1722885049214", "updated_at": "1737980799658", "restricted_to": ["<value>"]}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  discount:update:
+    speakeasy-default-discount:update:
+      parameters:
+        path:
+          discount_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "amount": 8574.78, "currency_code": "MXN", "type": "percentage", "custom_data": {}, "created_at": "1737714196175", "updated_at": "1737951227790", "restricted_to": ["<value>"]}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  products:list:
+    speakeasy-default-products:list:
+      responses:
+        "200":
+          application/json: [{"id": "<id>", "name": "<value>", "description": "yuck accountability pish likewise excepting unimpressively quickly", "status": "archived", "createdAt": "1735415450821", "updatedAt": "1737904592781", "custom_data": {}}, {"id": "<id>", "name": "<value>", "description": "briefly ugh fen phew reschedule hammock ick absent", "status": "archived", "createdAt": "1719837450701", "updatedAt": "1737913336799", "custom_data": {}}, {"id": "<id>", "name": "<value>", "description": "a supposing regarding times", "status": "archived", "createdAt": "1730874797724", "updatedAt": "1737911342795", "custom_data": {}}]
+  products:create:
+    speakeasy-default-products:create:
+      responses:
+        "200":
+          application/json: {"id": "<id>", "name": "<value>", "description": "yuck vice between gee ugh ha", "status": "archived", "createdAt": "1731061119344", "updatedAt": "1737963004514", "custom_data": {}}
+  products:getProduct:
+    speakeasy-default-products:get-product:
+      parameters:
+        path:
+          product_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "name": "<value>", "description": "diversity extract neaten qua meanwhile bah because impassioned", "status": "archived", "createdAt": "1720809968538", "updatedAt": "1737906227654", "custom_data": {}}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  products:update:
+    speakeasy-default-products:update:
+      parameters:
+        path:
+          product_id: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "name": "<value>", "description": "awful underneath retention too mobility char innocently dowse restfully", "status": "active", "createdAt": "1714804969757", "updatedAt": "1737914441833", "custom_data": {}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  subscription:list:
+    speakeasy-default-subscription:list:
+      responses:
+        "200":
+          application/json: [{"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "MMK", "created_at": "1727839103084", "updated_at": "1737912672791", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 229716, "interval": "<value>"}, "scheduled_change": [], "items": [{"status": "inactive", "price_id": "<id>", "quantity": 17577, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1709164230881", "updated_at": "1737903237875", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 6339.11}, "trial_period": {"interval": "day", "frequency": 546.07}, "unit_price": {"amount": 3677.45, "currency_code": "KZT"}, "status": "active", "id": "<id>", "created_at": "1735812910095", "updated_at": "1737946345796"}}, {"status": "trialing", "price_id": "<id>", "quantity": 490078, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1716621117462", "updated_at": "1737971673754", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "year", "frequency": 4243.67}, "trial_period": {"interval": "year", "frequency": 1730.9}, "unit_price": {"amount": 750.58, "currency_code": "UYU"}, "status": "active", "id": "<id>", "created_at": "1720962991710", "updated_at": "1737934067565"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}, {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "KES", "created_at": "1721604423020", "updated_at": "1737906254669", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 523875, "interval": "<value>"}, "scheduled_change": [{"id": "<id>", "subscription_id": "<id>", "action": "resume", "effective_at": "<value>", "status": "scheduled"}, {"id": "<id>", "subscription_id": "<id>", "action": "pause", "effective_at": "<value>", "status": "completed"}, {"id": "<id>", "subscription_id": "<id>", "action": "pause", "effective_at": "<value>", "status": "completed"}], "items": [{"status": "active", "price_id": "<id>", "quantity": 628106, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1735415451014", "updated_at": "1737904592974", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 8389.3}, "trial_period": {"interval": "year", "frequency": 9960.14}, "unit_price": {"amount": 813.09, "currency_code": "CDF"}, "status": "active", "id": "<id>", "created_at": "1732836646737", "updated_at": "1737964472290"}}, {"status": "active", "price_id": "<id>", "quantity": 664080, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1731090224481", "updated_at": "1737944376409", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "day", "frequency": 2940.83}, "trial_period": {"interval": "year", "frequency": 7475.62}, "unit_price": {"amount": 2589.45, "currency_code": "GNF"}, "status": "active", "id": "<id>", "created_at": "1727834763392", "updated_at": "1737935824882"}}, {"status": "active", "price_id": "<id>", "quantity": 810770, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1730964981518", "updated_at": "1737941017861", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "year", "frequency": 206.15}, "trial_period": {"interval": "week", "frequency": 9936.77}, "unit_price": {"amount": 7267, "currency_code": "SHP"}, "status": "active", "id": "<id>", "created_at": "1707370702748", "updated_at": "1737953679414"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}, {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "PYG", "created_at": "1725529206248", "updated_at": "1737932575662", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 41398, "interval": "<value>"}, "scheduled_change": [{"id": "<id>", "subscription_id": "<id>", "action": "pause", "effective_at": "<value>", "status": "completed"}, {"id": "<id>", "subscription_id": "<id>", "action": "pause", "effective_at": "<value>", "status": "completed"}, {"id": "<id>", "subscription_id": "<id>", "action": "cancel", "effective_at": "<value>", "status": "scheduled"}], "items": [{"status": "inactive", "price_id": "<id>", "quantity": 457442, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1734858839887", "updated_at": "1737901672619", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "week", "frequency": 1853.94}, "trial_period": {"interval": "day", "frequency": 2214.89}, "unit_price": {"amount": 1231.87, "currency_code": "PHP"}, "status": "archived", "id": "<id>", "created_at": "1721028168165", "updated_at": "1737962583571"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}]
+  subscription:create:
+    speakeasy-default-subscription:create:
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "KZT", "created_at": "1726581054504", "updated_at": "1737933387082", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 134365, "interval": "<value>"}, "scheduled_change": [], "items": [{"status": "trialing", "price_id": "<id>", "quantity": 86, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1709284837869", "updated_at": "1737965800688", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 7524.38}, "trial_period": {"interval": "year", "frequency": 3570.21}, "unit_price": {"amount": 2596.29, "currency_code": "ALL"}, "status": "active", "id": "<id>", "created_at": "1713112462715", "updated_at": "1737902912456"}}, {"status": "active", "price_id": "<id>", "quantity": 185693, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1709631799563", "updated_at": "1737953649955", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "day", "frequency": 6216.36}, "trial_period": {"interval": "month", "frequency": 2006.64}, "unit_price": {"amount": 155.52, "currency_code": "MAD"}, "status": "active", "id": "<id>", "created_at": "1727251435101", "updated_at": "1737944880343"}}, {"status": "trialing", "price_id": "<id>", "quantity": 452224, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1714639888209", "updated_at": "1737964914846", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 9209.94}, "trial_period": {"interval": "year", "frequency": 7602.59}, "unit_price": {"amount": 2199.74, "currency_code": "KMF"}, "status": "active", "id": "<id>", "created_at": "1725006541627", "updated_at": "1737905394934"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+  subscription:cancelSubscription:
+    speakeasy-default-subscription:cancel-subscription:
+      parameters:
+        path:
+          subscription_id: "<id>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "SZL", "created_at": "1727653459358", "updated_at": "1737898423277", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 901223, "interval": "<value>"}, "scheduled_change": [], "items": [{"status": "trialing", "price_id": "<id>", "quantity": 837093, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1728230707713", "updated_at": "1737970041890", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "year", "frequency": 3270.65}, "trial_period": {"interval": "month", "frequency": 9702.95}, "unit_price": {"amount": 8810.13, "currency_code": "BYN"}, "status": "archived", "id": "<id>", "created_at": "1734189459838", "updated_at": "1737902445971"}}, {"status": "active", "price_id": "<id>", "quantity": 882861, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1724952942452", "updated_at": "1737925309272", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "day", "frequency": 1238.81}, "trial_period": {"interval": "month", "frequency": 2339.68}, "unit_price": {"amount": 7126.69, "currency_code": "KGS"}, "status": "archived", "id": "<id>", "created_at": "1707243111533", "updated_at": "1737928423521"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  subscription:pauseSubscription:
+    speakeasy-default-subscription:pause-subscription:
+      parameters:
+        path:
+          subscription_id: "<id>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "NIO", "created_at": "1708718597947", "updated_at": "1737923649511", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 377193, "interval": "<value>"}, "scheduled_change": [{"id": "<id>", "subscription_id": "<id>", "action": "resume", "effective_at": "<value>", "status": "scheduled"}], "items": [{"status": "active", "price_id": "<id>", "quantity": 259592, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1708610476656", "updated_at": "1737951609281", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "year", "frequency": 8120.91}, "trial_period": {"interval": "week", "frequency": 5613.15}, "unit_price": {"amount": 5317.14, "currency_code": "ANG"}, "status": "active", "id": "<id>", "created_at": "1725780207838", "updated_at": "1737963438953"}}, {"status": "trialing", "price_id": "<id>", "quantity": 829880, "id": "<id>", "subscription_id": "<id>", "recurring": true, "created_at": "1727150436769", "updated_at": "1737957062885", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "week", "frequency": 9346.77}, "trial_period": {"interval": "year", "frequency": 1064.68}, "unit_price": {"amount": 3686.88, "currency_code": "JOD"}, "status": "archived", "id": "<id>", "created_at": "1724821247367", "updated_at": "1737922027754"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "409":
+          application/json: {"message": "<value>", "error": "<value>"}
+  subscription:resumeSubscription:
+    speakeasy-default-subscription:resume-subscription:
+      parameters:
+        path:
+          subscription_id: "<id>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "MNT", "created_at": "1728883139646", "updated_at": "1737963116236", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 879037, "interval": "<value>"}, "scheduled_change": [{"id": "<id>", "subscription_id": "<id>", "action": "cancel", "effective_at": "<value>", "status": "scheduled"}, {"id": "<id>", "subscription_id": "<id>", "action": "pause", "effective_at": "<value>", "status": "scheduled"}, {"id": "<id>", "subscription_id": "<id>", "action": "cancel", "effective_at": "<value>", "status": "scheduled"}], "items": [{"status": "active", "price_id": "<id>", "quantity": 802846, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1725170053258", "updated_at": "1737936757659", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "week", "frequency": 804.39}, "trial_period": {"interval": "day", "frequency": 3663.72}, "unit_price": {"amount": 5184.6, "currency_code": "ERN"}, "status": "archived", "id": "<id>", "created_at": "1735241526734", "updated_at": "1737931622426"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  subscription:activateSubscription:
+    speakeasy-default-subscription:activate-subscription:
+      parameters:
+        path:
+          subscription_id: "<id>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "ILS", "created_at": "1729041317115", "updated_at": "1737911171960", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 557829, "interval": "<value>"}, "scheduled_change": [{"id": "<id>", "subscription_id": "<id>", "action": "cancel", "effective_at": "<value>", "status": "scheduled"}, {"id": "<id>", "subscription_id": "<id>", "action": "pause", "effective_at": "<value>", "status": "scheduled"}, {"id": "<id>", "subscription_id": "<id>", "action": "pause", "effective_at": "<value>", "status": "scheduled"}], "items": [{"status": "trialing", "price_id": "<id>", "quantity": 285780, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1735141283573", "updated_at": "1737921503738", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "custom", "name": "<value>", "billing_cycle": {"interval": "day", "frequency": 1544.86}, "trial_period": {"interval": "week", "frequency": 7011.09}, "unit_price": {"amount": 7612.79, "currency_code": "YER"}, "status": "archived", "id": "<id>", "created_at": "1710740699412", "updated_at": "1737968954022"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
+  subscription:updateSubscription:
+    speakeasy-default-subscription:update-subscription:
+      parameters:
+        path:
+          subscription_id: "<id>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "status": "<value>", "customer_id": "<id>", "address_id": "<id>", "currency_code": "TWD", "created_at": "1708964227534", "updated_at": "1737944643133", "started_at": "<value>", "first_billed_at": "<value>", "next_billed_at": "<value>", "paused_at": "<value>", "canceled_at": "<value>", "collection_mode": "<value>", "billing_details": {"payment_terms": {}}, "current_billing_period": {"starts_at": "<value>", "ends_at": "<value>"}, "billing_cycle": {"frequency": 862048, "interval": "<value>"}, "scheduled_change": [], "items": [{"status": "inactive", "price_id": "<id>", "quantity": 938269, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1726225028077", "updated_at": "1737956294792", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "day", "frequency": 9674.94}, "trial_period": {"interval": "week", "frequency": 6095.92}, "unit_price": {"amount": 1883.44, "currency_code": "SYP"}, "status": "archived", "id": "<id>", "created_at": "1729024298128", "updated_at": "1737918182262"}}, {"status": "trialing", "price_id": "<id>", "quantity": 355279, "id": "<id>", "subscription_id": "<id>", "recurring": false, "created_at": "1729576830049", "updated_at": "1737955306445", "previously_billed_at": "<value>", "next_billed_at": "<value>", "trial_started_at": "<value>", "trial_ended_at": "<value>", "price": {"product_id": "<id>", "type": "standard", "name": "<value>", "billing_cycle": {"interval": "month", "frequency": 3505.73}, "trial_period": {"interval": "month", "frequency": 6748.19}, "unit_price": {"amount": 9743.82, "currency_code": "LRD"}, "status": "archived", "id": "<id>", "created_at": "1722094200280", "updated_at": "1737960110624"}}], "management_urls": {"update_payment_method": "<value>", "cancel": "<value>"}}}
+        "400":
+          application/json: {"message": "<value>", "error": "<value>"}
+        "404":
+          application/json: {"message": "<value>", "error": "<value>"}
 examplesVersion: 1.0.0
 generatedTests: {}

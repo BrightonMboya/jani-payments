@@ -10,9 +10,9 @@ let value: Data = {
   status: "<value>",
   customerId: "<id>",
   addressId: "<id>",
-  currencyCode: "LRD",
-  createdAt: "1716975246988",
-  updatedAt: "1737961258995",
+  currencyCode: "PHP",
+  createdAt: "1736371004953",
+  updatedAt: "1737897558306",
   startedAt: "<value>",
   firstBilledAt: "<value>",
   nextBilledAt: "<value>",
@@ -27,7 +27,7 @@ let value: Data = {
     endsAt: "<value>",
   },
   billingCycle: {
-    frequency: 97243,
+    frequency: 647197,
     interval: "<value>",
   },
   scheduledChange: [
@@ -43,12 +43,12 @@ let value: Data = {
     {
       status: "trialing",
       priceId: "<id>",
-      quantity: 90885,
+      quantity: 16871,
       id: "<id>",
       subscriptionId: "<id>",
       recurring: false,
-      createdAt: "1713625954608",
-      updatedAt: "1737928380841",
+      createdAt: "1728411993991",
+      updatedAt: "1737967625775",
       previouslyBilledAt: "<value>",
       nextBilledAt: "<value>",
       trialStartedAt: "<value>",
@@ -58,21 +58,21 @@ let value: Data = {
         type: "custom",
         name: "<value>",
         billingCycle: {
-          interval: "year",
-          frequency: 6188.26,
+          interval: "week",
+          frequency: 7908.4,
         },
         trialPeriod: {
           interval: "day",
-          frequency: 9805.81,
+          frequency: 4420.36,
         },
         unitPrice: {
-          amount: 8717.86,
-          currencyCode: "LKR",
+          amount: 5199.52,
+          currencyCode: "PYG",
         },
-        status: "archived",
+        status: "active",
         id: "<id>",
-        createdAt: "1723516315368",
-        updatedAt: "1737972703918",
+        createdAt: "1713630348166",
+        updatedAt: "1737932774399",
       },
     },
   ],
@@ -100,11 +100,11 @@ let value: Data = {
 | `pausedAt`                                                                                                         | *string*                                                                                                           | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
 | `canceledAt`                                                                                                       | *string*                                                                                                           | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
 | `collectionMode`                                                                                                   | *string*                                                                                                           | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
-| `billingDetails`                                                                                                   | [operations.PostSubscriptionBillingDetails](../../models/operations/postsubscriptionbillingdetails.md)             | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
-| `currentBillingPeriod`                                                                                             | [operations.PostSubscriptionCurrentBillingPeriod](../../models/operations/postsubscriptioncurrentbillingperiod.md) | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
-| `billingCycle`                                                                                                     | [operations.PostSubscriptionBillingCycle](../../models/operations/postsubscriptionbillingcycle.md)                 | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
+| `billingDetails`                                                                                                   | [operations.SubscriptionListBillingDetails](../../models/operations/subscriptionlistbillingdetails.md)             | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
+| `currentBillingPeriod`                                                                                             | [operations.SubscriptionListCurrentBillingPeriod](../../models/operations/subscriptionlistcurrentbillingperiod.md) | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
+| `billingCycle`                                                                                                     | [operations.SubscriptionListBillingCycle](../../models/operations/subscriptionlistbillingcycle.md)                 | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
 | `scheduledChange`                                                                                                  | [operations.ScheduledChange](../../models/operations/scheduledchange.md)[]                                         | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
-| `items`                                                                                                            | [operations.PostSubscriptionItems](../../models/operations/postsubscriptionitems.md)[]                             | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
-| `customData`                                                                                                       | [operations.PostSubscriptionCustomData](../../models/operations/postsubscriptioncustomdata.md)                     | :heavy_minus_sign:                                                                                                 | Any valid JSON value                                                                                               |
-| `managementUrls`                                                                                                   | [operations.PostSubscriptionManagementUrls](../../models/operations/postsubscriptionmanagementurls.md)             | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
-| `discount`                                                                                                         | [operations.PostSubscriptionDiscount](../../models/operations/postsubscriptiondiscount.md)                         | :heavy_minus_sign:                                                                                                 | N/A                                                                                                                |
+| `items`                                                                                                            | [operations.SubscriptionListItems](../../models/operations/subscriptionlistitems.md)[]                             | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
+| `customData`                                                                                                       | [operations.SubscriptionListCustomData](../../models/operations/subscriptionlistcustomdata.md)                     | :heavy_minus_sign:                                                                                                 | Any valid JSON value                                                                                               |
+| `managementUrls`                                                                                                   | [operations.SubscriptionListManagementUrls](../../models/operations/subscriptionlistmanagementurls.md)             | :heavy_check_mark:                                                                                                 | N/A                                                                                                                |
+| `discount`                                                                                                         | [operations.SubscriptionListDiscount](../../models/operations/subscriptionlistdiscount.md)                         | :heavy_minus_sign:                                                                                                 | N/A                                                                                                                |

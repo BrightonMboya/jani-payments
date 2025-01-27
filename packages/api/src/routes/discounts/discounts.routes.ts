@@ -22,7 +22,8 @@ export const list_discounts = createRoute({
   path: "/discounts",
   method: "get",
   tags,
-  operationId: "list",
+  operationId: "discount:list",
+  "x-speakeasy-name-override": "list",
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       z.array(DiscountResponseSchema),
@@ -35,7 +36,8 @@ export const create_discount = createRoute({
   path: "/discounts",
   method: "post",
   tags,
-  operationId: "create",
+  operationId: "discount:create",
+  "x-speakeasy-name-override": "create",
   request: {
     body: {
       content: {
@@ -61,7 +63,8 @@ export const get_discount = createRoute({
   path: "/discounts/{discount_id}",
   method: "get",
   tags,
-  operationId: "getDiscount",
+  operationId: "discount:getDiscount",
+   "x-speakeasy-name-override": "get",
   request: {
     params: z.object({
       discount_id: z.string(),
@@ -80,7 +83,8 @@ export const update_discount = createRoute({
   path: "/discounts/{discount_id}",
   method: "patch",
   tags,
-  operationId: "update",
+  operationId: "discount:update",
+   "x-speakeasy-name-override": "update",
   request: {
     params: z.object({
       discount_id: z.string(),

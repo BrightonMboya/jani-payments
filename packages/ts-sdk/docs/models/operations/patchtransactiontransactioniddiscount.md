@@ -11,8 +11,8 @@ let value: PatchTransactionTransactionIdDiscount = {
   currencyCode: "NPR",
   type: "percentage",
   customData: {},
-  createdAt: "1710056984505",
-  updatedAt: "1737939606811",
+  createdAt: "1710061378113",
+  updatedAt: "1737944000419",
   restrictedTo: [
     "<value>",
   ],

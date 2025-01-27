@@ -100,7 +100,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.products.getProducts();
+  const result = await janiPayments.products.list();
 
   // Handle the result
   console.log(result);
@@ -135,7 +135,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.products.getProducts();
+  const result = await janiPayments.products.list();
 
   // Handle the result
   console.log(result);
@@ -154,17 +154,17 @@ run();
 
 ### [addresses](docs/sdks/addresses/README.md)
 
-* [getCustomersCustomerIdAddresses](docs/sdks/addresses/README.md#getcustomerscustomeridaddresses)
-* [postCustomersCustomerIdAddresses](docs/sdks/addresses/README.md#postcustomerscustomeridaddresses)
-* [getAddressesAddressId](docs/sdks/addresses/README.md#getaddressesaddressid)
-* [patchCustomersCustomerIdAddressesAddressId](docs/sdks/addresses/README.md#patchcustomerscustomeridaddressesaddressid)
+* [list](docs/sdks/addresses/README.md#list)
+* [create](docs/sdks/addresses/README.md#create)
+* [get](docs/sdks/addresses/README.md#get)
+* [update](docs/sdks/addresses/README.md#update)
 
 ### [customers](docs/sdks/customers/README.md)
 
-* [getCustomers](docs/sdks/customers/README.md#getcustomers)
-* [postCustomers](docs/sdks/customers/README.md#postcustomers)
-* [getCustomersCustomerId](docs/sdks/customers/README.md#getcustomerscustomerid)
-* [patchCustomersCustomerId](docs/sdks/customers/README.md#patchcustomerscustomerid)
+* [list](docs/sdks/customers/README.md#list)
+* [create](docs/sdks/customers/README.md#create)
+* [get](docs/sdks/customers/README.md#get)
+* [update](docs/sdks/customers/README.md#update)
 
 ### [developerTools](docs/sdks/developertools/README.md)
 
@@ -172,35 +172,35 @@ run();
 
 ### [discounts](docs/sdks/discounts/README.md)
 
-* [getDiscounts](docs/sdks/discounts/README.md#getdiscounts)
-* [postDiscounts](docs/sdks/discounts/README.md#postdiscounts)
-* [getDiscountsDiscountId](docs/sdks/discounts/README.md#getdiscountsdiscountid)
-* [patchDiscountsDiscountId](docs/sdks/discounts/README.md#patchdiscountsdiscountid)
+* [list](docs/sdks/discounts/README.md#list)
+* [create](docs/sdks/discounts/README.md#create)
+* [get](docs/sdks/discounts/README.md#get)
+* [update](docs/sdks/discounts/README.md#update)
 
 
 ### [prices](docs/sdks/prices/README.md)
 
-* [getPrices](docs/sdks/prices/README.md#getprices)
-* [postPrices](docs/sdks/prices/README.md#postprices)
-* [getPricesPriceId](docs/sdks/prices/README.md#getpricespriceid)
-* [patchPricesPriceId](docs/sdks/prices/README.md#patchpricespriceid)
+* [list](docs/sdks/prices/README.md#list)
+* [create](docs/sdks/prices/README.md#create)
+* [get](docs/sdks/prices/README.md#get)
+* [update](docs/sdks/prices/README.md#update)
 
 ### [products](docs/sdks/products/README.md)
 
-* [getProducts](docs/sdks/products/README.md#getproducts)
-* [postProducts](docs/sdks/products/README.md#postproducts)
-* [getProductsProductId](docs/sdks/products/README.md#getproductsproductid)
-* [patchProductsProductId](docs/sdks/products/README.md#patchproductsproductid)
+* [list](docs/sdks/products/README.md#list)
+* [create](docs/sdks/products/README.md#create)
+* [get](docs/sdks/products/README.md#get)
+* [update](docs/sdks/products/README.md#update)
 
 ### [subscription](docs/sdks/subscription/README.md)
 
-* [postSubscription](docs/sdks/subscription/README.md#postsubscription)
-* [getSubscription](docs/sdks/subscription/README.md#getsubscription)
-* [postSubscriptionSubscriptionIdCancel](docs/sdks/subscription/README.md#postsubscriptionsubscriptionidcancel)
-* [postSubscriptionSubscriptionIdPause](docs/sdks/subscription/README.md#postsubscriptionsubscriptionidpause)
-* [postSubscriptionSubscriptionIdResume](docs/sdks/subscription/README.md#postsubscriptionsubscriptionidresume)
-* [postSubscriptionSubscriptionIdActivate](docs/sdks/subscription/README.md#postsubscriptionsubscriptionidactivate)
-* [patchSubscriptionSubscriptionId](docs/sdks/subscription/README.md#patchsubscriptionsubscriptionid)
+* [list](docs/sdks/subscription/README.md#list)
+* [create](docs/sdks/subscription/README.md#create)
+* [cancelSubscription](docs/sdks/subscription/README.md#cancelsubscription)
+* [pauseSubscription](docs/sdks/subscription/README.md#pausesubscription)
+* [resumeSubscription](docs/sdks/subscription/README.md#resumesubscription)
+* [activateSubscription](docs/sdks/subscription/README.md#activatesubscription)
+* [updateSubscription](docs/sdks/subscription/README.md#updatesubscription)
 
 ### [transactions](docs/sdks/transactions/README.md)
 
@@ -227,34 +227,34 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
-- [`addressesGetAddressesAddressId`](docs/sdks/addresses/README.md#getaddressesaddressid)
-- [`addressesGetCustomersCustomerIdAddresses`](docs/sdks/addresses/README.md#getcustomerscustomeridaddresses)
-- [`addressesPatchCustomersCustomerIdAddressesAddressId`](docs/sdks/addresses/README.md#patchcustomerscustomeridaddressesaddressid)
-- [`addressesPostCustomersCustomerIdAddresses`](docs/sdks/addresses/README.md#postcustomerscustomeridaddresses)
-- [`customersGetCustomers`](docs/sdks/customers/README.md#getcustomers)
-- [`customersGetCustomersCustomerId`](docs/sdks/customers/README.md#getcustomerscustomerid)
-- [`customersPatchCustomersCustomerId`](docs/sdks/customers/README.md#patchcustomerscustomerid)
-- [`customersPostCustomers`](docs/sdks/customers/README.md#postcustomers)
+- [`addressesCreate`](docs/sdks/addresses/README.md#create)
+- [`addressesGet`](docs/sdks/addresses/README.md#get)
+- [`addressesList`](docs/sdks/addresses/README.md#list)
+- [`addressesUpdate`](docs/sdks/addresses/README.md#update)
+- [`customersCreate`](docs/sdks/customers/README.md#create)
+- [`customersGet`](docs/sdks/customers/README.md#get)
+- [`customersList`](docs/sdks/customers/README.md#list)
+- [`customersUpdate`](docs/sdks/customers/README.md#update)
 - [`developerToolsPostApiKeys`](docs/sdks/developertools/README.md#postapikeys)
-- [`discountsGetDiscounts`](docs/sdks/discounts/README.md#getdiscounts)
-- [`discountsGetDiscountsDiscountId`](docs/sdks/discounts/README.md#getdiscountsdiscountid)
-- [`discountsPatchDiscountsDiscountId`](docs/sdks/discounts/README.md#patchdiscountsdiscountid)
-- [`discountsPostDiscounts`](docs/sdks/discounts/README.md#postdiscounts)
-- [`pricesGetPrices`](docs/sdks/prices/README.md#getprices)
-- [`pricesGetPricesPriceId`](docs/sdks/prices/README.md#getpricespriceid)
-- [`pricesPatchPricesPriceId`](docs/sdks/prices/README.md#patchpricespriceid)
-- [`pricesPostPrices`](docs/sdks/prices/README.md#postprices)
-- [`productsGetProducts`](docs/sdks/products/README.md#getproducts)
-- [`productsGetProductsProductId`](docs/sdks/products/README.md#getproductsproductid)
-- [`productsPatchProductsProductId`](docs/sdks/products/README.md#patchproductsproductid)
-- [`productsPostProducts`](docs/sdks/products/README.md#postproducts)
-- [`subscriptionGetSubscription`](docs/sdks/subscription/README.md#getsubscription)
-- [`subscriptionPatchSubscriptionSubscriptionId`](docs/sdks/subscription/README.md#patchsubscriptionsubscriptionid)
-- [`subscriptionPostSubscription`](docs/sdks/subscription/README.md#postsubscription)
-- [`subscriptionPostSubscriptionSubscriptionIdActivate`](docs/sdks/subscription/README.md#postsubscriptionsubscriptionidactivate)
-- [`subscriptionPostSubscriptionSubscriptionIdCancel`](docs/sdks/subscription/README.md#postsubscriptionsubscriptionidcancel)
-- [`subscriptionPostSubscriptionSubscriptionIdPause`](docs/sdks/subscription/README.md#postsubscriptionsubscriptionidpause)
-- [`subscriptionPostSubscriptionSubscriptionIdResume`](docs/sdks/subscription/README.md#postsubscriptionsubscriptionidresume)
+- [`discountsCreate`](docs/sdks/discounts/README.md#create)
+- [`discountsGet`](docs/sdks/discounts/README.md#get)
+- [`discountsList`](docs/sdks/discounts/README.md#list)
+- [`discountsUpdate`](docs/sdks/discounts/README.md#update)
+- [`pricesCreate`](docs/sdks/prices/README.md#create)
+- [`pricesGet`](docs/sdks/prices/README.md#get)
+- [`pricesList`](docs/sdks/prices/README.md#list)
+- [`pricesUpdate`](docs/sdks/prices/README.md#update)
+- [`productsCreate`](docs/sdks/products/README.md#create)
+- [`productsGet`](docs/sdks/products/README.md#get)
+- [`productsList`](docs/sdks/products/README.md#list)
+- [`productsUpdate`](docs/sdks/products/README.md#update)
+- [`subscriptionActivateSubscription`](docs/sdks/subscription/README.md#activatesubscription)
+- [`subscriptionCancelSubscription`](docs/sdks/subscription/README.md#cancelsubscription)
+- [`subscriptionCreate`](docs/sdks/subscription/README.md#create)
+- [`subscriptionList`](docs/sdks/subscription/README.md#list)
+- [`subscriptionPauseSubscription`](docs/sdks/subscription/README.md#pausesubscription)
+- [`subscriptionResumeSubscription`](docs/sdks/subscription/README.md#resumesubscription)
+- [`subscriptionUpdateSubscription`](docs/sdks/subscription/README.md#updatesubscription)
 - [`transactionsGetTransactions`](docs/sdks/transactions/README.md#gettransactions)
 - [`transactionsGetTransactionTransactionId`](docs/sdks/transactions/README.md#gettransactiontransactionid)
 - [`transactionsPatchTransactionTransactionId`](docs/sdks/transactions/README.md#patchtransactiontransactionid)
@@ -280,7 +280,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.products.getProducts({
+  const result = await janiPayments.products.list({
     retries: {
       strategy: "backoff",
       backoff: {
@@ -323,7 +323,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.products.getProducts();
+  const result = await janiPayments.products.list();
 
   // Handle the result
   console.log(result);
@@ -337,19 +337,19 @@ run();
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-Some methods specify known errors which can be thrown. All the known errors are enumerated in the `models/errors/errors.ts` module. The known errors for a method are documented under the *Errors* tables in SDK docs. For example, the `getProductsProductId` method may throw the following errors:
+Some methods specify known errors which can be thrown. All the known errors are enumerated in the `models/errors/errors.ts` module. The known errors for a method are documented under the *Errors* tables in SDK docs. For example, the `get` method may throw the following errors:
 
-| Error Type                              | Status Code | Content Type     |
-| --------------------------------------- | ----------- | ---------------- |
-| errors.GetProductsProductIdResponseBody | 404         | application/json |
-| errors.APIError                         | 4XX, 5XX    | \*/\*            |
+| Error Type                            | Status Code | Content Type     |
+| ------------------------------------- | ----------- | ---------------- |
+| errors.ProductsGetProductResponseBody | 404         | application/json |
+| errors.APIError                       | 4XX, 5XX    | \*/\*            |
 
 If the method throws an error and it is not captured by the known errors, it will default to throwing a `APIError`.
 
 ```typescript
 import { JaniPayments } from "jani-payments";
 import {
-  GetProductsProductIdResponseBody,
+  ProductsGetProductResponseBody,
   SDKValidationError,
 } from "jani-payments/models/errors";
 
@@ -363,7 +363,7 @@ const janiPayments = new JaniPayments({
 async function run() {
   let result;
   try {
-    result = await janiPayments.products.getProductsProductId({
+    result = await janiPayments.products.get({
       productId: "<id>",
     });
 
@@ -379,8 +379,8 @@ async function run() {
         console.error(err.rawValue);
         return;
       }
-      case (err instanceof GetProductsProductIdResponseBody): {
-        // Handle err.data$: GetProductsProductIdResponseBodyData
+      case (err instanceof ProductsGetProductResponseBody): {
+        // Handle err.data$: ProductsGetProductResponseBodyData
         console.error(err);
         return;
       }
@@ -428,7 +428,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.products.getProducts();
+  const result = await janiPayments.products.list();
 
   // Handle the result
   console.log(result);

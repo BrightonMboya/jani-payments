@@ -10,8 +10,8 @@ let value: PatchTransactionTransactionIdProduct = {
   name: "<value>",
   description: "after midst relieve potentially so aha barring wise finally",
   status: "active",
-  createdAt: "1712230328738",
-  updatedAt: "1737958144622",
+  createdAt: "1712234722354",
+  updatedAt: "1737962538238",
   customData: {},
 };
 ```

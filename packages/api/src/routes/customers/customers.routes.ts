@@ -21,8 +21,9 @@ const tags = ["customers"];
 export const list = createRoute({
   path: "/customers",
   method: "get",
-  operationId: "list",
+  operationId: "customers:list",
   tags,
+  "x-speakeasy-name-override": "list",
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       z.array(CustomersResponseSchema),
@@ -35,7 +36,8 @@ export const create = createRoute({
   path: "/customers",
   method: "post",
   tags,
-  operationId: "create",
+  operationId: "customers:create",
+   "x-speakeasy-name-override": "create",
   request: {
     body: {
       content: {
@@ -61,7 +63,8 @@ export const get_customer = createRoute({
   path: "/customers/{customer_id}",
   method: "get",
   tags,
-  operationId: "getCustomer",
+  operationId: "customers:get",
+   "x-speakeasy-name-override": "get",
   request: {
     params: z.object({
       customer_id: z.string(),
@@ -80,7 +83,8 @@ export const update_customer = createRoute({
   path: "/customers/{customer_id}",
   method: "patch",
   tags,
-  operationId: "update",
+  operationId: "customers:update",
+   "x-speakeasy-name-override": "update",
   request: {
     params: z.object({
       customer_id: z.string(),

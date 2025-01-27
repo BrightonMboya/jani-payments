@@ -8,8 +8,8 @@ import { GetTransactionsAddress } from "jani-payments/models/operations";
 let value: GetTransactionsAddress = {
   id: "<id>",
   customData: {},
-  createdAt: "1719492304369",
-  updatedAt: "1737952234335",
+  createdAt: "1719496697842",
+  updatedAt: "1737956627808",
 };
 ```
 

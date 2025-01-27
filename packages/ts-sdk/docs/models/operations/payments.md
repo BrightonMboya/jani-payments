@@ -10,7 +10,7 @@ let value: Payments = {
   status: "FAILED",
   paymentMethod: "MOBILE_MONEY",
   provider: "AIRTEL",
-  createdAt: "1733286726047",
+  createdAt: "1733291119515",
   providerReference: "<value>",
   providerMetadata: {},
   methodDetails: {

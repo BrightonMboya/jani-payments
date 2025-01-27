@@ -24,8 +24,8 @@ let value: PostTransactionsTransactionsItems = {
     },
     status: "archived",
     id: "<id>",
-    createdAt: "1732533480993",
-    updatedAt: "1737952071859",
+    createdAt: "1732537874460",
+    updatedAt: "1737956465326",
   },
   quantity: 4173.33,
   product: {
@@ -33,8 +33,8 @@ let value: PostTransactionsTransactionsItems = {
     name: "<value>",
     description: "cleverly wrong abnegate convection bogus till",
     status: "active",
-    createdAt: "1736708292584",
-    updatedAt: "1737913692887",
+    createdAt: "1736712686051",
+    updatedAt: "1737918086354",
     customData: {},
   },
 };

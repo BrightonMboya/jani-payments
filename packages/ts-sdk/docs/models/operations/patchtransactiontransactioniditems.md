@@ -24,8 +24,8 @@ let value: PatchTransactionTransactionIdItems = {
     },
     status: "active",
     id: "<id>",
-    createdAt: "1720160079403",
-    updatedAt: "1737971405938",
+    createdAt: "1720164473019",
+    updatedAt: "1737975799554",
   },
   quantity: 4090.21,
   product: {
@@ -33,8 +33,8 @@ let value: PatchTransactionTransactionIdItems = {
     name: "<value>",
     description: "up sin astride acidic range",
     status: "archived",
-    createdAt: "1731326369695",
-    updatedAt: "1737964660208",
+    createdAt: "1731330763311",
+    updatedAt: "1737969053824",
     customData: {},
   },
 };

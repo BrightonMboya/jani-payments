@@ -11,8 +11,8 @@ let value: GetTransactionTransactionIdDiscount = {
   currencyCode: "FKP",
   type: "percentage",
   customData: {},
-  createdAt: "1716368744388",
-  updatedAt: "1737942923329",
+  createdAt: "1716373137994",
+  updatedAt: "1737947316935",
   restrictedTo: [
     "<value>",
   ],

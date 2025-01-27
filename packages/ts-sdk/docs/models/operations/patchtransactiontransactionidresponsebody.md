@@ -39,8 +39,8 @@ let value: PatchTransactionTransactionIdResponseBody = {
         },
         status: "archived",
         id: "<id>",
-        createdAt: "1717154566455",
-        updatedAt: "1737948051951",
+        createdAt: "1717158960062",
+        updatedAt: "1737952445558",
       },
       quantity: 6037.83,
       product: {
@@ -48,8 +48,8 @@ let value: PatchTransactionTransactionIdResponseBody = {
         name: "<value>",
         description: "via serve awkwardly uselessly testify vulgarise",
         status: "active",
-        createdAt: "1728098788202",
-        updatedAt: "1737978890638",
+        createdAt: "1728103181810",
+        updatedAt: "1737983284246",
         customData: {},
       },
     },
@@ -59,7 +59,7 @@ let value: PatchTransactionTransactionIdResponseBody = {
     status: "FAILED",
     paymentMethod: "CARD",
     provider: "MPESA",
-    createdAt: "1716636246370",
+    createdAt: "1716640639977",
     providerReference: "<value>",
     providerMetadata: {},
     methodDetails: {
@@ -70,7 +70,7 @@ let value: PatchTransactionTransactionIdResponseBody = {
       },
     },
   },
-  createdAt: "1712782240778",
+  createdAt: "1712786634386",
   customer: {
     id: "cus_2e229e50-1b92-4479-b3e3-829a3da6fc00",
     email: "brighton@gmail.com",
@@ -84,8 +84,8 @@ let value: PatchTransactionTransactionIdResponseBody = {
   address: {
     id: "<id>",
     customData: {},
-    createdAt: "1733046796837",
-    updatedAt: "1737953093780",
+    createdAt: "1733051190444",
+    updatedAt: "1737957487387",
   },
   invoiceId: "<id>",
 };

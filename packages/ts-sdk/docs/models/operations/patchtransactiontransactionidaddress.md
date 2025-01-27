@@ -8,8 +8,8 @@ import { PatchTransactionTransactionIdAddress } from "jani-payments/models/opera
 let value: PatchTransactionTransactionIdAddress = {
   id: "<id>",
   customData: {},
-  createdAt: "1735319359172",
-  updatedAt: "1737894593724",
+  createdAt: "1735323752780",
+  updatedAt: "1737898987332",
 };
 ```
 

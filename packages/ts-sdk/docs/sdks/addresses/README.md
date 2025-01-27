@@ -5,12 +5,12 @@
 
 ### Available Operations
 
-* [getCustomersCustomerIdAddresses](#getcustomerscustomeridaddresses)
-* [postCustomersCustomerIdAddresses](#postcustomerscustomeridaddresses)
-* [getAddressesAddressId](#getaddressesaddressid)
-* [patchCustomersCustomerIdAddressesAddressId](#patchcustomerscustomeridaddressesaddressid)
+* [list](#list)
+* [create](#create)
+* [get](#get)
+* [update](#update)
 
-## getCustomersCustomerIdAddresses
+## list
 
 ### Example Usage
 
@@ -25,7 +25,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.addresses.getCustomersCustomerIdAddresses({
+  const result = await janiPayments.addresses.list({
     customerId: "<id>",
   });
 
@@ -42,7 +42,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { addressesGetCustomersCustomerIdAddresses } from "jani-payments/funcs/addressesGetCustomersCustomerIdAddresses.js";
+import { addressesList } from "jani-payments/funcs/addressesList.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -54,7 +54,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await addressesGetCustomersCustomerIdAddresses(janiPayments, {
+  const res = await addressesList(janiPayments, {
     customerId: "<id>",
   });
 
@@ -75,14 +75,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetCustomersCustomerIdAddressesRequest](../../models/operations/getcustomerscustomeridaddressesrequest.md)                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.AddressesListRequest](../../models/operations/addresseslistrequest.md)                                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetCustomersCustomerIdAddressesResponseBody[]](../../models/.md)\>**
+**Promise\<[operations.AddressesListResponseBody[]](../../models/.md)\>**
 
 ### Errors
 
@@ -90,7 +90,7 @@ run();
 | --------------- | --------------- | --------------- |
 | errors.APIError | 4XX, 5XX        | \*/\*           |
 
-## postCustomersCustomerIdAddresses
+## create
 
 ### Example Usage
 
@@ -105,7 +105,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.addresses.postCustomersCustomerIdAddresses({
+  const result = await janiPayments.addresses.create({
     customerId: "<id>",
   });
 
@@ -122,7 +122,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { addressesPostCustomersCustomerIdAddresses } from "jani-payments/funcs/addressesPostCustomersCustomerIdAddresses.js";
+import { addressesCreate } from "jani-payments/funcs/addressesCreate.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -134,7 +134,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await addressesPostCustomersCustomerIdAddresses(janiPayments, {
+  const res = await addressesCreate(janiPayments, {
     customerId: "<id>",
   });
 
@@ -155,23 +155,23 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PostCustomersCustomerIdAddressesRequest](../../models/operations/postcustomerscustomeridaddressesrequest.md)                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.AddressesCreateRequest](../../models/operations/addressescreaterequest.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PostCustomersCustomerIdAddressesResponseBody](../../models/operations/postcustomerscustomeridaddressesresponsebody.md)\>**
+**Promise\<[operations.AddressesCreateResponseBody](../../models/operations/addressescreateresponsebody.md)\>**
 
 ### Errors
 
-| Error Type                                          | Status Code                                         | Content Type                                        |
-| --------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
-| errors.PostCustomersCustomerIdAddressesResponseBody | 400                                                 | application/json                                    |
-| errors.APIError                                     | 4XX, 5XX                                            | \*/\*                                               |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.AddressesCreateResponseBody | 400                                | application/json                   |
+| errors.APIError                    | 4XX, 5XX                           | \*/\*                              |
 
-## getAddressesAddressId
+## get
 
 ### Example Usage
 
@@ -186,7 +186,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.addresses.getAddressesAddressId({
+  const result = await janiPayments.addresses.get({
     addressId: "<id>",
   });
 
@@ -203,7 +203,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { addressesGetAddressesAddressId } from "jani-payments/funcs/addressesGetAddressesAddressId.js";
+import { addressesGet } from "jani-payments/funcs/addressesGet.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -215,7 +215,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await addressesGetAddressesAddressId(janiPayments, {
+  const res = await addressesGet(janiPayments, {
     addressId: "<id>",
   });
 
@@ -236,23 +236,23 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetAddressesAddressIdRequest](../../models/operations/getaddressesaddressidrequest.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.AddressesGetRequest](../../models/operations/addressesgetrequest.md)                                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetAddressesAddressIdResponseBody](../../models/operations/getaddressesaddressidresponsebody.md)\>**
+**Promise\<[operations.AddressesGetResponseBody](../../models/operations/addressesgetresponsebody.md)\>**
 
 ### Errors
 
-| Error Type                               | Status Code                              | Content Type                             |
-| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| errors.GetAddressesAddressIdResponseBody | 404                                      | application/json                         |
-| errors.APIError                          | 4XX, 5XX                                 | \*/\*                                    |
+| Error Type                      | Status Code                     | Content Type                    |
+| ------------------------------- | ------------------------------- | ------------------------------- |
+| errors.AddressesGetResponseBody | 404                             | application/json                |
+| errors.APIError                 | 4XX, 5XX                        | \*/\*                           |
 
-## patchCustomersCustomerIdAddressesAddressId
+## update
 
 ### Example Usage
 
@@ -267,7 +267,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.addresses.patchCustomersCustomerIdAddressesAddressId({
+  const result = await janiPayments.addresses.update({
     customerId: "<id>",
     addressId: "<id>",
   });
@@ -285,7 +285,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { addressesPatchCustomersCustomerIdAddressesAddressId } from "jani-payments/funcs/addressesPatchCustomersCustomerIdAddressesAddressId.js";
+import { addressesUpdate } from "jani-payments/funcs/addressesUpdate.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -297,7 +297,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await addressesPatchCustomersCustomerIdAddressesAddressId(janiPayments, {
+  const res = await addressesUpdate(janiPayments, {
     customerId: "<id>",
     addressId: "<id>",
   });
@@ -319,18 +319,18 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PatchCustomersCustomerIdAddressesAddressIdRequest](../../models/operations/patchcustomerscustomeridaddressesaddressidrequest.md)                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.AddressesUpdateRequest](../../models/operations/addressesupdaterequest.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PatchCustomersCustomerIdAddressesAddressIdResponseBody](../../models/operations/patchcustomerscustomeridaddressesaddressidresponsebody.md)\>**
+**Promise\<[operations.AddressesUpdateResponseBody](../../models/operations/addressesupdateresponsebody.md)\>**
 
 ### Errors
 
-| Error Type                                                    | Status Code                                                   | Content Type                                                  |
-| ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
-| errors.PatchCustomersCustomerIdAddressesAddressIdResponseBody | 404                                                           | application/json                                              |
-| errors.APIError                                               | 4XX, 5XX                                                      | \*/\*                                                         |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.AddressesUpdateResponseBody | 404                                | application/json                   |
+| errors.APIError                    | 4XX, 5XX                           | \*/\*                              |

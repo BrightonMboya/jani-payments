@@ -6,18 +6,16 @@ import {
   ProductsResponseSchema,
   UpdateProductsSchema,
 } from "./helpers";
-import {
+import { ErrorSchema } from "~/lib/utils/zod-helpers";
 
-  ErrorSchema,
-} from "~/lib/utils/zod-helpers";
-
-export const tags = ["Products"];
+export const tags = ["products"];
 
 export const list = createRoute({
   path: "/products",
   method: "get",
   tags,
-  operationId: "list",
+  operationId: "products:list",
+  "x-speakeasy-name-override": "list",
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       z.array(ProductsResponseSchema),
@@ -30,7 +28,8 @@ export const create = createRoute({
   path: "/products",
   method: "post",
   tags,
-  operationId: "create",
+  operationId: "products:create",
+  "x-speakeasy-name-override": "create",
   request: {
     body: {
       content: {
@@ -51,7 +50,8 @@ export const create = createRoute({
 export const get_product = createRoute({
   path: "/products/{product_id}",
   method: "get",
-  operationId: "getProduct",
+  operationId: "products:getProduct",
+   "x-speakeasy-name-override": "get",
   tags,
   request: {
     params: z.object({
@@ -71,7 +71,8 @@ export const update_product = createRoute({
   path: "/products/{product_id}",
   method: "patch",
   tags,
-  operationId: "update",
+  operationId: "products:update",
+   "x-speakeasy-name-override": "update",
   request: {
     params: z.object({
       product_id: z.string(),

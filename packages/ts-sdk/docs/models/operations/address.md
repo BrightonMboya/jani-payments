@@ -8,8 +8,8 @@ import { Address } from "jani-payments/models/operations";
 let value: Address = {
   id: "<id>",
   customData: {},
-  createdAt: "1718340884587",
-  updatedAt: "1737972939669",
+  createdAt: "1718345278073",
+  updatedAt: "1737977333155",
 };
 ```
 

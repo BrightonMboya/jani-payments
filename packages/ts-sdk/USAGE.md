@@ -10,7 +10,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.products.getProducts();
+  const result = await janiPayments.products.list();
 
   // Handle the result
   console.log(result);

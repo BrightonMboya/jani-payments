@@ -18,7 +18,8 @@ export const create_subscription = createRoute({
   path: "/subscription",
   method: "post",
   tags,
-  operationId: "create",
+  operationId: "subscription:create",
+  "x-speakeasy-name-override": "create",
   request: {
     body: {
       content: {
@@ -41,7 +42,8 @@ export const list_subscriptions = createRoute({
   path: "/subscription",
   method: "get",
   tags,
-  operationId: "list",
+  operationId: "subscription:list",
+  "x-speakeasy-name-override": "list",
   responses: {
     [HttpsStatusCodes.OK]: jsonContent(
       z.array(transformedSubscriptionSchema),
@@ -54,7 +56,8 @@ export const cancel_subscription = createRoute({
   path: "/subscription/{subscription_id}/cancel",
   method: "post",
   tags,
-  operationId: "cancelSubscription",
+  operationId: "subscription:cancelSubscription",
+  "x-speakeasy-name-override": "cancelSubscription",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -85,7 +88,8 @@ export const pause_subscription = createRoute({
   path: "/subscription/{subscription_id}/pause",
   method: "post",
   tags,
-  operationId: "pauseSubscription",
+  operationId: "subscription:pauseSubscription",
+  "x-speakeasy-name-override": "pauseSubscription",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -119,7 +123,8 @@ export const resume_subscription = createRoute({
   path: "/subscription/{subscription_id}/resume",
   method: "post",
   tags,
-  operationId: "resumeSubscription",
+  operationId: "subscription:resumeSubscription",
+  "x-speakeasy-name-override": "resumeSubscription",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -142,7 +147,8 @@ export const activate_subscription = createRoute({
   path: "/subscription/{subscription_id}/activate",
   method: "post",
   tags,
-  operationId: "activateSubscription",
+  operationId: "subscription:activateSubscription",
+  "x-speakeasy-name-override": "activateSubscription",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -165,7 +171,8 @@ export const update_subscription = createRoute({
   path: "/subscription/{subscription_id}",
   method: "patch",
   tags,
-  operationId: "updateSubscription",
+  operationId: "subscription:updateSubscription",
+  "x-speakeasy-name-override": "updateSubscription",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -190,11 +197,14 @@ export const update_subscription = createRoute({
     [HttpsStatusCodes.BAD_REQUEST]: jsonContent(ErrorSchema, "Bad Request"),
   },
 });
+
+
 export const get_subscription = createRoute({
   path: "/subscription/{subscription_id}",
   method: "get",
   tags,
-  operationId: "getSubscription",
+  operationId: "subscription:getSubscription",
+  "x-speakeasy-name-override": "get",
   responses: {
     [HttpsStatusCodes.OK]: jsonContent(
       transformedSubscriptionSchema,

@@ -20,7 +20,7 @@ specific category of applications.
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { productsGetProducts } from "jani-payments/funcs/productsGetProducts.js";
+import { productsList } from "jani-payments/funcs/productsList.js";
 import { SDKValidationError } from "jani-payments/models/errors/sdkvalidationerror.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
@@ -33,7 +33,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await productsGetProducts(janiPayments);
+  const res = await productsList(janiPayments);
 
   switch (true) {
     case res.ok:

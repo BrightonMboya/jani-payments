@@ -23,7 +23,8 @@ export const list = createRoute({
   path: "/prices",
   method: "get",
   tags,
-  operationId: "list",
+  operationId: "prices:list",
+  "x-speakeasy-name-override": "list",
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       z.array(PricesResponseSchema),
@@ -36,7 +37,8 @@ export const create_prices = createRoute({
   path: "/prices",
   method: "post",
   tags,
-  operationId: "create",
+  operationId: "prices:create",
+  "x-speakeasy-name-override": "create",
   request: {
     body: {
       content: {
@@ -62,7 +64,8 @@ export const get_price = createRoute({
   path: "/prices/{price_id}",
   method: "get",
   tags,
-  operationId: "getPrice",
+  operationId: "prices:getPrice",
+  "x-speakeasy-name-override": "get",
   request: {
     params: z.object({
       price_id: z.string(),
@@ -80,7 +83,8 @@ export const get_price = createRoute({
 export const update_price = createRoute({
   path: "/prices/{price_id}",
   method: "patch",
-  operationId: "update",
+  operationId: "prices:update",
+  "x-speakeasy-name-override": "update",
   request: {
     params: z.object({
       price_id: z.string(),

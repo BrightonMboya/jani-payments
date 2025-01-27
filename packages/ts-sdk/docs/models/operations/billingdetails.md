@@ -7,8 +7,8 @@ import { BillingDetails } from "jani-payments/models/operations";
 
 let value: BillingDetails = {
   paymentTerms: {
-    paymentInterval: "month",
-    paymentFrequency: 2716.53,
+    paymentInterval: "week",
+    paymentFrequency: 764.86,
   },
   enableCheckout: false,
   additionalInformation: "<value>",

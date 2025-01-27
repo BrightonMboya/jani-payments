@@ -10,7 +10,7 @@ let value: GetTransactionTransactionIdPayments = {
   status: "COMPLETED",
   paymentMethod: "CARD",
   provider: "FLUTTERWAVE",
-  createdAt: "1728664974970",
+  createdAt: "1728669368574",
   providerReference: "<value>",
   providerMetadata: {},
   methodDetails: {

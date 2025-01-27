@@ -11,8 +11,8 @@ let value: PostTransactionsDiscount = {
   currencyCode: "ARS",
   type: "percentage",
   customData: {},
-  createdAt: "1727655300702",
-  updatedAt: "1737964511797",
+  createdAt: "1727659694299",
+  updatedAt: "1737968905394",
   restrictedTo: [
     "<value>",
   ],

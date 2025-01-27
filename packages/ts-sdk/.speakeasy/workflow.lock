@@ -1,20 +1,27 @@
-speakeasyVersion: 1.476.1
+speakeasyVersion: 1.476.2
 sources:
     JANI Payments:
         sourceNamespace: jani-payments
-        sourceRevisionDigest: sha256:bfb6ef7042c27b69d73c066e5c61487cbbfb2b9ee153128ab41724c0c70cbdc4
-        sourceBlobDigest: sha256:d71c099fb4dc3578fd649621c4f3a574fda46a198066f2edbabb8c16df8674f7
+        sourceRevisionDigest: sha256:f9465a0d97cd6bd74f4b520d77592cf6c3931ba62d54cee9678f18a0ca35b87f
+        sourceBlobDigest: sha256:212ff123ddff23ef8c988387b2d8df10fc3807f253c1c29800a6df411ce13281
         tags:
             - latest
             - 1.0.0
 targets:
+    jani:
+        source: JANI Payments
+        sourceNamespace: jani-payments
+        sourceRevisionDigest: sha256:605cf8d365260197c1e0d939d4155c384f981f964e5674b511f504207a842ec6
+        sourceBlobDigest: sha256:66995fb72f38553e3b9a1d4117f7932c37b0dbaf5400c63aef260cbe048c0dd8
+        codeSamplesNamespace: jani-payments-typescript-code-samples
+        codeSamplesRevisionDigest: sha256:60a2756d83e025522f562d1475b20fa05048606dd9651409a3058883c4f7c7e3
     jani-payments:
         source: JANI Payments
         sourceNamespace: jani-payments
-        sourceRevisionDigest: sha256:bfb6ef7042c27b69d73c066e5c61487cbbfb2b9ee153128ab41724c0c70cbdc4
-        sourceBlobDigest: sha256:d71c099fb4dc3578fd649621c4f3a574fda46a198066f2edbabb8c16df8674f7
+        sourceRevisionDigest: sha256:f9465a0d97cd6bd74f4b520d77592cf6c3931ba62d54cee9678f18a0ca35b87f
+        sourceBlobDigest: sha256:212ff123ddff23ef8c988387b2d8df10fc3807f253c1c29800a6df411ce13281
         codeSamplesNamespace: jani-payments-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:9da444bec2595d63ed34ab42f13b391ff6feac01476fb02a594092f91ecf509b
+        codeSamplesRevisionDigest: sha256:01cb8bc440e5776cf929f5f347f53eec4128e66f2b24a72a426d205b593bc621
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -22,6 +29,10 @@ workflow:
         JANI Payments:
             inputs:
                 - location: https://p5kv4b3h7rzao6bxlzmisxykfe0dragb.lambda-url.us-east-1.on.aws/doc
+            transformations:
+                - filterOperations:
+                    operations: update,create,list
+                    exclude: true
             registry:
                 location: registry.speakeasyapi.dev/jani-payments/billing/jani-payments
     targets:

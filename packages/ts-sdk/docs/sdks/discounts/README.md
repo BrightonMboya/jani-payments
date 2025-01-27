@@ -5,12 +5,12 @@
 
 ### Available Operations
 
-* [getDiscounts](#getdiscounts)
-* [postDiscounts](#postdiscounts)
-* [getDiscountsDiscountId](#getdiscountsdiscountid)
-* [patchDiscountsDiscountId](#patchdiscountsdiscountid)
+* [list](#list)
+* [create](#create)
+* [get](#get)
+* [update](#update)
 
-## getDiscounts
+## list
 
 ### Example Usage
 
@@ -25,7 +25,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.discounts.getDiscounts();
+  const result = await janiPayments.discounts.list();
 
   // Handle the result
   console.log(result);
@@ -40,7 +40,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { discountsGetDiscounts } from "jani-payments/funcs/discountsGetDiscounts.js";
+import { discountsList } from "jani-payments/funcs/discountsList.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -52,7 +52,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await discountsGetDiscounts(janiPayments);
+  const res = await discountsList(janiPayments);
 
   if (!res.ok) {
     throw res.error;
@@ -77,7 +77,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.GetDiscountsResponseBody[]](../../models/.md)\>**
+**Promise\<[operations.DiscountListResponseBody[]](../../models/.md)\>**
 
 ### Errors
 
@@ -85,7 +85,7 @@ run();
 | --------------- | --------------- | --------------- |
 | errors.APIError | 4XX, 5XX        | \*/\*           |
 
-## postDiscounts
+## create
 
 ### Example Usage
 
@@ -100,7 +100,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.discounts.postDiscounts();
+  const result = await janiPayments.discounts.create();
 
   // Handle the result
   console.log(result);
@@ -115,7 +115,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { discountsPostDiscounts } from "jani-payments/funcs/discountsPostDiscounts.js";
+import { discountsCreate } from "jani-payments/funcs/discountsCreate.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -127,7 +127,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await discountsPostDiscounts(janiPayments);
+  const res = await discountsCreate(janiPayments);
 
   if (!res.ok) {
     throw res.error;
@@ -146,23 +146,23 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PostDiscountsRequestBody](../../models/operations/postdiscountsrequestbody.md)                                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.DiscountCreateRequestBody](../../models/operations/discountcreaterequestbody.md)                                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PostDiscountsResponseBody](../../models/operations/postdiscountsresponsebody.md)\>**
+**Promise\<[operations.DiscountCreateResponseBody](../../models/operations/discountcreateresponsebody.md)\>**
 
 ### Errors
 
-| Error Type                       | Status Code                      | Content Type                     |
-| -------------------------------- | -------------------------------- | -------------------------------- |
-| errors.PostDiscountsResponseBody | 400                              | application/json                 |
-| errors.APIError                  | 4XX, 5XX                         | \*/\*                            |
+| Error Type                        | Status Code                       | Content Type                      |
+| --------------------------------- | --------------------------------- | --------------------------------- |
+| errors.DiscountCreateResponseBody | 400                               | application/json                  |
+| errors.APIError                   | 4XX, 5XX                          | \*/\*                             |
 
-## getDiscountsDiscountId
+## get
 
 ### Example Usage
 
@@ -177,7 +177,7 @@ const janiPayments = new JaniPayments({
 });
 
 async function run() {
-  const result = await janiPayments.discounts.getDiscountsDiscountId({
+  const result = await janiPayments.discounts.get({
     discountId: "<id>",
   });
 
@@ -194,7 +194,7 @@ The standalone function version of this method:
 
 ```typescript
 import { JaniPaymentsCore } from "jani-payments/core.js";
-import { discountsGetDiscountsDiscountId } from "jani-payments/funcs/discountsGetDiscountsDiscountId.js";
+import { discountsGet } from "jani-payments/funcs/discountsGet.js";
 
 // Use `JaniPaymentsCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -206,88 +206,7 @@ const janiPayments = new JaniPaymentsCore({
 });
 
 async function run() {
-  const res = await discountsGetDiscountsDiscountId(janiPayments, {
-    discountId: "<id>",
-  });
-
-  if (!res.ok) {
-    throw res.error;
-  }
-
-  const { value: result } = res;
-
-  // Handle the result
-  console.log(result);
-}
-
-run();
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetDiscountsDiscountIdRequest](../../models/operations/getdiscountsdiscountidrequest.md)                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
-| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
-
-### Response
-
-**Promise\<[operations.GetDiscountsDiscountIdResponseBody](../../models/operations/getdiscountsdiscountidresponsebody.md)\>**
-
-### Errors
-
-| Error Type                                | Status Code                               | Content Type                              |
-| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
-| errors.GetDiscountsDiscountIdResponseBody | 404                                       | application/json                          |
-| errors.APIError                           | 4XX, 5XX                                  | \*/\*                                     |
-
-## patchDiscountsDiscountId
-
-### Example Usage
-
-```typescript
-import { JaniPayments } from "jani-payments";
-
-const janiPayments = new JaniPayments({
-  security: {
-    bearer: process.env["JANIPAYMENTS_BEARER"] ?? "",
-    organizationId: process.env["JANIPAYMENTS_ORGANIZATION_ID"] ?? "",
-  },
-});
-
-async function run() {
-  const result = await janiPayments.discounts.patchDiscountsDiscountId({
-    discountId: "<id>",
-  });
-
-  // Handle the result
-  console.log(result);
-}
-
-run();
-```
-
-### Standalone function
-
-The standalone function version of this method:
-
-```typescript
-import { JaniPaymentsCore } from "jani-payments/core.js";
-import { discountsPatchDiscountsDiscountId } from "jani-payments/funcs/discountsPatchDiscountsDiscountId.js";
-
-// Use `JaniPaymentsCore` for best tree-shaking performance.
-// You can create one instance of it to use across an application.
-const janiPayments = new JaniPaymentsCore({
-  security: {
-    bearer: process.env["JANIPAYMENTS_BEARER"] ?? "",
-    organizationId: process.env["JANIPAYMENTS_ORGANIZATION_ID"] ?? "",
-  },
-});
-
-async function run() {
-  const res = await discountsPatchDiscountsDiscountId(janiPayments, {
+  const res = await discountsGet(janiPayments, {
     discountId: "<id>",
   });
 
@@ -308,18 +227,99 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PatchDiscountsDiscountIdRequest](../../models/operations/patchdiscountsdiscountidrequest.md)                                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.DiscountGetDiscountRequest](../../models/operations/discountgetdiscountrequest.md)                                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PatchDiscountsDiscountIdResponseBody](../../models/operations/patchdiscountsdiscountidresponsebody.md)\>**
+**Promise\<[operations.DiscountGetDiscountResponseBody](../../models/operations/discountgetdiscountresponsebody.md)\>**
 
 ### Errors
 
-| Error Type                                  | Status Code                                 | Content Type                                |
-| ------------------------------------------- | ------------------------------------------- | ------------------------------------------- |
-| errors.PatchDiscountsDiscountIdResponseBody | 404                                         | application/json                            |
-| errors.APIError                             | 4XX, 5XX                                    | \*/\*                                       |
+| Error Type                             | Status Code                            | Content Type                           |
+| -------------------------------------- | -------------------------------------- | -------------------------------------- |
+| errors.DiscountGetDiscountResponseBody | 404                                    | application/json                       |
+| errors.APIError                        | 4XX, 5XX                               | \*/\*                                  |
+
+## update
+
+### Example Usage
+
+```typescript
+import { JaniPayments } from "jani-payments";
+
+const janiPayments = new JaniPayments({
+  security: {
+    bearer: process.env["JANIPAYMENTS_BEARER"] ?? "",
+    organizationId: process.env["JANIPAYMENTS_ORGANIZATION_ID"] ?? "",
+  },
+});
+
+async function run() {
+  const result = await janiPayments.discounts.update({
+    discountId: "<id>",
+  });
+
+  // Handle the result
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { JaniPaymentsCore } from "jani-payments/core.js";
+import { discountsUpdate } from "jani-payments/funcs/discountsUpdate.js";
+
+// Use `JaniPaymentsCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const janiPayments = new JaniPaymentsCore({
+  security: {
+    bearer: process.env["JANIPAYMENTS_BEARER"] ?? "",
+    organizationId: process.env["JANIPAYMENTS_ORGANIZATION_ID"] ?? "",
+  },
+});
+
+async function run() {
+  const res = await discountsUpdate(janiPayments, {
+    discountId: "<id>",
+  });
+
+  if (!res.ok) {
+    throw res.error;
+  }
+
+  const { value: result } = res;
+
+  // Handle the result
+  console.log(result);
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.DiscountUpdateRequest](../../models/operations/discountupdaterequest.md)                                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.DiscountUpdateResponseBody](../../models/operations/discountupdateresponsebody.md)\>**
+
+### Errors
+
+| Error Type                        | Status Code                       | Content Type                      |
+| --------------------------------- | --------------------------------- | --------------------------------- |
+| errors.DiscountUpdateResponseBody | 404                               | application/json                  |
+| errors.APIError                   | 4XX, 5XX                          | \*/\*                             |

@@ -10,13 +10,14 @@ export const AddressResponseSchema = AddressesModel.extend({
   custom_data: jsonSchema,
 });
 
-const tags = ["Addresses"];
+const tags = ["addresses"];
 
 export const list = createRoute({
   path: "/customers/{customer_id}/addresses",
   method: "get",
   tags,
-  operationId: "list",
+  operationId: "addresses:list",
+  "x-speakeasy-name-override": "list",
   request: {
     params: z.object({
       customer_id: z.string(),
@@ -33,8 +34,9 @@ export const list = createRoute({
 export const create = createRoute({
   path: "/customers/{customer_id}/addresses",
   method: "post",
-  operationId: "create",
+  operationId: "addresses:create",
   tags,
+  "x-speakeasy-name-override": "create",
   request: {
     params: z.object({
       customer_id: z.string(),
@@ -62,8 +64,9 @@ export const create = createRoute({
 export const get_address = createRoute({
   path: "/addresses/{address_id}",
   method: "get",
-  operationId: "getAddress",
   tags,
+  operationId: "addresses:get",
+  "x-speakeasy-name-override": "get",
   request: {
     params: z.object({
       address_id: z.string(),
@@ -79,7 +82,8 @@ export const update_address = createRoute({
   path: "/customers/{customer_id}/addresses/{address_id}",
   method: "patch",
   tags,
-  operationId: "update",
+  operationId: "addresses:update",
+  "x-speakeasy-name-override": "update",
   request: {
     params: z.object({
       customer_id: z.string(),

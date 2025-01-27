@@ -1,0 +1,43 @@
+# DiscountUpdateResponseBody
+
+Updates a Discount by ID
+
+## Example Usage
+
+```typescript
+import { DiscountUpdateResponseBody } from "jani-payments/models/operations";
+
+let value: DiscountUpdateResponseBody = {
+  id: "<id>",
+  amount: 9903.45,
+  currencyCode: "ISK",
+  type: "flat",
+  customData: {},
+  createdAt: "1726591714778",
+  updatedAt: "1737939686528",
+  restrictedTo: [
+    "<value>",
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                                                        | Type                                                                                                         | Required                                                                                                     | Description                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `id`                                                                                                         | *string*                                                                                                     | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
+| `status`                                                                                                     | [operations.DiscountUpdateDiscountsStatus](../../models/operations/discountupdatediscountsstatus.md)         | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
+| `description`                                                                                                | *string*                                                                                                     | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
+| `enabledForCheckout`                                                                                         | *boolean*                                                                                                    | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
+| `amount`                                                                                                     | *number*                                                                                                     | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
+| `currencyCode`                                                                                               | *string*                                                                                                     | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
+| `type`                                                                                                       | [operations.DiscountUpdateDiscountsType](../../models/operations/discountupdatediscountstype.md)             | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
+| `recur`                                                                                                      | *boolean*                                                                                                    | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
+| `maxRecurringIntervals`                                                                                      | *number*                                                                                                     | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
+| `usageLimit`                                                                                                 | *number*                                                                                                     | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
+| `expiresAt`                                                                                                  | *string*                                                                                                     | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
+| `customData`                                                                                                 | [operations.DiscountUpdateDiscountsCustomData](../../models/operations/discountupdatediscountscustomdata.md) | :heavy_check_mark:                                                                                           | Any valid JSON value                                                                                         |
+| `timesUsed`                                                                                                  | *number*                                                                                                     | :heavy_minus_sign:                                                                                           | N/A                                                                                                          |
+| `createdAt`                                                                                                  | *string*                                                                                                     | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
+| `updatedAt`                                                                                                  | *string*                                                                                                     | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
+| `restrictedTo`                                                                                               | *string*[]                                                                                                   | :heavy_check_mark:                                                                                           | N/A                                                                                                          |

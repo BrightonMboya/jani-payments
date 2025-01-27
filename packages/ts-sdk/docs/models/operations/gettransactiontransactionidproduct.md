@@ -10,8 +10,8 @@ let value: GetTransactionTransactionIdProduct = {
   name: "<value>",
   description: "spring midst yuck",
   status: "active",
-  createdAt: "1722290467790",
-  updatedAt: "1737895382479",
+  createdAt: "1722294861402",
+  updatedAt: "1737899776091",
   customData: {},
 };
 ```

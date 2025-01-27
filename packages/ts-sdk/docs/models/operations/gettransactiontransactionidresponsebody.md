@@ -39,8 +39,8 @@ let value: GetTransactionTransactionIdResponseBody = {
         },
         status: "active",
         id: "<id>",
-        createdAt: "1707783284252",
-        updatedAt: "1737903087861",
+        createdAt: "1707787677858",
+        updatedAt: "1737907481467",
       },
       quantity: 3816.54,
       product: {
@@ -49,8 +49,8 @@ let value: GetTransactionTransactionIdResponseBody = {
         description:
           "than acidly colorless oof oof ugh beneath unruly pupil extroverted",
         status: "archived",
-        createdAt: "1715995737755",
-        updatedAt: "1737942808774",
+        createdAt: "1716000131361",
+        updatedAt: "1737947202380",
         customData: {},
       },
     },
@@ -60,7 +60,7 @@ let value: GetTransactionTransactionIdResponseBody = {
     status: "PENDING",
     paymentMethod: "MOBILE_MONEY",
     provider: "PAYSTACK",
-    createdAt: "1719903511815",
+    createdAt: "1719907905420",
     providerReference: "<value>",
     providerMetadata: {},
     methodDetails: {
@@ -71,7 +71,7 @@ let value: GetTransactionTransactionIdResponseBody = {
       },
     },
   },
-  createdAt: "1710593370154",
+  createdAt: "1710597763760",
   customer: {
     id: "cus_2e229e50-1b92-4479-b3e3-829a3da6fc00",
     email: "brighton@gmail.com",
@@ -85,8 +85,8 @@ let value: GetTransactionTransactionIdResponseBody = {
   address: {
     id: "<id>",
     customData: {},
-    createdAt: "1707679875538",
-    updatedAt: "1737895112017",
+    createdAt: "1707684269144",
+    updatedAt: "1737899505623",
   },
   invoiceId: "<id>",
 };

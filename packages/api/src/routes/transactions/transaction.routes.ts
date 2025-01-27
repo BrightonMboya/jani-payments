@@ -17,6 +17,8 @@ export const create_transaction = createRoute({
   path: "/transactions",
   method: "post",
   tags,
+  operationId: "transactions:create",
+  "x-speakeasy-name-override": "create",
   request: {
     body: {
       content: {
@@ -42,6 +44,8 @@ export const list_transaction = createRoute({
   path: "/transactions",
   method: "get",
   tags,
+  "x-speakeasy-name-override": "list",
+  operationId: "transactions:list",
   request: {
     query: listTransactionQueryParams,
   },
@@ -57,6 +61,8 @@ export const get_transaction = createRoute({
   path: "/transaction/{transaction_id}",
   method: "get",
   tags,
+  operationId: "transactions:get",
+  "x-speakeasy-name-override": "get",
   request: {
     params: transactionIdSchema,
   },
@@ -76,6 +82,8 @@ export const update_transaction = createRoute({
   path: "/transaction/{transaction_id}",
   method: "patch",
   tags,
+  operationId: "transactions:update",
+  "x-speakeasy-name-override": "update",
   request: {
     params: transactionIdSchema,
     body: {

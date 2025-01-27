@@ -24,8 +24,8 @@ let value: GetTransactionTransactionIdItems = {
     },
     status: "archived",
     id: "<id>",
-    createdAt: "1721825474614",
-    updatedAt: "1737894082451",
+    createdAt: "1721829868226",
+    updatedAt: "1737898476063",
   },
   quantity: 6062.62,
   product: {
@@ -34,8 +34,8 @@ let value: GetTransactionTransactionIdItems = {
     description:
       "sushi straw ha nudge er after well-off license cheerfully repeatedly",
     status: "archived",
-    createdAt: "1725591380016",
-    updatedAt: "1737975658009",
+    createdAt: "1725595773628",
+    updatedAt: "1737980051621",
     customData: {},
   },
 };

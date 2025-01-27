@@ -11,8 +11,8 @@ let value: GetTransactionsDiscount = {
   currencyCode: "SYP",
   type: "percentage",
   customData: {},
-  createdAt: "1708817275996",
-  updatedAt: "1737899692160",
+  createdAt: "1708821669469",
+  updatedAt: "1737904085632",
   restrictedTo: [
     "<value>",
   ],

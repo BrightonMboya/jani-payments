@@ -37,8 +37,8 @@ let value: GetTransactionsData = {
         },
         status: "archived",
         id: "<id>",
-        createdAt: "1724741712695",
-        updatedAt: "1737959880619",
+        createdAt: "1724746106168",
+        updatedAt: "1737964274091",
       },
       quantity: 9440.33,
       product: {
@@ -46,8 +46,8 @@ let value: GetTransactionsData = {
         name: "<value>",
         description: "reel foot oof",
         status: "archived",
-        createdAt: "1725916724998",
-        updatedAt: "1737978067505",
+        createdAt: "1725921118470",
+        updatedAt: "1737982460977",
         customData: {},
       },
     },
@@ -57,7 +57,7 @@ let value: GetTransactionsData = {
     status: "REFUNDED",
     paymentMethod: "BANK_TRANSFER",
     provider: "STRIPE",
-    createdAt: "1717970970207",
+    createdAt: "1717975363679",
     providerReference: "<value>",
     providerMetadata: {},
     methodDetails: {
@@ -68,7 +68,7 @@ let value: GetTransactionsData = {
       },
     },
   },
-  createdAt: "1721806034625",
+  createdAt: "1721810428098",
   customer: {
     id: "cus_2e229e50-1b92-4479-b3e3-829a3da6fc00",
     email: "brighton@gmail.com",
@@ -82,8 +82,8 @@ let value: GetTransactionsData = {
   address: {
     id: "<id>",
     customData: {},
-    createdAt: "1737675592507",
-    updatedAt: "1737971740714",
+    createdAt: "1737679985979",
+    updatedAt: "1737976134186",
   },
   invoiceId: "<id>",
 };

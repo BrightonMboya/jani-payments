@@ -39,8 +39,8 @@ let value: PostTransactionsResponseBody = {
         },
         status: "active",
         id: "<id>",
-        createdAt: "1728399299919",
-        updatedAt: "1737902398627",
+        createdAt: "1728403693518",
+        updatedAt: "1737906792226",
       },
       quantity: 5658.45,
       product: {
@@ -48,8 +48,8 @@ let value: PostTransactionsResponseBody = {
         name: "<value>",
         description: "needily academics ack generously aboard promptly",
         status: "archived",
-        createdAt: "1713948033794",
-        updatedAt: "1737958761607",
+        createdAt: "1713952427392",
+        updatedAt: "1737963155205",
         customData: {},
       },
     },
@@ -59,7 +59,7 @@ let value: PostTransactionsResponseBody = {
     status: "REFUNDED",
     paymentMethod: "BANK_TRANSFER",
     provider: "AIRTEL",
-    createdAt: "1706729048053",
+    createdAt: "1706733441652",
     providerReference: "<value>",
     providerMetadata: {},
     methodDetails: {
@@ -70,7 +70,7 @@ let value: PostTransactionsResponseBody = {
       },
     },
   },
-  createdAt: "1714973105071",
+  createdAt: "1714977498670",
   customer: {
     id: "cus_2e229e50-1b92-4479-b3e3-829a3da6fc00",
     email: "brighton@gmail.com",
@@ -84,8 +84,8 @@ let value: PostTransactionsResponseBody = {
   address: {
     id: "<id>",
     customData: {},
-    createdAt: "1725875278095",
-    updatedAt: "1737926132737",
+    createdAt: "1725879671694",
+    updatedAt: "1737930526336",
   },
   invoiceId: "<id>",
 };

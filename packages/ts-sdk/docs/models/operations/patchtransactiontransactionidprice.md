@@ -23,8 +23,8 @@ let value: PatchTransactionTransactionIdPrice = {
   },
   status: "active",
   id: "<id>",
-  createdAt: "1736207877948",
-  updatedAt: "1737952269438",
+  createdAt: "1736212271564",
+  updatedAt: "1737956663054",
 };
 ```
 
