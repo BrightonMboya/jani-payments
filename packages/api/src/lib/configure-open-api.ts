@@ -9,23 +9,37 @@ export default async function configureOpenAPI(app: AppOpenAPI) {
       version: packageJSON.version,
       title: "JANI Payments",
     },
-    security: [{ Bearer: [], organization_Id: [] }],
+    security: [{ Bearer: [] }],
     servers: [
       {
         url: "https://p5kv4b3h7rzao6bxlzmisxykfe0dragb.lambda-url.us-east-1.on.aws",
       },
     ],
+    "x-speakeasy-globals": {
+      parameters: [
+        {
+          name: "organization_Id",
+          in: "header",
+          description: "Organization ID",
+          required: true,
+          schema: {
+            type: "string",
+          },
+          "x-speakeasy-global": true,
+        },
+      ],
+    },
   });
   app.openAPIRegistry.registerComponent("securitySchemes", "Bearer", {
     type: "http",
     scheme: "bearer",
     bearerFormat: "JWT",
   });
-  app.openAPIRegistry.registerComponent("securitySchemes", "organization_Id", {
-    type: "apiKey",
-    in: "cookie",
-    name: "organization_Id",
-  });
+  // app.openAPIRegistry.registerComponent("securitySchemes", "organization_Id", {
+  //   type: "apiKey",
+  //   in: "cookie",
+  //   name: "organization_Id",
+  // });
   app.get(
     "/reference",
     apiReference({
