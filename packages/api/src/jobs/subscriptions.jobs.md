@@ -21,8 +21,8 @@ Example: 14-day free trial
 5. Invoice generation
    Example: Monthly subscription
 
-- Cron runs daily to:
-  a. Generate invoices for next billing cycle
+- Cron run daily to:
+  a. Generate invoice for next billing cycle
   b. Include:
   - Regular subscription fees
   - Usage charges
@@ -32,5 +32,4 @@ Example: 14-day free trial
 [Done] 6. this is not a job parse, but when you collect the payment u need to update the
 first_billed_at, next_billed_at, and current_billing_period dates
 
-[Done]7. Job to handle subscription_scheduled_changes
-go to the schdeduled_changes table and then perfrom the logic for the scheduled change
+[Done]7. Job to handle subscription_scheduled_changes to to the schdeduled_changes table and then perfrom the logic for the scheduled change

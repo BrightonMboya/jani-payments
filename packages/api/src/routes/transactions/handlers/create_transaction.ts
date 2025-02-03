@@ -12,6 +12,7 @@ import * as HttpStatusCodes from "~/lib/http-status-code";
 import { Resource } from "sst";
 import { bus } from "sst/aws/bus";
 import { TransactionEvent } from "../events/event-defintion";
+import {randomBytes} from "crypto"
 
 const create_transaction: APPRouteHandler<CreateTransaction> = async (
   c: Context
@@ -22,7 +23,7 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
 
   const transaction = await db.$transaction(async (tx) => {
     const transaction_id = `txn_${crypto.randomUUID()}`;
-    const invoice_id = `inv_${crypto.randomUUID()}`; //TODO: u should send this to the event queue to create an invoice, maybe take it above this txn
+    const invoice_id = `INV-${randomBytes(12)}`; 
     // Verify all prices belong to the same project
     const prices = await db.prices.findMany({
       where: {

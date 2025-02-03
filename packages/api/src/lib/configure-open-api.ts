@@ -18,7 +18,7 @@ export default async function configureOpenAPI(app: AppOpenAPI) {
     "x-speakeasy-globals": {
       parameters: [
         {
-          name: "organization_Id",
+          name: "organizationId",
           in: "header",
           description: "Organization ID",
           required: true,
@@ -35,11 +35,11 @@ export default async function configureOpenAPI(app: AppOpenAPI) {
     scheme: "bearer",
     bearerFormat: "JWT",
   });
-  // app.openAPIRegistry.registerComponent("securitySchemes", "organization_Id", {
-  //   type: "apiKey",
-  //   in: "cookie",
-  //   name: "organization_Id",
-  // });
+  app.openAPIRegistry.registerComponent("securitySchemes", "organization_Id", {
+    type: "apiKey",
+    in: "header",
+    name: "organization_Id",
+  });
   app.get(
     "/reference",
     apiReference({

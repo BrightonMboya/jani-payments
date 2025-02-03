@@ -7,7 +7,7 @@ import { ErrorSchema } from "~/lib/utils/zod-helpers";
 import { CreateAddressSchema, UpdateAddressSchema } from "./helpers";
 
 export const AddressResponseSchema = AddressesModel.extend({
-  custom_data: jsonSchema,
+  custom_data: jsonSchema
 });
 
 const tags = ["addresses"];
@@ -22,15 +22,10 @@ export const list = createRoute({
     params: z.object({
       customer_id: z.string(),
     }),
-    
+    headers: z.object({
+      organization_Id: z.string().describe("organization_Id"),
+    }),
   },
-  parameters: [
-    {
-      name: "organization_Id",
-      in: "header",
-      schema: { type: "string" },
-    },
-  ],
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       z.array(AddressResponseSchema),
@@ -45,16 +40,12 @@ export const create = createRoute({
   operationId: "addresses:create",
   tags,
   "x-speakeasy-name-override": "create",
-  parameters: [
-    {
-      name: "organization_Id",
-      in: "header",
-      schema: { type: "string" },
-    },
-  ],
   request: {
     params: z.object({
       customer_id: z.string(),
+    }),
+    headers: z.object({
+      organization_Id: z.string().describe("organization_Id"),
     }),
     body: {
       content: {
@@ -83,16 +74,13 @@ export const get_address = createRoute({
   tags,
   operationId: "addresses:get",
   "x-speakeasy-name-override": "get",
-  // parameters: [
-  //   {
-  //     name: "organization_Id",
-  //     in: "cookie",
-  //     schema: { type: "string" },
-  //   },
-  // ],
+
   request: {
     params: z.object({
       address_id: z.string(),
+    }),
+    headers: z.object({
+      organization_Id: z.string().describe("organization_Id"),
     }),
   },
   responses: {
@@ -106,18 +94,14 @@ export const update_address = createRoute({
   method: "patch",
   tags,
   operationId: "addresses:update",
-  // parameters: [
-  //   {
-  //     name: "organization_Id",
-  //     in: "cookie",
-  //     schema: { type: "string" },
-  //   },
-  // ],
   "x-speakeasy-name-override": "update",
   request: {
     params: z.object({
       customer_id: z.string(),
       address_id: z.string(),
+    }),
+    headers: z.object({
+      organization_Id: z.string().describe("organization_Id"),
     }),
     body: {
       content: {

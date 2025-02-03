@@ -45,9 +45,9 @@ routes.forEach((route) => {
 });
 
 app.get("/test", async (c: Context) => {
-  // return generateInvoice(c)
-  const changes = await SubscriptionScheduledChanges()
-  return c.json(changes)
+  return generateInvoice(c)
+  // const changes = await SubscriptionScheduledChanges()
+  // return c.json(changes)
   // const tests = await db.transactions.findMany()
   // return c.json(tests)
 });
