@@ -23,7 +23,6 @@ export default function CreateAPP() {
     cors({
       origin: [
         "http://localhost:3000",
-        " https://wpgusntzzjxww5xfflrwiu326a0brzhd.lambda-url.us-east-1.on.aws/",
       ],
       maxAge: 600,
       credentials: true,

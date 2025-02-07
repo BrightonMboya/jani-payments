@@ -68,6 +68,9 @@ export default async function configureOpenAPI(app: AppOpenAPI) {
       title: "JANI Payments",
     },
     security: [{ Bearer: [], organization_Id: [] }],
+    servers: [{
+      url: "billing.jani-ai.com"
+    }]
   });
   app.openAPIRegistry.registerComponent("securitySchemes", "Bearer", {
     type: "http",

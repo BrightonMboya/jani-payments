@@ -57,6 +57,7 @@ model Project {
   Subscriptions     Subscriptions[]
   Transactions      Transactions[]
   Api_keys          Api_keys[]
+  Checkouts         Checkouts[]
 
   @@index(usageLastChecked(sort: Asc))
 }
@@ -243,6 +244,7 @@ model Prices {
   Discount_Prices         Discount_Prices[]
   Subscription_Items      SubscriptionItems[]
   TransactionItems        TransactionItems[]
+  CheckoutItems           CheckoutItems[]
 
   @@index([product_id, projectId])
 }
@@ -299,6 +301,7 @@ model Customers {
   Addresses     Addresses[]
   Subscriptions Subscriptions[]
   Transactions  Transactions[]
+  Checkouts     Checkouts[]
 }
 
 model Addresses {
@@ -579,4 +582,23 @@ model Transactions {
 
   @@index([created_at])
   @@index([customer_id, created_at])
+}
+
+model Checkouts {
+  id            String          @id @default(cuid())
+  customer      Customers       @relation(fields: [customer_id], references: [id])
+  customer_id   String
+  project_id    String
+  project       Project         @relation(fields: [project_id], references: [id])
+  checkoutItems CheckoutItems[]
+  created_at    DateTime        @default(now())
+}
+
+model CheckoutItems {
+  id         String    @id @default(cuid())
+  price      Prices    @relation(fields: [price_id], references: [id])
+  price_id   String
+  quantity   Int
+  checkouts  Checkouts @relation(fields: [checkoutId], references: [id])
+  checkoutId String
 }

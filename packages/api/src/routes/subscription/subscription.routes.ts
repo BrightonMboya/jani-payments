@@ -91,7 +91,7 @@ export const pause_subscription = createRoute({
   method: "post",
   tags,
   operationId: "subscription:pauseSubscription",
-  "x-speakeasy-name-override": "pauseSubscription",
+  "x-speakeasy-name-override": "pause",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -127,7 +127,7 @@ export const resume_subscription = createRoute({
   method: "post",
   tags,
   operationId: "subscription:resumeSubscription",
-  "x-speakeasy-name-override": "resumeSubscription",
+  "x-speakeasy-name-override": "resume",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -151,7 +151,7 @@ export const activate_subscription = createRoute({
   method: "post",
   tags,
   operationId: "subscription:activateSubscription",
-  "x-speakeasy-name-override": "activateSubscription",
+  "x-speakeasy-name-override": "activate",
   request: {
     params: z.object({
       subscription_id: z.string(),
@@ -175,7 +175,7 @@ export const update_subscription = createRoute({
   method: "patch",
   tags,
   operationId: "subscription:updateSubscription",
-  "x-speakeasy-name-override": "updateSubscription",
+  "x-speakeasy-name-override": "update",
   request: {
     params: z.object({
       subscription_id: z.string(),
