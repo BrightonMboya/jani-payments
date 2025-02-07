@@ -1,17 +1,14 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./index.css"
-import PaymentForm from "./components/PaymentForm";
-import CheckoutPage from "./components/Payment";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      {/* <PaymentForm/> */}
-      <CheckoutPage/>
+      <Router>
+        <Routes>
+          <Route path="/:checkout_id" element={<CheckoutPage />} />
+        </Routes>
+      </Router>
     </>
   );
 }
