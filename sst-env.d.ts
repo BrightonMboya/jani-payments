@@ -28,6 +28,10 @@ declare module "sst" {
       "type": "sst.aws.Queue"
       "url": string
     }
+    "checkout": {
+      "type": "sst.aws.StaticSite"
+      "url": string
+    }
     "router": {
       "type": "sst.aws.Router"
       "url": string
