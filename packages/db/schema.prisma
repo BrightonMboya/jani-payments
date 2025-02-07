@@ -276,6 +276,7 @@ model Discounts {
   projectId               String?
   Subscriptions           Subscriptions[]
   Transactions            Transactions[]
+  Checkouts               Checkouts[]
 }
 
 model Discount_Prices {
@@ -591,6 +592,8 @@ model Checkouts {
   project_id    String
   project       Project         @relation(fields: [project_id], references: [id])
   checkoutItems CheckoutItems[]
+  discount      Discounts?      @relation(fields: [discount_id], references: [id])
+  discount_id   String?
   created_at    DateTime        @default(now())
 }
 
