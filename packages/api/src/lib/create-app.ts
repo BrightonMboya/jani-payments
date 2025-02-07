@@ -7,6 +7,7 @@ import { cors } from "hono/cors";
 import { APPBindings } from "./types";
 import { pinoLogger } from "~/middleware/pino-logger";
 
+
 export function CreateRouter() {
   return new OpenAPIHono<APPBindings>({
     strict: false,
@@ -20,8 +21,12 @@ export default function CreateAPP() {
   app.use(
     "/*",
     cors({
-      origin: ["http://localhost:3000"],
+      origin: [
+        "http://localhost:3000",
+        " https://wpgusntzzjxww5xfflrwiu326a0brzhd.lambda-url.us-east-1.on.aws/",
+      ],
       maxAge: 600,
+      credentials: true,
       allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       allowHeaders: ["Content-Type", "Authorization"],
     })

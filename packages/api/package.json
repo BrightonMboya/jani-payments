@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "./src/index.ts",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify"
+    "build": "esbuild --bundle --outfile=./dist/index.js --platform=node --target=node20 ./src/index.ts",
+    "zip": "zip -j lambda.zip dist/index.js",
+    "update": "aws lambda update-function-code --zip-file fileb://lambda.zip --function-name hello",
+    "deploy": "run-s build zip update"
   },
   "dependencies": {
     "@hono/valibot-validator": "^0.5.2",
@@ -27,7 +29,6 @@
   },
   "devDependencies": {
     "@types/luxon": "^3.4.2",
-    "@types/react": "^18.3.3",
-    "wrangler": "^3.96.0"
+    "@types/react": "^18.3.3"
   }
 }

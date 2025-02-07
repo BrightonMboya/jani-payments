@@ -5,6 +5,7 @@ import { bus } from "./bus";
 export const api = new sst.aws.Function("Hono", {
   url: true,
   handler: "packages/api/src/index.handler",
+  description: "The Billing Engine API",
   copyFiles: [
     {
       from: "packages/db/node_modules/@prisma/client/",
@@ -14,7 +15,6 @@ export const api = new sst.aws.Function("Hono", {
       from: "packages/db/node_modules/prisma/",
       to: "node_modules/prisma",
     },
-   
   ],
   architecture: "arm64",
   runtime: "nodejs20.x",
@@ -31,4 +31,12 @@ export const api = new sst.aws.Function("Hono", {
   },
 
   link: [secrets.DATABASE_URL, bus],
+});
+
+// this is used to route the request to the custom domain
+export const router = new sst.aws.Router("router", {
+  domain: "billing.jani-ai.com",
+  routes: {
+    "/*": api.url,
+  },
 });

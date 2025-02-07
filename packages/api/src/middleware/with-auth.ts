@@ -21,8 +21,10 @@ const withAuth = async (c: Context, next: Next) => {
     const authHeader = c.req.header("Authorization");
 
     const allCookies = getCookie(c);
+    console.log(allCookies, "all cookies")
+    // const project_id = getCookie(c, "organization_Id");
+    const project_id = allCookies["organization_Id"];
 
-    const project_id = getCookie(c, "organization_Id");
 
     if (!authHeader) {
       return c.json(
