@@ -175,6 +175,8 @@ export const createTransactionSchema = z.object({
     ),
 });
 
+export type ICreateTransactionSchema = typeof createTransactionSchema;
+
 export const updateTransactionSchema = z.object({
   status: z.nativeEnum(TransactionStatus),
 });

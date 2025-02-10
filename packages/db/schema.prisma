@@ -595,6 +595,11 @@ model Checkouts {
   checkoutItems CheckoutItems[]
   discount      Discounts?      @relation(fields: [discount_id], references: [id])
   discount_id   String?
+  // Basic totals
+  // tax           Decimal  will handle the tax logic later in time
+  discount_ammount Decimal
+  total            Decimal
+  grand_total      Decimal
   created_at    DateTime        @default(now())
 }
 

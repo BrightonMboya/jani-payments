@@ -12,7 +12,8 @@ import * as HttpStatusCodes from "~/lib/http-status-code";
 import { Resource } from "sst";
 import { bus } from "sst/aws/bus";
 import { TransactionEvent } from "../events/event-defintion";
-import {randomBytes} from "crypto"
+import { randomBytes } from "crypto";
+import { calculateTransactionTotals } from "../fns";
 
 const create_transaction: APPRouteHandler<CreateTransaction> = async (
   c: Context
@@ -20,65 +21,14 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
   const db: PrismaClient = c.get("db");
   const input = createTransactionSchema.parse(await c.req.json());
 
+  const transaction_id = `txn_${crypto.randomUUID()}`;
+  const invoice_id = `INV-${randomBytes(12)}`;
+
+  // is there a need to do this inside a transaction??
+  const { grandTotal, subtotal, discountAmount, prices } =
+    await calculateTransactionTotals(input, c, db);
 
   const transaction = await db.$transaction(async (tx) => {
-    const transaction_id = `txn_${crypto.randomUUID()}`;
-    const invoice_id = `INV-${randomBytes(12)}`; 
-    // Verify all prices belong to the same project
-    const prices = await db.prices.findMany({
-      where: {
-        id: {
-          in: input.items.map((item) => item.price_id),
-        },
-        projectId: c.get("organization_Id"),
-      },
-      include: {
-        Products: true,
-      },
-    });
-
-    if (prices.length !== input.items.length) {
-      throw new Error(
-        "One or more prices not found or don't belong to this project"
-      );
-    }
-    // calculate totals
-    const subtotal = input.items.reduce((acc, item) => {
-      const price = prices.find((p) => p.id === item.price_id);
-      if (!price) throw new Error("Price not found");
-      return acc + Number(price.amount) * item.quantity;
-    }, 0);
-
-    // 3. Handle discount if provided
-    let discountAmount = 0;
-    if (input.discount_id) {
-      const discount = await db.discounts.findFirst({
-        where: {
-          id: input.discount_id,
-          projectId: c.get("organization_Id"),
-          status: "active",
-        },
-      });
-
-      if (!discount) {
-        throw new Error("Provided Discount Id Not Found or Inactive");
-        // return c.json(
-        //   {
-        //     error: "Not Found",
-        //     message: "Discount not found or inactive",
-        //   } satisfies z.infer<typeof ErrorSchema>,
-        //   HttpStatusCodes.NOT_FOUND
-        // );
-      }
-
-      // Calculate discount amount based on type
-      discountAmount = calculateDiscountAmount(
-        discount,
-        subtotal,
-        input.items.reduce((acc, item) => acc + item.quantity, 0)
-      );
-    }
-    const grandTotal = subtotal - discountAmount;
     return await tx.transactions.create({
       data: {
         id: transaction_id,

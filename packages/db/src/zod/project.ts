@@ -1,4 +1,5 @@
 import * as z from "zod"
+import { PaymentProvider } from "@prisma/client"
 import { CompleteProjectUsers, RelatedProjectUsersModel, CompleteProjectInvite, RelatedProjectInviteModel, CompleteSentEmail, RelatedSentEmailModel, CompleteProducts, RelatedProductsModel, CompletePrices, RelatedPricesModel, CompleteDiscounts, RelatedDiscountsModel, CompleteCustomers, RelatedCustomersModel, CompleteSubscriptions, RelatedSubscriptionsModel, CompleteTransactions, RelatedTransactionsModel, CompleteApi_keys, RelatedApi_keysModel, CompleteCheckouts, RelatedCheckoutsModel } from "./index"
 
 export const ProjectModel = z.object({
@@ -12,6 +13,7 @@ export const ProjectModel = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   usageLastChecked: z.date(),
+  paymentProvider: z.nativeEnum(PaymentProvider),
 })
 
 export interface CompleteProject extends z.infer<typeof ProjectModel> {

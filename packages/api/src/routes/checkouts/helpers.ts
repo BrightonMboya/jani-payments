@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CheckoutsModel } from "@repo/db/zod/checkouts.js";
+
 
 export const createCheckoutSchema = z.object({
   items: z.array(
@@ -12,4 +12,10 @@ export const createCheckoutSchema = z.object({
   customer_id: z.string(),
 });
 
-export const createCheckoutResponseSchema = CheckoutsModel.extend({});
+export const createCheckoutResponseSchema = createCheckoutSchema.extend({
+  total: z.number(),
+  discount_amount: z.number(),
+  grandTotal: z.number(),
+});
+
+
