@@ -181,16 +181,23 @@ enum product_status {
   archived
 }
 
+// api keys are not stored in plain text in case ur wondering
 model Api_keys {
-  id          String   @unique @default(uuid())
-  prefix      String?
-  description String?
-  createdAt   DateTime @default(now())
-  key         String   @unique
-  User        User     @relation(fields: [userId], references: [id])
-  userId      String
-  Project     Project? @relation(fields: [project_id], references: [id])
-  project_id  String?
+  id                  String   @unique @default(uuid())
+  prefix              String?
+  description         String?
+  createdAt           DateTime @default(now())
+  key                 String   @unique
+  // the payment provider api keys
+  PAYSTACK_API_KEY    String?
+  SELCOM_API_KEY      String?
+  STRIPE_API_KEY      String?
+  DPO_API_KEY         String?
+  FLUTTERWAVE_API_KEY String?
+  User                User     @relation(fields: [userId], references: [id])
+  userId              String
+  Project             Project? @relation(fields: [project_id], references: [id])
+  project_id          String?
 
   @@index([key, userId])
 }
@@ -587,20 +594,20 @@ model Transactions {
 }
 
 model Checkouts {
-  id            String          @id @default(cuid())
-  customer      Customers       @relation(fields: [customer_id], references: [id])
-  customer_id   String
-  project_id    String
-  project       Project         @relation(fields: [project_id], references: [id])
-  checkoutItems CheckoutItems[]
-  discount      Discounts?      @relation(fields: [discount_id], references: [id])
-  discount_id   String?
+  id               String          @id @default(cuid())
+  customer         Customers       @relation(fields: [customer_id], references: [id])
+  customer_id      String
+  project_id       String
+  project          Project         @relation(fields: [project_id], references: [id])
+  checkoutItems    CheckoutItems[]
+  discount         Discounts?      @relation(fields: [discount_id], references: [id])
+  discount_id      String?
   // Basic totals
   // tax           Decimal  will handle the tax logic later in time
   discount_ammount Decimal
   total            Decimal
   grand_total      Decimal
-  created_at    DateTime        @default(now())
+  created_at       DateTime        @default(now())
 }
 
 model CheckoutItems {
