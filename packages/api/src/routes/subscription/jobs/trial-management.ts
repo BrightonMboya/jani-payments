@@ -7,7 +7,7 @@ If the `trial_ended_at` date is the same as today it marks the item status as ac
 import { db } from "~/middleware/with-db";
 import { DateTime } from "luxon";
 
-export async function TrialManagement() {
+export async function handler() {
   const today = DateTime.now();
   const startOfToday = today.startOf("day").toJSDate();
   const endOfToday = today.endOf("day").toJSDate();

@@ -6,7 +6,7 @@ not to be confused with the trial management
 import { DateTime } from "luxon";
 import { db } from "~/middleware/with-db";
 
-export async function MarkAsPaused() {
+export async function handler() {
   const today = DateTime.now();
   const startOfToday = today.startOf("day").toJSDate();
   const endOfToday = today.endOf("day").toJSDate();

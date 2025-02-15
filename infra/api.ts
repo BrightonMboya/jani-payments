@@ -8,35 +8,15 @@ export const api = new sst.aws.Function("Hono", {
   description: "The Billing Engine API",
   copyFiles: [
     {
-      from: "packages/db/node_modules/@prisma/client/",
-      to: "node_modules/@prisma/client",
+      from: "./node_modules/.pnpm/@prisma+client@6.3.1_prisma@6.3.1_typescript@5.7.3/node_modules/.prisma/client",
+      // to: "node_modules/.pnpm/@prisma+client@6.3.1_prisma@6.3.1_typescript@5.7.3/node_modules/.prisma",
     },
-    {
-      from: "packages/db/node_modules/prisma/",
-      to: "node_modules/prisma",
-    },
+   
   ],
   architecture: "arm64",
-  runtime: "nodejs20.x",
-  nodejs: {
-    install: ["@prisma/client"],
-    esbuild: {
-      platform: "node",
-
-      external: ["@prisma/client"],
-    },
-  },
   environment: {
     DATABASE_URL: process.env.DATABASE_URL!,
   },
 
   link: [secrets.DATABASE_URL, bus],
-});
-
-// this is used to route the request to the custom domain
-export const router = new sst.aws.Router("router", {
-  domain: "billing.jani-ai.com",
-  routes: {
-    "/*": api.url,
-  },
 });

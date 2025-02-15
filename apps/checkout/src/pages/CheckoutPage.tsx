@@ -1,7 +1,7 @@
 import CardPaymentForm from "../components/CardPaymentForm";
 import MomoPaymentForm from "../components/MomoPaymentForm";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import ProductInfo from "../components/ProductInfo";
 
 // Sample data structure
@@ -15,7 +15,7 @@ const sampleData = {
 
 const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("card"); // 'card' or 'mobile'
-  const { checkout_id } = useParams();
+  // const { checkout_id } = useParams();
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 lg:py-0">

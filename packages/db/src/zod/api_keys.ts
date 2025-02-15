@@ -7,6 +7,11 @@ export const Api_keysModel = z.object({
   description: z.string().nullish(),
   createdAt: z.date(),
   key: z.string(),
+  PAYSTACK_API_KEY: z.string().nullish(),
+  SELCOM_API_KEY: z.string().nullish(),
+  STRIPE_API_KEY: z.string().nullish(),
+  DPO_API_KEY: z.string().nullish(),
+  FLUTTERWAVE_API_KEY: z.string().nullish(),
   userId: z.string(),
   project_id: z.string().nullish(),
 })

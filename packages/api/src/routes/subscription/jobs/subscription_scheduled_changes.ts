@@ -6,7 +6,7 @@ and then marks the scheduled change as completed
 import { db } from "~/middleware/with-db";
 import { DateTime } from "luxon";
 
-export async function SubscriptionScheduledChanges() {
+export async function handler() {
   const now = DateTime.now();
   const startOfToday = now.startOf("day").toJSDate();
   const endOfToday = now.endOf("day").toJSDate();

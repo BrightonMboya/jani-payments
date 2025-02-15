@@ -6,7 +6,8 @@
     "build": "esbuild --bundle --outfile=./dist/index.js --platform=node --target=node20 ./src/index.ts",
     "zip": "zip -j lambda.zip dist/index.js",
     "update": "aws lambda update-function-code --zip-file fileb://lambda.zip --function-name hello",
-    "deploy": "run-s build zip update"
+    "deploy": "run-s build zip update",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hono/valibot-validator": "^0.5.2",
@@ -14,7 +15,7 @@
     "@react-pdf/renderer": "^3.1.14",
     "@react-pdf/types": "^2.7.0",
     "@repo/db": "workspace:*",
-    "@scalar/hono-api-reference": "^0.5.165",
+    "@scalar/hono-api-reference": "^0.5.172",
     "hono": "^4.6.14",
     "hono-pino": "^0.7.0",
     "luxon": "^3.5.0",
