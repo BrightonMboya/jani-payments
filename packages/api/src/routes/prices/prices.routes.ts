@@ -1,7 +1,7 @@
 import { z, createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
-import { PricesModel } from "@repo/db/zod/prices.ts";
+import { pricesInsertSchema } from "@repo/db/types";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
 import {
@@ -12,12 +12,14 @@ import {
 
 const tags = ["prices"];
 
-export const PricesSchema = PricesModel.extend({
-  trial_period: jsonSchema,
-  custom_data: jsonSchema,
-}).omit({
-  projectId: true,
-});
+export const PricesSchema = pricesInsertSchema
+  .extend({
+    trial_period: jsonSchema,
+    custom_data: jsonSchema,
+  })
+  .omit({
+    projectId: true,
+  });
 
 export const list = createRoute({
   path: "/prices",
@@ -27,7 +29,8 @@ export const list = createRoute({
   "x-speakeasy-name-override": "list",
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      z.array(PricesResponseSchema),
+      // z.array(PricesResponseSchema),
+      PricesResponseSchema,
       "Lists all Prices belonging to a specific merchant"
     ),
   },

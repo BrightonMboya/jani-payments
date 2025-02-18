@@ -20,4 +20,11 @@ export const productsSelectSchema = createSelectSchema(schema.Products);
 export const productsInsertSchema = createInsertSchema(schema.Products);
 export const productsUpdateSchema = createUpdateSchema(schema.Products);
 
-export const Entity_Status = z.enum(["archived", "active"]);
+export const pricesSelectSchema = createSelectSchema(schema.Prices);
+export const pricesInsertSchema = createInsertSchema(schema.Prices);
+export const pricesUpdateSchema = createUpdateSchema(schema.Prices);
+
+export const BillingInterval = schema.billingInterval.enumValues;
+
+export const Entity_Status = schema.entityStatus.enumValues;
+export const PriceType = schema.priceType.enumValues;

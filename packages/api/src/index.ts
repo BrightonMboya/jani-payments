@@ -25,7 +25,7 @@ configureOpenAPI(app);
 
 const routes = [
   products,
-  // prices,
+  prices,
   // discounts,
   customers,
   addresses,

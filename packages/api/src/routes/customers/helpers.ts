@@ -13,7 +13,7 @@ export const CustomersResponseSchema = customerInsertSchema.extend({
   name: z.string().openapi({
     example: "Brighton Mboya",
   }),
-  status: Entity_Status.nullish().openapi({
+  status: z.enum(Entity_Status).nullish().openapi({
     example: "active",
   }),
   description: z.string().nullish().openapi({
