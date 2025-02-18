@@ -13,7 +13,7 @@ const onError: ErrorHandler = (err, c) => {
       : INTERNAL_SERVER_ERROR;
   const env = c.env?.NODE_ENV || c.env?.NODE_ENV;
 
-  console.log(err);
+  // console.log(err);
 
   if (err.name === "PrismaClientValidationError") {
     return c.json(
@@ -37,6 +37,7 @@ const onError: ErrorHandler = (err, c) => {
   }
 
   if (err.name === "ZodError") {
+    // console.log(err, "///////")
     return c.json(
       {
         message: "Bad Request",
@@ -53,7 +54,7 @@ const onError: ErrorHandler = (err, c) => {
 
       stack: env === "production" ? undefined : err.stack,
     },
-    statusCode
+    // statusCode
   );
 };
 

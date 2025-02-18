@@ -1,9 +1,9 @@
-import { CustomersModel } from "@repo/db/zod/customers.ts";
+import { customerInsertSchema } from "@repo/db/types";
 import { z } from "zod";
 import { Entity_Status } from "@repo/db/types";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
 
-export const CustomersResponseSchema = CustomersModel.extend({
+export const CustomersResponseSchema = customerInsertSchema.extend({
   id: z.string().openapi({
     example: "cus_2e229e50-1b92-4479-b3e3-829a3da6fc00",
   }),
@@ -13,7 +13,7 @@ export const CustomersResponseSchema = CustomersModel.extend({
   name: z.string().openapi({
     example: "Brighton Mboya",
   }),
-  status: z.nativeEnum(Entity_Status).nullish().openapi({
+  status: Entity_Status.nullish().openapi({
     example: "active",
   }),
   description: z.string().nullish().openapi({
@@ -32,7 +32,7 @@ export const CustomersResponseSchema = CustomersModel.extend({
   projectId: true,
 });
 
-export const CreateCustomerSchema = CustomersModel.omit({
+export const CreateCustomerSchema = customerInsertSchema.omit({
   id: true,
   projectId: true,
   created_at: true,

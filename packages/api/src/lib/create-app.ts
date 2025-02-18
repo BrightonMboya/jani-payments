@@ -31,7 +31,7 @@ export default function CreateAPP() {
     })
   );
   // app.use(withDB);
-  // app.use(withAuth);
+  app.use(withAuth);
   // app.use(pinoLogger());
   app.notFound(notFound);
   app.onError(onError);

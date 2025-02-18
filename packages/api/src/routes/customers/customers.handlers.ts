@@ -6,7 +6,6 @@ import {
   UpdateCustomer,
 } from "./customers.routes";
 import { type Context } from "hono";
-import { PrismaClient } from "@repo/db/types";
 import { APPRouteHandler } from "~/lib/types";
 import * as HtttpStatusCodes from "~/lib/http-status-code";
 import { z } from "zod";
@@ -24,7 +23,7 @@ const CustomersDefaultSelect = {
 };
 
 export const list: APPRouteHandler<ListCustomers> = async (c: Context) => {
-  const db: PrismaClient = c.get("db");
+  const db = c.get("db");
 
   const customers = await db.customers.findMany({
     where: {
@@ -38,7 +37,7 @@ export const list: APPRouteHandler<ListCustomers> = async (c: Context) => {
 };
 
 export const create: APPRouteHandler<CreateCustomers> = async (c: Context) => {
-  const db: PrismaClient = c.get("db");
+  const db = c.get("db");
 
   const input = await c.req.json();
   const customer = await db.customers.create({
@@ -63,7 +62,7 @@ export const create: APPRouteHandler<CreateCustomers> = async (c: Context) => {
 export const get_customer: APPRouteHandler<GetCustomer> = async (
   c: Context
 ) => {
-  const db: PrismaClient = await c.get("db");
+  const db = await c.get("db");
   const customer_id = c.req.param("customer_id");
   const customer = await db.customers.findUnique({
     where: {
@@ -87,7 +86,7 @@ export const get_customer: APPRouteHandler<GetCustomer> = async (
 export const update_customer: APPRouteHandler<UpdateCustomer> = async (
   c: Context
 ) => {
-  const db: PrismaClient = await c.get("db");
+  const db = await c.get("db");
   const customer_id = c.req.param("customer_id");
   const input = await c.req.json();
 

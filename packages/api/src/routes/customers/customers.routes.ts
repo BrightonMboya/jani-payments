@@ -1,11 +1,11 @@
 import { z, createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
-import { CustomersModel } from "@repo/db/zod/customers.ts";
+import { customerInsertSchema } from "@repo/db/types";
 import { jsonSchema, ErrorSchema } from "~/lib/utils/zod-helpers";
 import { CreateCustomerSchema, UpdateCustomerSchema } from "./helpers";
 
-export const CustomersResponseSchema = CustomersModel.extend({
+export const CustomersResponseSchema = customerInsertSchema.extend({
   custom_data: jsonSchema,
   //   status: z.enum(["active", "archived"]).optional(),
 }).omit({

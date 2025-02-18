@@ -12,7 +12,11 @@ import { AddressResponseSchema } from "./addresses.routes";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
 
 import { db } from "@repo/db";
-import { addressInsertSchema, UpdateAddressSchema } from "@repo/db/types";
+import {
+  addressInsertSchema,
+  addressSelectSchema,
+  UpdateAddressSchema,
+} from "@repo/db/types";
 import { eq, and } from "drizzle-orm";
 
 import * as schema from "@repo/db/db/schema.ts";
@@ -65,11 +69,6 @@ export const get_address: APPRouteHandler<GetAddress> = async (c: Context) => {
     .select()
     .from(schema.addresses)
     .where(eq(schema.addresses.id, address_id));
-  // const address = await db.addresses.findUnique({
-  //   where: {
-  //     id: address_id,
-  //   },
-  // });
 
   if (!address) {
     const errorResponse: z.infer<typeof ErrorSchema> = {
@@ -78,8 +77,7 @@ export const get_address: APPRouteHandler<GetAddress> = async (c: Context) => {
     };
     return c.json(errorResponse, HttpStatusCodes.NOT_FOUND);
   }
-  const res = AddressResponseSchema.parse(address);
-  return c.json(res, HttpStatusCodes.OK);
+  return c.json(address, HttpStatusCodes.OK);
 };
 
 export const update_address: APPRouteHandler<UpdateAddress> = async (
