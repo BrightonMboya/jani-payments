@@ -10,68 +10,69 @@ import { APPRouteHandler } from "~/lib/types";
 import * as HtttpStatusCodes from "~/lib/http-status-code";
 import { z } from "zod";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
+import { db } from "@repo/db";
+import * as schema from "@repo/db/db/schema.ts";
+import { eq, and } from "drizzle-orm";
+import { UpdateCustomerSchema } from "./helpers";
 
 const CustomersDefaultSelect = {
-  id: true,
-  email: true,
-  name: true,
-  status: true,
-  description: true,
-  custom_data: true,
-  created_at: true,
-  updated_at: true,
+  id: schema.Customers.id,
+  email: schema.Customers.email,
+  name: schema.Customers.name,
+  status: schema.Customers.status,
+  description: schema.Customers.description,
+  custom_data: schema.Customers.customData,
+  created_at: schema.Customers.createdAt,
+  updated_at: schema.Customers.updatedAt,
 };
 
 export const list: APPRouteHandler<ListCustomers> = async (c: Context) => {
-  const db = c.get("db");
-
-  const customers = await db.customers.findMany({
-    where: {
-      projectId: c.get("organization_Id"),
-    },
-    select: CustomersDefaultSelect,
-  });
-  const validatedCustomers = z.array(CustomersResponseSchema).parse(customers);
-
-  return c.json(validatedCustomers, HtttpStatusCodes.OK);
+  const project_id = c.get("organization_Id");
+  const customers = await db
+    .select(CustomersDefaultSelect)
+    .from(schema.Customers)
+    .where(eq(schema.Customers.projectId, project_id));
+  return c.json(customers, HtttpStatusCodes.OK);
 };
 
 export const create: APPRouteHandler<CreateCustomers> = async (c: Context) => {
-  const db = c.get("db");
-
   const input = await c.req.json();
-  const customer = await db.customers.create({
-    data: {
-      id: `cus_${crypto.randomUUID()}`,
-      email: input.email,
-      name: input.name,
-      status: input.status,
-      description: input.description,
-      custom_data: input.custom_data,
-      created_at: new Date(),
-      updated_at: new Date(),
-      projectId: c.get("organization_Id"),
-    },
-    select: CustomersDefaultSelect,
-  });
-  const validatedCustomer = CustomersResponseSchema.parse(customer);
+  type CustomerInsert = typeof schema.Customers.$inferInsert;
+  console.log("About to insert");
+  const insertData: CustomerInsert = {
+    id: `cus_${crypto.randomUUID()}`,
+    email: input.email,
+    name: input.name,
+    status: input.status,
+    description: input.description,
+    customData: input.custom_data,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    projectId: c.get("organization_Id"),
+  };
 
-  return c.json(validatedCustomer, HtttpStatusCodes.OK);
+  const customer = await db
+    .insert(schema.Customers)
+    .values(insertData)
+    .returning();
+  console.log("finished to insert");
+
+  return c.json(customer, HtttpStatusCodes.OK);
 };
 
 export const get_customer: APPRouteHandler<GetCustomer> = async (
   c: Context
 ) => {
-  const db = await c.get("db");
   const customer_id = c.req.param("customer_id");
-  const customer = await db.customers.findUnique({
-    where: {
-      id: customer_id,
-      projectId: c.get("organization_Id"),
-    },
-    select: CustomersDefaultSelect,
-  });
-
+  const customer = await db
+    .select(CustomersDefaultSelect)
+    .from(schema.Customers)
+    .where(
+      and(
+        eq(schema.Customers.id, customer_id),
+        eq(schema.Customers.projectId, c.get("organization_Id"))
+      )
+    );
   if (!customer) {
     const errorResponse: z.infer<typeof ErrorSchema> = {
       error: "Customer not found",
@@ -80,27 +81,32 @@ export const get_customer: APPRouteHandler<GetCustomer> = async (
     return c.json(errorResponse, HtttpStatusCodes.NOT_FOUND);
   }
 
-  return c.json(CustomersResponseSchema.parse(customer), HtttpStatusCodes.OK);
+  return c.json(customer, HtttpStatusCodes.OK);
 };
 
 export const update_customer: APPRouteHandler<UpdateCustomer> = async (
   c: Context
 ) => {
-  const db = await c.get("db");
   const customer_id = c.req.param("customer_id");
-  const input = await c.req.json();
+  const input = UpdateCustomerSchema.parse(await c.req.json());
 
-  const customer = await db.customers.update({
-    where: {
-      id: customer_id,
-      projectId: c.get("organization_Id"),
-    },
-    data: {
-      ...input,
-      updated_at: new Date(),
-    },
-    select: CustomersDefaultSelect,
-  });
+  const customer = await db
+    .update(schema.Customers)
+    .set({
+      email: input.email,
+      name: input.name,
+      status: input.status,
+      description: input.description,
+      customData: input.customData,
+      updatedAt: new Date().toISOString(),
+    })
+    .where(
+      and(
+        eq(schema.Customers.id, customer_id),
+        eq(schema.Customers.projectId, c.get("organization_Id"))
+      )
+    )
+    .returning();
 
   if (!customer) {
     const errorResponse: z.infer<typeof ErrorSchema> = {
@@ -110,5 +116,5 @@ export const update_customer: APPRouteHandler<UpdateCustomer> = async (
     return c.json(errorResponse, HtttpStatusCodes.NOT_FOUND);
   }
 
-  return c.json(CustomersResponseSchema.parse(customer), HtttpStatusCodes.OK);
+  return c.json(customer, HtttpStatusCodes.OK);
 };

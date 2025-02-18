@@ -37,7 +37,6 @@ const withAuth = async (c: Context, next: Next) => {
         .update(apiKey)
         .digest("hex");
 
-    
       const apiKeyRecord = await db
         .select({
           key: schema.apiKeys.key,
@@ -55,15 +54,12 @@ const withAuth = async (c: Context, next: Next) => {
         .limit(1)
         .then((results) => results[0] || null);
 
-  
-
       if (!apiKeyRecord) {
         return c.json(
           { error: "Invalid API key" },
           HttpStatusCodes.BAD_REQUEST
         );
       }
-
 
       if (!project_id || apiKeyRecord.projectId !== project_id) {
         return c.json(
@@ -81,7 +77,7 @@ const withAuth = async (c: Context, next: Next) => {
       });
       // set the project_id which comes as organization_id from the cookie
 
-      c.set("project_id", project_id);
+      c.set("organization_Id", project_id);
 
       return next();
     }

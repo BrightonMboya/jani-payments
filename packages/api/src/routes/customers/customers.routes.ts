@@ -5,12 +5,13 @@ import { customerInsertSchema } from "@repo/db/types";
 import { jsonSchema, ErrorSchema } from "~/lib/utils/zod-helpers";
 import { CreateCustomerSchema, UpdateCustomerSchema } from "./helpers";
 
-export const CustomersResponseSchema = customerInsertSchema.extend({
-  custom_data: jsonSchema,
-  //   status: z.enum(["active", "archived"]).optional(),
-}).omit({
-  projectId: true,
-});
+export const CustomersResponseSchema = customerInsertSchema
+  .extend({
+    custom_data: jsonSchema,
+  })
+  .omit({
+    projectId: true,
+  });
 
 export type ICustomersResponseSchema = z.infer<
   typeof CustomersResponseSchema
@@ -24,6 +25,11 @@ export const list = createRoute({
   operationId: "customers:list",
   tags,
   "x-speakeasy-name-override": "list",
+  request: {
+    cookies: z.object({
+      organization_Id: z.string().describe("organization_Id"),
+    }),
+  },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       z.array(CustomersResponseSchema),
@@ -39,6 +45,9 @@ export const create = createRoute({
   operationId: "customers:create",
   "x-speakeasy-name-override": "create",
   request: {
+    cookies: z.object({
+      organization_Id: z.string().describe("organization_Id"),
+    }),
     body: {
       content: {
         "application/json": {
@@ -65,10 +74,13 @@ export const get_customer = createRoute({
   method: "get",
   tags,
   operationId: "customers:get",
-   "x-speakeasy-name-override": "get",
+  "x-speakeasy-name-override": "get",
   request: {
     params: z.object({
       customer_id: z.string(),
+    }),
+    cookies: z.object({
+      organization_Id: z.string().describe("organization_Id"),
     }),
   },
   responses: {
@@ -89,6 +101,9 @@ export const update_customer = createRoute({
   request: {
     params: z.object({
       customer_id: z.string(),
+    }),
+    cookies: z.object({
+      organization_Id: z.string().describe("organization_Id"),
     }),
     body: {
       content: {
