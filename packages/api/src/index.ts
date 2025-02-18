@@ -11,29 +11,28 @@ import transactions from "./routes/transactions/transaction.index";
 import checkout from "./routes/checkouts/checkouts.index"
 import { handle } from "hono/aws-lambda";
 import { Context } from "hono";
-import { SubscriptionScheduledChanges } from "./routes/subscription/jobs/subscription_scheduled_changes";
 import {
 
   generateInvoice,
 
 } from "./routes/transactions/events/create-invoice";
 
-import {db} from "~/middleware/with-db"
+
 
 
 const app = CreateAPP();
 configureOpenAPI(app);
 
 const routes = [
-  products,
-  prices,
-  discounts,
+  // products,
+  // prices,
+  // discounts,
   customers,
   addresses,
-  subscriptions,
-  transactions,
-  keys,
-  checkout
+  // subscriptions,
+  // transactions,
+  // keys,
+  // checkout
 ] as const;
 
 app.get("/", (c) => {

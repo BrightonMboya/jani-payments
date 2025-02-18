@@ -1,7 +1,7 @@
 import { getCookie } from "hono/cookie";
 import { getToken } from "next-auth/jwt";
 import { type Context, type Next } from "hono";
-import { PrismaClient } from "@repo/db/types";
+// import { PrismaClient } from "@repo/db/types";
 import { createHash } from "crypto";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 

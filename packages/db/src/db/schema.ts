@@ -14,7 +14,7 @@ import {
   numeric,
   uuid,
 } from "drizzle-orm/pg-core";
-import { apiKeys } from "packages/db/drizzle/schema";
+
 
 export const billingInterval = pgEnum("BillingInterval", [
   "day",
@@ -347,7 +347,7 @@ export const Project = pgTable("Project", {
   paymentProvider: paymentProvider().default("PAYSTACK").notNull(),
 });
 
-export const Api_Keys = pgTable("Api_keys", {
+export const apiKeys = pgTable("Api_keys", {
   id: text().notNull(),
   prefix: text(),
   description: text(),
@@ -356,7 +356,7 @@ export const Api_Keys = pgTable("Api_keys", {
     .notNull(),
   key: text().notNull(),
   userId: text().notNull(),
-  projectId: text("project_id"),
+  project_id: text("project_id"),
 });
 
 export const verificationToken = pgTable("VerificationToken", {
@@ -407,13 +407,13 @@ export const addresses = pgTable("Addresses", {
   id: text().primaryKey().notNull(),
   description: text(),
   firstLine: text("first_line"),
-  customData: jsonb("custom_data"),
+  custom_data: jsonb("custom_data"),
   city: text(),
   status: entityStatus().default("active").notNull(),
   createdAt: timestamp("created_at", { precision: 3, mode: "string" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", {
+  updated_at: timestamp("updated_at", {
     precision: 3,
     mode: "string",
   }).notNull(),

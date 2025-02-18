@@ -6,7 +6,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./types": "./src/types.ts",
-    "./zod/*": "./src/zod/*"
+    "./zod/*": "./src/zod/*",
+    "./db/*": "./src/db/*"
   },
   "typesVersions": {
     "*": {
@@ -19,30 +20,23 @@
     }
   },
   "scripts": {
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
     "typecheck": "tsc --noEmit",
     "db": "sst shell drizzle-kit"
   },
   "dependencies": {
-    "@prisma/client": "^6.3.1",
-    "@prisma/extension-accelerate": "^1.2.1",
     "drizzle-orm": "^0.39.3",
+    "postgres": "^3.4.5",
     "zod": "^3.24.1",
     "zod-prisma": "^0.5.4"
   },
   "devDependencies": {
-    "@prisma/adapter-pg": "^6.1.0",
     "@types/node": "^20.4.2",
     "@types/pg": "^8.11.11",
     "dotenv-cli": "^7.2.1",
     "drizzle-kit": "^0.30.4",
     "drizzle-prisma-generator": "^0.1.7",
     "pg": "^8.13.3",
-    "prisma": "^6.3.1",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"
-  },
-  "prisma": {}
+  }
 }

@@ -2,11 +2,11 @@ import { z, createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
-import { AddressesModel } from "@repo/db/zod/addresses.ts";
+import { addressInsertSchema } from "@repo/db/types";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
 import { CreateAddressSchema, UpdateAddressSchema } from "./helpers";
 
-export const AddressResponseSchema = AddressesModel.extend({
+export const AddressResponseSchema = addressInsertSchema.extend({
   custom_data: jsonSchema
 });
 
