@@ -1,16 +1,17 @@
 import { z, createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
-import { DiscountsModel } from "@repo/db/zod/discounts.ts";
+import { discountInsertSchema } from "@repo/db/types";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
 import { CreateDiscountSchema, UpdateDiscountSchema } from "./helpers";
 
 const tags = ["discounts"];
 
-export const DiscountResponseSchema = DiscountsModel.extend({
-  custom_data: jsonSchema,
-})
+export const DiscountResponseSchema = discountInsertSchema
+  .extend({
+    custom_data: z.any()
+  })
   .omit({
     projectId: true,
   })
@@ -65,7 +66,7 @@ export const get_discount = createRoute({
   method: "get",
   tags,
   operationId: "discount:getDiscount",
-   "x-speakeasy-name-override": "get",
+  "x-speakeasy-name-override": "get",
   request: {
     params: z.object({
       discount_id: z.string(),
@@ -73,7 +74,7 @@ export const get_discount = createRoute({
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      DiscountResponseSchema,
+      z.array(DiscountResponseSchema),
       "Returns a Discount by ID"
     ),
     [HttpStatusCodes.NOT_FOUND]: jsonContent(ErrorSchema, "Discount not found"),

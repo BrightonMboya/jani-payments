@@ -17,7 +17,8 @@ import { discountInsertSchema } from "@repo/db/types";
 // }>;
 
 type Discount = Omit<z.infer<typeof discountInsertSchema>, "projectId"> & {
-  discount_prices: { price_id: string }[];
+  discount_prices: { price_id: string };
+  restricted_to: string[];
 };
 
 export const transformDiscount = (
@@ -27,15 +28,13 @@ export const transformDiscount = (
   status: discount.status,
   description: discount.description,
   enabled_for_checkout: discount.enabled_for_checkout,
-  amount: Number(discount.amount),
+  amount: parseFloat(discount.amount) as unknown as string,
   currency_code: discount.currency_code,
   type: discount.type,
-  restricted_to: discount.discount_prices.map(
-    (dp: { price_id: string }) => dp.price_id
-  ),
+  restricted_to: discount.restricted_to,
   recur: discount.recur,
   max_recurring_intervals: discount.max_recurring_intervals
-    ? Number(discount.max_recurring_intervals)
+    ? discount.max_recurring_intervals
     : null,
   usage_limit: discount.usage_limit,
   times_used: discount.times_used,
@@ -79,7 +78,11 @@ export const CreateDiscountSchema = BaseDiscountSchema.strict().refine(
   }
 );
 
-export const UpdateDiscountSchema = BaseDiscountSchema.partial()
+export const UpdateDiscountSchema = BaseDiscountSchema.omit({ price_ids: true })
+  .extend({
+    restricted_to: z.array(z.string()),
+  })
+  .partial()
   .strict()
   .refine(
     (data) => !(data.type === "percentage" && data.amount && data.amount > 100),
