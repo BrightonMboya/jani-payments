@@ -24,6 +24,10 @@ export const pricesSelectSchema = createSelectSchema(schema.Prices);
 export const pricesInsertSchema = createInsertSchema(schema.Prices);
 export const pricesUpdateSchema = createUpdateSchema(schema.Prices);
 
+export const discountSelectSchema = createSelectSchema(schema.Discounts);
+export const discountInsertSchema = createInsertSchema(schema.Discounts);
+export const discountUpdateSchema = createUpdateSchema(schema.Discounts);
+
 export const BillingInterval = schema.billingInterval.enumValues;
 
 export const Entity_Status = schema.entityStatus.enumValues;

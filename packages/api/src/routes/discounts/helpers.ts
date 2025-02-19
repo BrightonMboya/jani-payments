@@ -1,21 +1,24 @@
 import { DiscountResponseSchema } from "./discounts.routes";
 import { z } from "zod";
 import { Json, jsonSchema } from "~/lib/utils/zod-helpers";
-import { DiscountsModel } from "@repo/db/zod/discounts.ts";
-import { type Prisma } from "@repo/db/types";
+import { discountInsertSchema } from "@repo/db/types";
 
-export type Discount = Prisma.DiscountsGetPayload<{
-  omit: {
-    projectId: true;
-  };
-  include: {
-    discount_prices: {
-      select: {
-        price_id: true;
-      };
-    };
-  };
-}>;
+// export type Discount = Prisma.DiscountsGetPayload<{
+//   omit: {
+//     projectId: true;
+//   };
+//   include: {
+//     discount_prices: {
+//       select: {
+//         price_id: true;
+//       };
+//     };
+//   };
+// }>;
+
+type Discount = Omit<z.infer<typeof discountInsertSchema>, "projectId"> & {
+  discount_prices: { price_id: string }[];
+};
 
 export const transformDiscount = (
   discount: Discount
@@ -42,30 +45,32 @@ export const transformDiscount = (
   updated_at: discount.updated_at,
 });
 
-const BaseDiscountSchema = DiscountsModel.omit({
-  projectId: true,
-  id: true,
-  created_at: true,
-  updated_at: true,
-  times_used: true,
-}).extend({
-  amount: z
-    .number()
-    .min(1, "Amount cannot be negative")
-    .refine((val) => Number.isFinite(val), "Amount must be a finite number"),
+const BaseDiscountSchema = discountInsertSchema
+  .omit({
+    projectId: true,
+    id: true,
+    created_at: true,
+    updated_at: true,
+    times_used: true,
+  })
+  .extend({
+    amount: z
+      .number()
+      .min(1, "Amount cannot be negative")
+      .refine((val) => Number.isFinite(val), "Amount must be a finite number"),
 
-  expires_at: z
-    .date()
-    .optional()
-    .nullable()
-    .refine(
-      (date) => !date || date > new Date(),
-      "Expiry date cannot be in the past"
-    ),
+    expires_at: z
+      .date()
+      .optional()
+      .nullable()
+      .refine(
+        (date) => !date || date > new Date(),
+        "Expiry date cannot be in the past"
+      ),
 
-  price_ids: z.array(z.string()).optional(),
-  custom_data: jsonSchema.optional().nullable(),
-});
+    price_ids: z.array(z.string()).optional(),
+    custom_data: jsonSchema.optional().nullable(),
+  });
 export const CreateDiscountSchema = BaseDiscountSchema.strict().refine(
   (data) => !(data.type === "percentage" && data.amount > 100),
   {

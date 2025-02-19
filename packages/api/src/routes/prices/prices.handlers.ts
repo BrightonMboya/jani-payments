@@ -68,7 +68,7 @@ export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
         ...p,
         customData: p.customData as any,
       })
-    );
+    )
 
     return c.json(
       PricesResponseSchema.parse(formattedPrice),
@@ -88,6 +88,7 @@ export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
 export const get_price: APPRouteHandler<GetPrice> = async (c: Context) => {
   //   @ts-expect-error
   const { price_id } = c.req.valid("param");
+
   const price = await db
     .select()
     .from(schema.Prices)
@@ -107,6 +108,7 @@ export const get_price: APPRouteHandler<GetPrice> = async (c: Context) => {
       HttpStatusCodes.NOT_FOUND
     );
   }
+
   const formattedPrice = price.map((price) =>
     transformPrices({
       ...(price as any),
@@ -135,7 +137,8 @@ export const update_price: APPRouteHandler<UpdatePrice> = async (
         eq(schema.Prices.id, price_id),
         eq(schema.Prices.projectId, c.get("organization_Id"))
       )
-    );
+    )
+    .returning();
 
   if (!price) {
     return c.json(

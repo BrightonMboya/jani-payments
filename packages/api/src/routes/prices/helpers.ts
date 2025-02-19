@@ -26,13 +26,16 @@ export const CreatePricesSchema = z.object({
   custom_data: jsonSchema.nullish(),
 });
 
-export const PricesResponseSchema = CreatePricesSchema.extend({
+// this is a bad pattern but idgaf
+const BasePriceSchema = CreatePricesSchema.extend({
   id: z.string(),
-  created_at: z.date(),
-  updated_at: z.date(),
+  created_at: z.string(),
+  updated_at: z.string(),
 });
 
-export const UpdatePricesSchema = PricesResponseSchema.partial().strict();
+export const PricesResponseSchema = BasePriceSchema.array();
+
+export const UpdatePricesSchema = BasePriceSchema.partial().strict();
 
 export const transformPrices = (price: z.infer<typeof pricesInsertSchema>) => ({
   id: price.id,

@@ -15,7 +15,6 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-
 export const billingInterval = pgEnum("BillingInterval", [
   "day",
   "week",
@@ -305,24 +304,24 @@ export const Discounts = pgTable("Discounts", {
   id: text().primaryKey().notNull(),
   status: entityStatus().default("active").notNull(),
   description: text(),
-  enabledForCheckout: boolean("enabled_for_checkout"),
+  enabled_for_checkout: boolean("enabled_for_checkout"),
   amount: numeric({ precision: 65, scale: 30 }).notNull(),
-  currencyCode: text("currency_code").notNull(),
+  currency_code: text("currency_code").notNull(),
   type: discountType().notNull(),
   recur: boolean(),
-  maxRecurringIntervals: numeric("max_recurring_intervals", {
+  max_recurring_intervals: numeric("max_recurring_intervals", {
     precision: 65,
     scale: 30,
   }),
-  usageLimit: integer("usage_limit"),
-  expiresAt: timestamp("expires_at", { precision: 3, mode: "string" }),
-  customData: jsonb("custom_data"),
-  timesUsed: integer("times_used").default(0),
-  createdAt: timestamp("created_at", {
+  usage_limit: integer("usage_limit"),
+  expires_at: timestamp("expires_at", { precision: 3, mode: "string" }),
+  custom_data: jsonb("custom_data"),
+  times_used: integer("times_used").default(0),
+  created_at: timestamp("created_at", {
     precision: 3,
     mode: "string",
   }).notNull(),
-  updatedAt: timestamp("updated_at", {
+  updated_at: timestamp("updated_at", {
     precision: 3,
     mode: "string",
   }).notNull(),
