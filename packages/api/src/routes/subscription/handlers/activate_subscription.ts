@@ -1,11 +1,12 @@
 import { type Context } from "hono";
 import { APPRouteHandler } from "~/lib/types";
 import { ActivateSubscription } from "../subscription.routes";
-import { PrismaClient } from "@repo/db/types";
 import { transformSubscription } from "../helpers";
 import { DateTime } from "luxon";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import { calculatePeriodEnd } from "../fns";
+import * as schema from "@repo/db/db/schema.ts";
+import { db } from "@repo/db";
 
 const activate_subscription: APPRouteHandler<ActivateSubscription> = async (
   c: Context

@@ -31,7 +31,7 @@ const routes = [
   addresses,
   // subscriptions,
   // transactions,
-  // keys,
+  keys,
   // checkout
 ] as const;
 
