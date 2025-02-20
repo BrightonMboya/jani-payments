@@ -180,15 +180,15 @@ export const Checkouts = pgTable("Checkouts", {
   id: text().primaryKey().notNull(),
   customer_id: text("customer_id").notNull(),
   project_id: text("project_id").notNull(),
-  createdAt: timestamp("created_at", { precision: 3, mode: "string" })
+  created_at: timestamp("created_at", { precision: 3, mode: "string" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   discount_id: text("discount_id"),
-  discountAmmount: numeric("discount_ammount", {
+  discount_ammount: numeric("discount_ammount", {
     precision: 65,
     scale: 30,
   }).notNull(),
-  grandTotal: numeric("grand_total", { precision: 65, scale: 30 }).notNull(),
+  grand_total: numeric("grand_total", { precision: 65, scale: 30 }).notNull(),
   total: numeric({ precision: 65, scale: 30 }).notNull(),
 });
 
@@ -422,36 +422,39 @@ export const addresses = pgTable("Addresses", {
 export const Subscriptions = pgTable("Subscriptions", {
   id: text().primaryKey().notNull(),
   status: subscriptionsStatus().notNull(),
-  currencyCode: text("currency_code").notNull(),
-  createdAt: timestamp("created_at", { precision: 3, mode: "string" })
+  currency_code: text("currency_code").notNull(),
+  created_at: timestamp("created_at", { precision: 3, mode: "string" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", {
+  updated_at: timestamp("updated_at", {
     precision: 3,
     mode: "string",
   }).notNull(),
-  startedAt: timestamp("started_at", { precision: 3, mode: "string" }),
-  firstBilledAt: timestamp("first_billed_at", { precision: 3, mode: "string" }),
-  nextBilledAt: timestamp("next_billed_at", { precision: 3, mode: "string" }),
-  pausedAt: timestamp("paused_at", { precision: 3, mode: "string" }),
-  canceledAt: timestamp("canceled_at", { precision: 3, mode: "string" }),
-  currentPeriodStarts: timestamp("current_period_starts", {
+  started_at: timestamp("started_at", { precision: 3, mode: "string" }),
+  first_billed_at: timestamp("first_billed_at", {
     precision: 3,
     mode: "string",
   }),
-  currentPeriodEnds: timestamp("current_period_ends", {
+  next_billed_at: timestamp("next_billed_at", { precision: 3, mode: "string" }),
+  paused_at: timestamp("paused_at", { precision: 3, mode: "string" }),
+  canceled_at: timestamp("canceled_at", { precision: 3, mode: "string" }),
+  current_period_starts: timestamp("current_period_starts", {
     precision: 3,
     mode: "string",
   }),
-  billingCycleInterval: billingInterval("billing_cycle_interval").notNull(),
-  billingCycleFrequency: integer("billing_cycle_frequency").notNull(),
-  updatePaymentMethodUrl: text("update_payment_method_url"),
-  cancelUrl: text("cancel_url"),
+  current_period_ends: timestamp("current_period_ends", {
+    precision: 3,
+    mode: "string",
+  }),
+  billing_cycle_interval: billingInterval("billing_cycle_interval").notNull(),
+  billing_cycle_frequency: integer("billing_cycle_frequency").notNull(),
+  update_payment_method_url: text("update_payment_method_url"),
+  cancel_url: text("cancel_url"),
   customer_id: text("customer_id").notNull(),
   address_id: text("address_id").notNull(),
   project_id: text("project_id").notNull(),
   discount_id: text("discount_id"),
-  collectionMode: collectionMode("collection_mode").notNull(),
+  collection_mode: collectionMode("collection_mode").notNull(),
 });
 
 export const SubscriptionItems = pgTable("SubscriptionItems", {
@@ -461,24 +464,27 @@ export const SubscriptionItems = pgTable("SubscriptionItems", {
   quantity: integer().notNull(),
   status: subscriptionItemsStatus().notNull(),
   recurring: boolean().notNull(),
-  createdAt: timestamp("created_at", { precision: 3, mode: "string" })
+  created_at: timestamp("created_at", { precision: 3, mode: "string" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", {
+  updated_at: timestamp("updated_at", {
     precision: 3,
     mode: "string",
   }).notNull(),
-  previouslyBilledAt: timestamp("previously_billed_at", {
+  previously_billed_at: timestamp("previously_billed_at", {
     precision: 3,
     mode: "string",
   }),
-  nextBilledAt: timestamp("next_billed_at", { precision: 3, mode: "string" }),
-  trialStartedAt: timestamp("trial_started_at", {
+  next_billed_at: timestamp("next_billed_at", {
     precision: 3,
     mode: "string",
   }),
-  trialEndedAt: timestamp("trial_ended_at", { precision: 3, mode: "string" }),
-  customData: jsonb("custom_data"),
+  trial_started_at: timestamp("trial_started_at", {
+    precision: 3,
+    mode: "string",
+  }),
+  trial_ended_at: timestamp("trial_ended_at", { precision: 3, mode: "string" }),
+  custom_data: jsonb("custom_data"),
 });
 
 export const BillingDetails = pgTable("BillingDetails", {

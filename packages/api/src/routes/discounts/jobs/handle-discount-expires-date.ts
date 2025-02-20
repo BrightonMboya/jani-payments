@@ -5,7 +5,7 @@ This job is responsible for marking the expired discounts as expired
 import { db } from "@repo/db";
 import { DateTime } from "luxon";
 import * as schema from "@repo/db/db/schema.ts";
-import { gte, and, lt } from "drizzle-orm";
+import { gte, eq, and, lt } from "drizzle-orm";
 
 export async function handler() {
   const now = DateTime.now();
