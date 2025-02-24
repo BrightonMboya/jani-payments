@@ -7,7 +7,7 @@ import configureOpenAPI from "./lib/configure-open-api";
 import addresses from "./routes/addresses/addresses.index";
 import subscriptions from "./routes/subscription/subscription.index";
 import keys from "./routes/api-keys/keys.index";
-// import transactions from "./routes/transactions/transaction.index";
+import transactions from "./routes/transactions/transaction.index";
 // import checkout from "./routes/checkouts/checkouts.index";
 import { handle } from "hono/aws-lambda";
 import { Context } from "hono";
@@ -26,7 +26,7 @@ const routes = [
   customers,
   addresses,
   subscriptions,
-  // transactions,
+  transactions,
   keys,
   // checkout,
 ] as const;

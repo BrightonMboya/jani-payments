@@ -41,20 +41,20 @@ const DefaultDiscountSelect = {
 };
 
 export const list: APPRouteHandler<ListDiscounts> = async (c: Context) => {
-  const discounts = await db
-    .select({
-      ...DefaultDiscountSelect,
-      restricted_to: sql`ARRAY_AGG(${schema.DiscountPrices.price_id})`,
-    })
-    .from(schema.Discounts)
-    .leftJoin(
-      schema.DiscountPrices,
-      eq(schema.Discounts.id, schema.DiscountPrices.discount_id)
-    )
-    .groupBy(schema.Discounts.id)
-    .where(eq(schema.Discounts.projectId, c.get("organization_Id")));
+  const discounts = await db.query.Discounts.findMany({
+    where: eq(schema.Discounts.projectId, c.get("organization_Id")),
+    with: {
+      discount_prices: {
+        columns: {
+          price_id: true,
+        },
+      },
+    },
+  });
+
+
   const formattedDiscounts = discounts.map((discount) =>
-    transformDiscount({ ...(discount as any) })
+    transformDiscount(discount)
   );
 
   return c.json(

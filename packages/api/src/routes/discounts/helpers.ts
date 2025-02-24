@@ -1,24 +1,21 @@
 import { DiscountResponseSchema } from "./discounts.routes";
-import { z } from "zod";
+import {  z } from "zod";
 import { Json, jsonSchema } from "~/lib/utils/zod-helpers";
 import { discountInsertSchema } from "@repo/db/types";
 
-// export type Discount = Prisma.DiscountsGetPayload<{
-//   omit: {
-//     projectId: true;
-//   };
-//   include: {
-//     discount_prices: {
-//       select: {
-//         price_id: true;
-//       };
-//     };
-//   };
-// }>;
+import * as schema from "@repo/db/db/schema.ts";
 
-type Discount = Omit<z.infer<typeof discountInsertSchema>, "projectId"> & {
-  discount_prices: { price_id: string };
-  restricted_to: string[];
+// Base type inference for discounts
+
+type BaseDiscount = typeof schema.Discounts.$inferSelect;
+
+
+
+// Discount type with relations, omitting projectId
+export type Discount = Omit<BaseDiscount, "projectId"> & {
+  discount_prices: {
+    price_id: string;
+  }[];
 };
 
 export const transformDiscount = (
@@ -31,7 +28,9 @@ export const transformDiscount = (
   amount: parseFloat(discount.amount) as unknown as string,
   currency_code: discount.currency_code,
   type: discount.type,
-  restricted_to: discount.restricted_to,
+  restricted_to: discount.discount_prices.map(
+    (dp: { price_id: string }) => dp.price_id
+  ),
   recur: discount.recur,
   max_recurring_intervals: discount.max_recurring_intervals
     ? discount.max_recurring_intervals

@@ -111,55 +111,55 @@ export const Transactions = pgTable("Transactions", {
   product_id: text("product_id").notNull(),
   subscription_id: text("subscription_id"),
   subtotal: numeric({ precision: 65, scale: 30 }).notNull(),
-  discountAmmount: numeric("discount_ammount", {
+  discount_ammount: numeric("discount_ammount", {
     precision: 65,
     scale: 30,
   }).notNull(),
   total: numeric({ precision: 65, scale: 30 }).notNull(),
-  grandTotal: numeric("grand_total", { precision: 65, scale: 30 }).notNull(),
+  grand_total: numeric("grand_total", { precision: 65, scale: 30 }).notNull(),
   discount_id: text("discount_id"),
   invoice_id: text("invoice_id").notNull(),
-  currentPeriodStarts: timestamp("current_period_starts", {
+  current_period_starts: timestamp("current_period_starts", {
     precision: 3,
     mode: "string",
   }),
-  currentPeriodEnds: timestamp("current_period_ends", {
+  current_period_ends: timestamp("current_period_ends", {
     precision: 3,
     mode: "string",
   }),
-  customData: jsonb("custom_data"),
-  currencyCode: text("currency_code").notNull(),
-  collectionMode: collectionMode("collection_mode").notNull(),
-  createdAt: timestamp("created_at", { precision: 3, mode: "string" })
+  custom_data: jsonb("custom_data"),
+  currency_code: text("currency_code").notNull(),
+  collection_mode: collectionMode("collection_mode").notNull(),
+  created_at: timestamp("created_at", { precision: 3, mode: "string" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: "string" }),
+  updated_at: timestamp("updated_at", { precision: 3, mode: "string" }),
 });
 
 export const TransactionPayment = pgTable("TransactionPayment", {
   id: text().primaryKey().notNull(),
   transaction_id: text("transaction_id").notNull(),
-  paymentMethod: paymentMethod("payment_method").notNull(),
-  paymentProvider: paymentProvider("payment_provider").notNull(),
+  payment_method: paymentMethod("payment_method").notNull(),
+  payment_provider: paymentProvider("payment_provider").notNull(),
   status: paymentStatus().default("PENDING").notNull(),
   amount: numeric({ precision: 65, scale: 30 }).notNull(),
-  currencyCode: text("currency_code").notNull(),
-  mobileNetwork: text("mobile_network"),
-  phoneSuffix: text("phone_suffix"),
-  cardLast4: text("card_last4"),
-  cardBrand: text("card_brand"),
-  cardExpMonth: integer("card_exp_month"),
-  cardExpYear: integer("card_exp_year"),
-  cardHolderName: text("card_holder_name"),
-  bankReference: text("bank_reference"),
-  bankName: text("bank_name"),
-  providerReference: text("provider_reference"),
-  providerMetadata: jsonb("provider_metadata"),
-  errorMessage: text("error_message"),
-  createdAt: timestamp("created_at", { precision: 3, mode: "string" })
+  currency_code: text("currency_code").notNull(),
+  mobile_network: text("mobile_network"),
+  phone_suffix: text("phone_suffix"),
+  card_last4: text("card_last4"),
+  card_brand: text("card_brand"),
+  card_exp_month: integer("card_exp_month"),
+  card_exp_year: integer("card_exp_year"),
+  card_holder_name: text("card_holder_name"),
+  bank_reference: text("bank_reference"),
+  bank_name: text("bank_name"),
+  provider_reference: text("provider_reference"),
+  provider_metadata: jsonb("provider_metadata"),
+  error_message: text("error_message"),
+  created_at: timestamp("created_at", { precision: 3, mode: "string" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: "string" }),
+  updated_at: timestamp("updated_at", { precision: 3, mode: "string" }),
 });
 
 export const TransactionItems = pgTable("TransactionItems", {
