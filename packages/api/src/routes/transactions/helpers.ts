@@ -49,42 +49,6 @@ export type Transaction = InferSelectModel<typeof schema.Transactions> & {
   TransactionPayment: InferSelectModel<typeof schema.TransactionPayment>;
 };
 
-// export type Transaction = Prisma.TransactionsGetPayload<{
-//   include: {
-//     transactionItems: {
-//       select: {
-//         price: {
-//           include: {
-//             Products: {
-//               omit: {
-//                 project_id: true;
-//               };
-//             };
-//           };
-//         };
-//         // price_id: true;
-//         quantity: true;
-//       };
-//     };
-//     // price: true;
-//     address: true;
-//     discount: {
-//       omit: {
-//         projectId: true;
-//       };
-//       include: {
-//         discount_prices: {
-//           select: {
-//             price_id: true;
-//           };
-//         };
-//       };
-//     };
-//     customer: true;
-//     TransactionPayment: true;
-//   };
-// }>;
-
 // Payment method specific details schemas
 
 const mobileMoneyDetailsSchema = z.object({

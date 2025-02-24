@@ -25,7 +25,7 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
 
   // is there a need to do this inside a transaction??
   const { grandTotal, subtotal, discountAmount, prices } =
-    await calculateTransactionTotals(input, c, db);
+    await calculateTransactionTotals(input, c);
 
   const transaction = await db.transaction(async (tx) => {
     // insert into the main transaction table

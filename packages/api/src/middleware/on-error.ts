@@ -15,26 +15,28 @@ const onError: ErrorHandler = (err, c) => {
 
   console.log(err);
 
-  if (err.name === "PrismaClientValidationError") {
-    return c.json(
-      {
-        error: "Bad Request",
-        message: "Invalid Request Body",
-      },
-      HttpStatusCodes.BAD_REQUEST
-    );
-  }
+  // leaving these prisma errors here for future ref
 
-  if (err.name === "PrismaClientKnownRequestError") {
-    return c.json(
-      {
-        error: "Bad Request",
-        // @ts-expect-error
-        message: err.meta.cause || "One or more fields in the request body are invalid",
-      },
-      HttpStatusCodes.BAD_REQUEST
-    );
-  }
+  // if (err.name === "PrismaClientValidationError") {
+  //   return c.json(
+  //     {
+  //       error: "Bad Request",
+  //       message: "Invalid Request Body",
+  //     },
+  //     HttpStatusCodes.BAD_REQUEST
+  //   );
+  // }
+
+  // if (err.name === "PrismaClientKnownRequestError") {
+  //   return c.json(
+  //     {
+  //       error: "Bad Request",
+  //       // @ts-expect-error
+  //       message: err.meta.cause || "One or more fields in the request body are invalid",
+  //     },
+  //     HttpStatusCodes.BAD_REQUEST
+  //   );
+  // }
 
   if (err.name === "ZodError") {
     // console.log(err, "///////")

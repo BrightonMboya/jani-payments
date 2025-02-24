@@ -13,19 +13,22 @@ export const create: APPRouteHandler<CreateCheckout> = async (c: Context) => {
   const reqInput = await c.req.json();
   const input = createCheckoutSchema.parse(reqInput);
   const { grandTotal, subtotal, discountAmount } =
-    await calculateTransactionTotals(input.items, c, db);
+    await calculateTransactionTotals(input.items, c);
   const checkout_id = `chk_${crypto.randomUUID()}`;
   const checkout = await db.transaction(async (tx) => {
     // insert into the main checkout table
-    await tx.insert(schema.Checkouts).values({
+
+    type checkoutInsertType = typeof schema.Checkouts.$inferInsert;
+    const checkoutData: checkoutInsertType = {
       id: checkout_id,
       customer_id: input.customer_id,
       discount_id: input.discount_id,
-      discount_ammount: discountAmount,
+      discount_ammount: discountAmount.toString(),
       total: subtotal,
       grand_total: grandTotal,
       project_id: c.get("organization_Id"),
-    });
+    };
+    await tx.insert(schema.Checkouts).values(checkoutData);
 
     // then insert into checkout items
     const checkoutItems = input.items.map((item) => ({
