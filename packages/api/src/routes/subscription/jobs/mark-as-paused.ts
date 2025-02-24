@@ -4,22 +4,27 @@ not to be confused with the trial management
 */
 
 import { DateTime } from "luxon";
-import { db } from "~/middleware/with-db";
+import { db } from "@repo/db";
+import * as schema from "@repo/db/db/schema.ts";
+import { gte, and, lt } from "drizzle-orm";
 
 export async function handler() {
   const today = DateTime.now();
   const startOfToday = today.startOf("day").toJSDate();
   const endOfToday = today.endOf("day").toJSDate();
 
-  const dueSubscriptions = await db.subscriptions.updateMany({
-    where: {
-      current_period_ends: {
-        gte: startOfToday,
-        lt: endOfToday,
-      },
-    },
-    data: {
+  const dueSubscriptions = await db
+    .update(schema.Subscriptions)
+    .set({
       status: "paused",
-    },
-  });
+    })
+    .where(
+      and(
+        gte(
+          schema.Subscriptions.current_period_ends,
+          startOfToday.toISOString()
+        ),
+        lt(schema.Subscriptions.current_period_ends, endOfToday.toISOString())
+      )
+    );
 }

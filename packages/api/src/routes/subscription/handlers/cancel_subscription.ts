@@ -1,35 +1,43 @@
 import { type Context } from "hono";
 import { APPRouteHandler } from "~/lib/types";
 import { CancelSubscription } from "../subscription.routes";
-import { PrismaClient } from "@repo/db/types";
+
 import { cancelSubscriptionSchema, transformSubscription } from "../helpers";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
 import { z } from "zod";
+import * as schema from "@repo/db/db/schema.ts";
+import { db } from "@repo/db";
+import { eq, and, inArray } from "drizzle-orm";
 
 const cancel_subscription: APPRouteHandler<CancelSubscription> = async (
   c: Context
 ) => {
-  const db: PrismaClient = c.get("db");
   const subscription_id = c.req.param("subscription_id");
   const input = cancelSubscriptionSchema.parse(await c.req.json());
-  const subscription = await db.subscriptions.findUnique({
-    where: {
-      id: subscription_id,
-      project_id: c.get("organization_Id"),
-    },
-    include: {
+  const subscription = await db.query.Subscriptions.findFirst({
+    where: and(
+      eq(schema.Subscriptions.id, subscription_id),
+      eq(schema.Subscriptions.project_id, c.get("organization_Id"))
+    ),
+    with: {
+      BillingDetails: true,
       discount: {
-        include: {
+        with: {
           discount_prices: true,
         },
       },
       Subscription_Items: {
-        include: {
+        with: {
           price: true,
         },
       },
-      BillingDetails: true,
+      Subscription_Scheduled_Changes: {
+        where: inArray(schema.Subscription_Scheduled_Changes.action, [
+          "pause",
+          "cancel",
+        ]),
+      },
     },
   });
 
@@ -42,7 +50,7 @@ const cancel_subscription: APPRouteHandler<CancelSubscription> = async (
       HttpStatusCodes.NOT_FOUND
     );
   }
-  if (subscription?.status === "cancelled") {
+  if (subscription.status === "cancelled") {
     return c.json(
       {
         error: "Bad Request",
@@ -52,69 +60,86 @@ const cancel_subscription: APPRouteHandler<CancelSubscription> = async (
     );
   }
 
-  return await db.$transaction(async (tx) => {
-    if (input.effective_from === "immediately") {
-      const now = new Date();
+  if (input.effective_from === "immediately") {
+    const now = new Date();
+    const updatedSubscription = await db.transaction(async (tx) => {
       // Update subscription
-      const updatedSubscription = await tx.subscriptions.update({
-        where: { id: subscription_id, project_id: c.get("organization_Id") },
-        data: {
+      await tx
+        .update(schema.Subscriptions)
+        .set({
           status: "cancelled",
-          canceled_at: now,
-          // Clear scheduled changes if any
-          Subscription_Scheduled_Changes: {
-            deleteMany: {},
-          },
-        },
-        include: {
-          Subscription_Scheduled_Changes: true,
+          canceled_at: now.toISOString(),
+        })
+        .where(
+          and(
+            eq(schema.Subscriptions.id, subscription_id),
+            eq(schema.Subscriptions.project_id, c.get("organization_Id"))
+          )
+        );
+
+      // then delete the scheduled changes
+      await tx
+        .delete(schema.Subscription_Scheduled_Changes)
+        .where(
+          eq(
+            schema.Subscription_Scheduled_Changes.subscription_id,
+            subscription_id
+          )
+        );
+
+      return await tx.query.Subscriptions.findFirst({
+        where: and(
+          eq(schema.Subscriptions.id, subscription_id),
+          eq(schema.Subscriptions.project_id, c.get("organization_Id"))
+        ),
+        with: {
+          BillingDetails: true,
           discount: {
-            include: {
+            with: {
               discount_prices: true,
             },
           },
           Subscription_Items: {
-            include: {
+            with: {
               price: true,
             },
           },
-          BillingDetails: true,
+          Subscription_Scheduled_Changes: {
+            where: inArray(schema.Subscription_Scheduled_Changes.action, [
+              "pause",
+              "cancel",
+            ]),
+          },
         },
       });
-
-      // Update subscription items
-      //   await tx.subscriptionItems.updateMany({
-      //     where: { subscription_id: subscription_id },
-      //     data: {
-      //       status: "inactive",
-      //       updated_at: now,
-      //     },
-      //   });
-
-      const formattedSubscription = transformSubscription(updatedSubscription);
-      return c.json(formattedSubscription, HttpStatusCodes.OK);
-    } else {
-      // Schedule cancellation for next billing period
-      const scheduledChange = await tx.subscription_Scheduled_Changes.create({
-        data: {
+    });
+    const formattedSubscription = transformSubscription(updatedSubscription!);
+    return c.json(formattedSubscription, HttpStatusCodes.OK);
+  } else {
+    // Schedule cancellation for next billing period
+    const response = await db.transaction(async (tx) => {
+      const scheduledChange = await tx
+        .insert(schema.Subscription_Scheduled_Changes)
+        .values({
           id: `sc_${crypto.randomUUID()}`,
           subscription_id: subscription_id,
           action: "cancel",
-          effective_at: subscription.next_billed_at || new Date(),
-        },
-      });
-      // Don't change subscription status yet, just return the scheduled change
-      const response = {
-        ...subscription,
-        scheduled_change: scheduledChange,
-      };
+          effective_at:
+            subscription.next_billed_at?.toString() || new Date().toISOString(),
+        })
+        .returning();
 
-      const formattedResponse = transformSubscription({
-        ...(response as any),
-      });
-      return c.json(formattedResponse, HttpStatusCodes.OK);
-    }
-  });
+      // Don't change subscription status yet, just return the scheduled change
+      return {
+        ...subscription,
+        scheduled_change: scheduledChange[0],
+      };
+    });
+    const formattedResponse = transformSubscription({
+      ...(response as any),
+    });
+    return c.json(formattedResponse, HttpStatusCodes.OK);
+  }
 };
 
 export default cancel_subscription;

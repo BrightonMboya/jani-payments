@@ -1,29 +1,33 @@
 import { DateTime } from "luxon";
-import {
-  BillingInterval,
-  SubscriptionsStatus,
-  SubscriptionItemsStatus,
-} from "@repo/db/types";
-import { type Subscriptions } from "./helpers";
+import { SubscriptionStatus, type Subscriptions, type SubscriptionItemStatus } from "./helpers";
 
-interface Price {
-  trial_period_interval: BillingInterval;
-  trial_period_frequency: number;
-  billing_cycle_interval: BillingInterval;
-  billing_cycle_frequency: number;
-}
+// interface Price {
+//   trial_period_interval: BillingInterval;
+//   trial_period_frequency: number;
+//   billing_cycle_interval: BillingInterval;
+//   billing_cycle_frequency: number;
+// }
 
-export function calculateSubscriptionDates(prices: Price[]) {
+ export type PriceDetails = {
+   status: "active" | "archived";
+   currencyCode: string;
+   billingCycleFrequency: number;
+   billingCycleInterval: "day" | "week" | "month" | "year";
+   trialPeriodFrequency: number;
+   trialPeriodInterval: "day" | "week" | "month" | "year";
+ };
+
+export function calculateSubscriptionDates(prices: PriceDetails[]) {
   const start = DateTime.now();
   const hasTrialPeriod = prices.some(
-    (price) => price.trial_period_frequency > 0
+    (price) => price.trialPeriodFrequency > 0
   );
 
   if (!hasTrialPeriod) {
     // No trial - subscription starts active
-    const { billing_cycle_interval, billing_cycle_frequency } = prices[0];
+    const { billingCycleInterval, billingCycleFrequency } = prices[0];
     const periodEnd = start.plus({
-      [billing_cycle_interval + "s"]: billing_cycle_frequency,
+      [billingCycleInterval + "s"]: billingCycleFrequency,
     });
 
     return {
@@ -40,11 +44,11 @@ export function calculateSubscriptionDates(prices: Price[]) {
 
   // Has trial period - calculate trial end dates
   const trialEndDates = prices.map((price) => {
-    if (price.trial_period_frequency === 0) {
+    if (price.trialPeriodFrequency === 0) {
       return start;
     }
     return start.plus({
-      [price.trial_period_interval + "s"]: price.trial_period_frequency,
+      [price.trialPeriodInterval + "s"]: price.trialPeriodFrequency
     });
   });
 
@@ -63,13 +67,11 @@ export function calculateSubscriptionDates(prices: Price[]) {
   };
 }
 
-export function getSubscriptionStatus(prices: Price[]): {
-  subscriptionStatus: SubscriptionsStatus;
-  itemStatus: SubscriptionItemsStatus;
+export function getSubscriptionStatus(prices: PriceDetails[]): {
+  subscriptionStatus: SubscriptionStatus;
+  itemStatus: SubscriptionItemStatus;
 } {
-  const hasTrialPeriod = prices.some(
-    (price) => price.trial_period_frequency > 0
-  );
+  const hasTrialPeriod = prices.some((price) => price.trialPeriodFrequency > 0);
 
   return {
     subscriptionStatus: hasTrialPeriod ? "trial" : "active",

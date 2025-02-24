@@ -1,33 +1,35 @@
 import { type Context } from "hono";
 import { APPRouteHandler } from "~/lib/types";
 import { ListSubscription } from "../subscription.routes";
-import { PrismaClient } from "@repo/db/types";
 import { transformSubscription } from "../helpers";
 import * as HttpStatusCodes from "~/lib/http-status-code";
+import * as schema from "@repo/db/db/schema.ts";
+import { db } from "@repo/db";
+import { eq, inArray } from "drizzle-orm";
 
 const list_subscriptions: APPRouteHandler<ListSubscription> = async (
   c: Context
 ) => {
-  const db: PrismaClient = c.get("db");
-  
-
-  const subscriptions = await db.subscriptions.findMany({
-    where: {
-      project_id: c.get("organization_Id"),
-    },
-    include: {
+  const subscriptions = await db.query.Subscriptions.findMany({
+    where: eq(schema.Subscriptions.project_id, c.get("organization_Id")),
+    with: {
+      BillingDetails: true,
       discount: {
-        include: {
+        with: {
           discount_prices: true,
         },
       },
       Subscription_Items: {
-        include: {
+        with: {
           price: true,
         },
       },
-      Subscription_Scheduled_Changes: true,
-      BillingDetails: true,
+      Subscription_Scheduled_Changes: {
+        where: inArray(schema.Subscription_Scheduled_Changes.action, [
+          "pause",
+          "cancel",
+        ]),
+      },
     },
   });
 

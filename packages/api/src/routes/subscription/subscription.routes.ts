@@ -8,6 +8,7 @@ import {
   pauseSubscriptionSchema,
   transformedSubscriptionSchema,
   updateSubscriptionSchema,
+  resumeSubscriptionSchema
 } from "./helpers";
 
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
@@ -132,6 +133,14 @@ export const resume_subscription = createRoute({
     params: z.object({
       subscription_id: z.string(),
     }),
+    body: {
+      content: {
+        "application/json": {
+          schema: resumeSubscriptionSchema,
+        },
+      },
+      required: true,
+    },
   },
   responses: {
     [HttpsStatusCodes.OK]: jsonContent(

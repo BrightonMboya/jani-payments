@@ -370,11 +370,11 @@ export const Subscription_Scheduled_Changes = pgTable(
     id: text().primaryKey().notNull(),
     subscription_id: text("subscription_id").notNull(),
     action: scheduledChangeAction().notNull(),
-    effectiveAt: timestamp("effective_at", {
+    effective_at: timestamp("effective_at", {
       precision: 3,
       mode: "string",
     }).notNull(),
-    resumesAt: timestamp("resumes_at", { precision: 3, mode: "string" }),
+    resumes_at: timestamp("resumes_at", { precision: 3, mode: "string" }),
     status: scheduledChangesStatus().default("scheduled").notNull(),
   }
 );
@@ -490,15 +490,15 @@ export const SubscriptionItems = pgTable("SubscriptionItems", {
 export const BillingDetails = pgTable("BillingDetails", {
   id: text().primaryKey().notNull(),
   subscription_id: text("subscription_id").notNull(),
-  paymentInterval: billingInterval("payment_interval").notNull(),
-  paymentFrequency: integer("payment_frequency").notNull(),
-  enableCheckout: boolean("enable_checkout").default(false).notNull(),
-  purchaseOrderNumber: text("purchase_order_number"),
-  additionalInformation: text("additional_information"),
-  createdAt: timestamp("created_at", { precision: 3, mode: "string" })
+  payment_interval: billingInterval("payment_interval").notNull(),
+  payment_frequency: integer("payment_frequency").notNull(),
+  enable_checkout: boolean("enable_checkout").default(false).notNull(),
+  purchase_order_number: text("purchase_order_number"),
+  additional_information: text("additional_information"),
+  created_at: timestamp("created_at", { precision: 3, mode: "string" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", {
+  updated_at: timestamp("updated_at", {
     precision: 3,
     mode: "string",
   }).notNull(),
