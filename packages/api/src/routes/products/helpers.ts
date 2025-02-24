@@ -1,19 +1,23 @@
-import { ProductsModel } from "@repo/db/zod/index.ts";
+import { productsInsertSchema } from "@repo/db/types";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
 
-export const ProductsResponseSchema = ProductsModel.extend({
-  custom_data: jsonSchema,
-}).omit({
-  project_id: true,
-});
+export const ProductsResponseSchema = productsInsertSchema
+  .extend({
+    custom_data: jsonSchema,
+  })
+  .omit({
+    projectId: true,
+  });
 
-export const CreateProductsSchema = ProductsModel.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  project_id: true,
-}).extend({
-  custom_data: jsonSchema.nullish(),
-});
+export const CreateProductsSchema = productsInsertSchema
+  .omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    projectId: true,
+  })
+  .extend({
+    custom_data: jsonSchema.nullish(),
+  });
 
-export const UpdateProductsSchema = CreateProductsSchema.partial().strict()
+export const UpdateProductsSchema = CreateProductsSchema.partial().strict();

@@ -3,10 +3,11 @@
  * has received the money from the customer hence calling the `create-transaction` endpoint
  */
 
-
 import { Context } from "hono";
 import { DateTime } from "luxon";
-import { db } from "~/middleware/with-db";
+import { db } from "@repo/db";
+import { eq } from "drizzle-orm";
+import * as schema from "@repo/db/db/schema.ts";
 
 interface UpdateSubscriptionDatesProps {
   subscription_id: string;
@@ -22,28 +23,10 @@ export async function updateSubscriptionDates({
   c,
 }: UpdateSubscriptionDatesProps) {
   // First fetch the subscription to get billing cycle details
-
-  const subscription = await db.subscriptions.findUnique({
-    where: { id: subscription_id },
-    include: {
+  const subscription = await db.query.Subscriptions.findFirst({
+    where: eq(schema.Subscriptions.id, subscription_id),
+    with: {
       BillingDetails: true,
-      //   Subscription_Scheduled_Changes: {
-      //     where: {
-      //       action: {
-      //         in: ["pause", "resume", "cancel"],
-      //       },
-      //     },
-      //   },
-      //   discount: {
-      //     include: {
-      //       discount_prices: true,
-      //     },
-      //   },
-      //   Subscription_Items: {
-      //     include: {
-      //       price: true,
-      //     },
-      //   },
     },
   });
   if (!subscription) {
@@ -59,24 +42,21 @@ export async function updateSubscriptionDates({
         subscription.billing_cycle_frequency,
     });
 
-    const nextBillingDate = periodEnd.plus({ days: 1});
-
-    await db.subscriptions.update({
-      where: {
-        id: subscription_id,
-      },
-      data: {
-        first_billed_at: today.toJSDate(),
-        current_period_starts: today.toJSDate(),
-        current_period_ends: periodEnd.toJSDate(),
-        next_billed_at: nextBillingDate.toJSDate(),
-      },
-    });
+    const nextBillingDate = periodEnd.plus({ days: 1 });
+    await db
+      .update(schema.Subscriptions)
+      .set({
+        first_billed_at: today.toJSDate().toISOString(),
+        current_period_starts: today.toJSDate().toISOString(),
+        current_period_ends: periodEnd.toJSDate().toISOString(),
+        next_billed_at: nextBillingDate.toJSDate().toISOString(),
+      })
+      .where(eq(schema.Subscriptions.id, subscription_id));
   } else {
     // For subsequent payments:
     // 1. Use the current period end as the new period start
     // 2. Calculate new period end from there
-    const currentPeriodEnd = DateTime.fromJSDate(
+    const currentPeriodEnd = DateTime.fromISO(
       subscription.current_period_ends!
     );
     const newPeriodEnd = currentPeriodEnd.plus({
@@ -85,17 +65,13 @@ export async function updateSubscriptionDates({
     });
 
     const nextBillingDate = newPeriodEnd.minus({ days: billing_offset_days });
-
-    return await db.subscriptions.update({
-      where: {
-        id: subscription_id,
-      },
-      data: {
-        current_period_starts: currentPeriodEnd.toJSDate(),
-        current_period_ends: newPeriodEnd.toJSDate(),
-        next_billed_at: nextBillingDate.toJSDate(),
-      },
-    });
+    return await db
+      .update(schema.Subscriptions)
+      .set({
+        current_period_starts: currentPeriodEnd.toJSDate().toISOString(),
+        current_period_ends: newPeriodEnd.toJSDate().toISOString(),
+        next_billed_at: nextBillingDate.toJSDate().toISOString(),
+      })
+      .where(eq(schema.Subscriptions.id, subscription_id));
   }
-
 }

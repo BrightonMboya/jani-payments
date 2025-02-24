@@ -1,39 +1,42 @@
 import { type Context } from "hono";
 import { APPRouteHandler } from "~/lib/types";
 import { ActivateSubscription } from "../subscription.routes";
-import { PrismaClient } from "@repo/db/types";
 import { transformSubscription } from "../helpers";
 import { DateTime } from "luxon";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import { calculatePeriodEnd } from "../fns";
+import * as schema from "@repo/db/db/schema.ts";
+import { db } from "@repo/db";
+import { eq, and, inArray } from "drizzle-orm";
 
 const activate_subscription: APPRouteHandler<ActivateSubscription> = async (
   c: Context
 ) => {
-  const db: PrismaClient = c.get("db");
   const subscriptionId = c.req.param("subscription_id");
 
   // 1. Fetch subscription with all relevant data
-  const subscription = await db.subscriptions.findUniqueOrThrow({
-    where: { id: subscriptionId, project_id: c.get("organization_Id") },
-    include: {
+  const subscription = await db.query.Subscriptions.findFirst({
+    where: and(
+      eq(schema.Subscriptions.id, subscriptionId),
+      eq(schema.Subscriptions.project_id, c.get("organization_Id"))
+    ),
+    with: {
       BillingDetails: true,
-      Subscription_Scheduled_Changes: {
-        where: {
-          action: {
-            in: ["pause", "cancel"],
-          },
-        },
-      },
       discount: {
-        include: {
+        with: {
           discount_prices: true,
         },
       },
       Subscription_Items: {
-        include: {
+        with: {
           price: true,
         },
+      },
+      Subscription_Scheduled_Changes: {
+        where: inArray(schema.Subscription_Scheduled_Changes.action, [
+          "pause",
+          "cancel",
+        ]),
       },
     },
   });
@@ -73,50 +76,68 @@ const activate_subscription: APPRouteHandler<ActivateSubscription> = async (
   // 3. Calculate new billing dates
   const newPeriodEnd = calculatePeriodEnd(now.toJSDate(), subscription);
 
-  return await db.$transaction(async (tx) => {
-    // 4. Update subscription
-    const updatedSubscription = await tx.subscriptions.update({
-      where: { id: subscriptionId, project_id: c.get("organization_Id") },
-      data: {
+  const updatedSubscription = await db.transaction(async (tx) => {
+    // 4. update the subscription
+    await tx
+      .update(schema.Subscriptions)
+      .set({
         status: "active",
         // Update billing period to start now
-        current_period_starts: now.toJSDate(),
-        current_period_ends: newPeriodEnd,
+        current_period_starts: now.toString(),
+        current_period_ends: newPeriodEnd.toISOString(),
         // Set first billing to now since we're activating immediately
-        first_billed_at: now.toJSDate(),
+        first_billed_at: now.toString(),
         // Next billing will be at the end of new period
-        next_billed_at: newPeriodEnd,
-      },
-      include: {
+        next_billed_at: newPeriodEnd.toISOString(),
+      })
+      .where(
+        and(
+          eq(schema.Subscriptions.id, subscriptionId),
+          eq(schema.Subscriptions.project_id, c.get("organization_Id"))
+        )
+      );
+
+    // 5. Update subscription items
+    // Note: We only update trial-related dates, not the status as per Paddle's behavior
+    await tx
+      .update(schema.SubscriptionItems)
+      .set({
+        trial_ended_at: now.toString(),
+        next_billed_at: newPeriodEnd.toISOString(),
+        previously_billed_at: now.toString(),
+      })
+      .where(eq(schema.SubscriptionItems.subscription_id, subscriptionId));
+
+    // forgive me my lord as i am repeating myself
+    return await tx.query.Subscriptions.findFirst({
+      where: and(
+        eq(schema.Subscriptions.id, subscriptionId),
+        eq(schema.Subscriptions.project_id, c.get("organization_Id"))
+      ),
+      with: {
         BillingDetails: true,
         discount: {
-          include: {
+          with: {
             discount_prices: true,
           },
         },
         Subscription_Items: {
-          include: {
+          with: {
             price: true,
           },
         },
-        Subscription_Scheduled_Changes: true,
+        Subscription_Scheduled_Changes: {
+          where: inArray(schema.Subscription_Scheduled_Changes.action, [
+            "pause",
+            "cancel",
+          ]),
+        },
       },
     });
-
-    // 5. Update subscription items
-    // Note: We only update trial-related dates, not the status as per Paddle's behavior
-    await tx.subscriptionItems.updateMany({
-      where: { subscription_id: subscriptionId },
-      data: {
-        trial_ended_at: now.toJSDate(),
-        next_billed_at: newPeriodEnd,
-        previously_billed_at: now.toJSDate(),
-      },
-    });
-
-    const formattedSubscription = transformSubscription(updatedSubscription);
-    return c.json(formattedSubscription, HttpStatusCodes.OK);
   });
+
+  const formattedSubscription = transformSubscription(updatedSubscription!);
+  return c.json(formattedSubscription, HttpStatusCodes.OK);
 };
 
 export default activate_subscription;

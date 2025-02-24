@@ -1,7 +1,9 @@
 import { type Context } from "hono";
 import { APPRouteHandler } from "~/lib/types";
 import { ResumeSubscription } from "../subscription.routes";
-import { PrismaClient } from "@repo/db/types";
+import * as schema from "@repo/db/db/schema.ts";
+import { db } from "@repo/db";
+import { eq, and, inArray } from "drizzle-orm";
 import { resumeSubscriptionSchema, transformSubscription } from "../helpers";
 import { DateTime } from "luxon";
 import * as HttpStatusCodes from "~/lib/http-status-code";
@@ -10,32 +12,32 @@ import { calculatePeriodEnd } from "../fns";
 const resume_subscription: APPRouteHandler<ResumeSubscription> = async (
   c: Context
 ) => {
-  const db: PrismaClient = c.get("db");
   const subscriptionId = c.req.param("subscription_id");
   const input = resumeSubscriptionSchema.parse(await c.req.json());
 
   // 1. Fetch subscription and validate current state
-  const subscription = await db.subscriptions.findUniqueOrThrow({
-    where: { id: subscriptionId, project_id: c.get("organization_Id") },
-
-    include: {
+  const subscription = await db.query.Subscriptions.findFirst({
+    where: and(
+      eq(schema.Subscriptions.id, subscriptionId),
+      eq(schema.Subscriptions.project_id, c.get("organization_Id"))
+    ),
+    with: {
       BillingDetails: true,
-      Subscription_Scheduled_Changes: {
-        where: {
-          action: {
-            in: ["pause", "resume", "cancel"],
-          },
-        },
-      },
       discount: {
-        include: {
+        with: {
           discount_prices: true,
         },
       },
       Subscription_Items: {
-        include: {
+        with: {
           price: true,
         },
+      },
+      Subscription_Scheduled_Changes: {
+        where: inArray(schema.Subscription_Scheduled_Changes.action, [
+          "pause",
+          "cancel",
+        ]),
       },
     },
   });
@@ -49,29 +51,23 @@ const resume_subscription: APPRouteHandler<ResumeSubscription> = async (
       HttpStatusCodes.NOT_FOUND
     );
   }
-  const resumeDate = DateTime.fromISO(input.effective_from);
+
+  // Validate effective_from field
+  if (
+    input.effective_from !== "immediately" &&
+    input.effective_from !== "next_billing_period"
+  ) {
+    return c.json(
+      {
+        error: "Invalid effective_from",
+        message:
+          "Effective from must be either 'immediately' or 'next_billing_period'",
+      },
+      HttpStatusCodes.BAD_REQUEST
+    );
+  }
+
   const now = DateTime.now();
-
-  // Validate resume date
-  if (!resumeDate.isValid) {
-    return c.json(
-      {
-        error: "Invalid Date",
-        message: "Invalid effective_from date format",
-      },
-      HttpStatusCodes.BAD_REQUEST
-    );
-  }
-
-  if (resumeDate < now) {
-    return c.json(
-      {
-        error: "Bad Request",
-        message: "Resume date cannot be in the past",
-      },
-      HttpStatusCodes.BAD_REQUEST
-    );
-  }
 
   // State validations
   if (subscription.status === "cancelled") {
@@ -97,7 +93,7 @@ const resume_subscription: APPRouteHandler<ResumeSubscription> = async (
   if (
     subscription.status === "active" &&
     !subscription.Subscription_Scheduled_Changes.some(
-      (change) => change.action === "pause"
+      (change: { action: string }) => change.action === "pause"
     )
   ) {
     return c.json(
@@ -109,97 +105,90 @@ const resume_subscription: APPRouteHandler<ResumeSubscription> = async (
     );
   }
 
-  // Handle continue_existing_billing_period option
-  if (input.on_resume === "continue_existing_billing_period") {
-    const periodEndDate = DateTime.fromJSDate(
-      subscription.current_period_ends!
-    );
-
-    if (resumeDate > periodEndDate) {
-      return c.json(
-        {
-          error: "Invalid resume_date",
-          message:
-            "Resume date is after the current billing period end date. Cannot continue existing period.",
-        },
-        HttpStatusCodes.BAD_REQUEST
-      );
-    }
-  }
-
-  // Calculate next billing date based on resume strategy
+  // Determine next billing date based on effective_from value
   const nextBillingDate =
-    input.on_resume === "continue_existing_billing_period"
-      ? subscription.current_period_ends
-      : resumeDate.toJSDate();
+    input.effective_from === "immediately"
+      ? now.toJSDate()
+      : DateTime.fromISO(subscription.current_period_ends!).toJSDate();
 
-  return await db.$transaction(async (tx) => {
+  return await db.transaction(async (tx) => {
     // Clear any existing resume scheduled changes
-    await tx.subscription_Scheduled_Changes.deleteMany({
-      where: {
-        subscription_id: subscriptionId,
-        action: "resume",
-      },
-    });
+    await tx
+      .delete(schema.Subscription_Scheduled_Changes)
+      .where(
+        and(
+          eq(
+            schema.Subscription_Scheduled_Changes.subscription_id,
+            subscriptionId
+          ),
+          inArray(schema.Subscription_Scheduled_Changes.action, ["resume"])
+        )
+      );
 
-    if (resumeDate <= now.plus({ minutes: 5 })) {
-      // Allow 5 minutes buffer for "immediate" resumes
+    if (input.effective_from === "immediately") {
       // Immediate resume
-      const updatedSubscription = await tx.subscriptions.update({
-        where: { id: subscriptionId },
-        data: {
+      await tx
+        .update(schema.Subscriptions)
+        .set({
           status: "active",
           paused_at: null,
-          // Only update billing period if starting new one
-          ...(input.on_resume === "start_new_billing_period" && {
-            current_period_starts: resumeDate.toJSDate(),
-            current_period_ends: calculatePeriodEnd(
-              resumeDate.toJSDate(),
-              subscription
-            ),
-            next_billed_at: calculatePeriodEnd(
-              resumeDate.toJSDate(),
-              subscription
-            ),
-          }),
-          // Clear any pause scheduled changes
-          Subscription_Scheduled_Changes: {
-            deleteMany: {
-              action: "pause",
-            },
-          },
-        },
-        include: {
-          Subscription_Scheduled_Changes: true,
+          current_period_starts: subscription.current_period_starts,
+          current_period_ends: subscription.current_period_ends,
+          next_billed_at: subscription.next_billed_at,
+        })
+        .where(eq(schema.Subscriptions.id, subscriptionId));
+
+      // Clear any pause scheduled changes
+      await tx
+        .delete(schema.Subscription_Scheduled_Changes)
+        .where(
+          and(
+            eq(
+              schema.Subscription_Scheduled_Changes.subscription_id,
+              subscriptionId
+            )
+          )
+        );
+
+      const updatedSubscription = await tx.query.Subscriptions.findFirst({
+        where: and(
+          eq(schema.Subscriptions.id, subscriptionId),
+          eq(schema.Subscriptions.project_id, c.get("organization_Id"))
+        ),
+        with: {
+          BillingDetails: true,
           discount: {
-            include: {
+            with: {
               discount_prices: true,
             },
           },
           Subscription_Items: {
-            include: {
+            with: {
               price: true,
             },
           },
-          BillingDetails: true,
+          Subscription_Scheduled_Changes: {
+            where: inArray(schema.Subscription_Scheduled_Changes.action, [
+              "pause",
+              "cancel",
+            ]),
+          },
         },
       });
-      const formattedSubscription = transformSubscription(updatedSubscription);
+
+      const formattedSubscription = transformSubscription(updatedSubscription!);
       return c.json(formattedSubscription, HttpStatusCodes.OK);
     } else {
-      // Schedule future resume
-      const scheduledChange = await tx.subscription_Scheduled_Changes.create({
-        data: {
+      // Schedule resume at next billing period
+      const scheduledChange = await tx
+        .insert(schema.Subscription_Scheduled_Changes)
+        .values({
           id: `sc_${crypto.randomUUID()}`,
           subscription_id: subscriptionId,
           action: "resume",
-          effective_at: resumeDate.toJSDate(),
-          resumes_at: nextBillingDate,
-        },
-        include: {
-        
-        }
-      });
+          effective_at: nextBillingDate.toISOString(),
+          resumes_at: nextBillingDate.toISOString(),
+        });
 
       const response = {
         ...subscription,
@@ -210,5 +199,6 @@ const resume_subscription: APPRouteHandler<ResumeSubscription> = async (
     }
   });
 };
+
 
 export default resume_subscription;

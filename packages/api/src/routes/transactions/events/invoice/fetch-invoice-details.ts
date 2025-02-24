@@ -1,24 +1,23 @@
-import { db } from "~/middleware/with-db";
+import { db } from "@repo/db";
+import * as schema from "@repo/db/db/schema.ts";
 import { TemplateProps } from "./types";
-
+import { eq } from "drizzle-orm";
 
 export async function fetchInvoiceDetails(transactionId: string) {
-  const transaction = await db.transactions.findUnique({
-    where: {
-      id: "txn_248cb851-6265-484b-a448-d0bf55d0af05",
-    },
-    include: {
+  const transaction = await db.query.Transactions.findFirst({
+    where: eq(schema.Transactions.id, transactionId),
+    with: {
       address: {
-        select: {
-          first_line: true,
+        columns: {
+          firstLine: true,
           city: true,
         },
       },
       TransactionPayment: true,
       transactionItems: {
-        include: {
+        with: {
           price: {
-            select: {
+            columns: {
               name: true,
               amount: true,
             },
@@ -26,13 +25,14 @@ export async function fetchInvoiceDetails(transactionId: string) {
         },
       },
       customer: {
-        select: {
+        columns: {
           name: true,
           email: true,
         },
       },
     },
   });
+  
 
   if (!transaction) {
     return "No Transaction found with the Id";
@@ -46,9 +46,10 @@ export async function fetchInvoiceDetails(transactionId: string) {
     };
   });
 
+
   const invoiceDetails: TemplateProps = {
     invoice_number: transaction?.invoice_id,
-    issue_date: transaction.created_at.toISOString(),
+    issue_date: transaction.created_at,
     // due_date: transaction.created_at.toISOString(),
     template: {
       logo_url: "https://placeholder.co/100x100.png",
@@ -72,16 +73,14 @@ export async function fetchInvoiceDetails(transactionId: string) {
     customer_details: {
       name: transaction.customer.name,
       email: transaction.customer.email,
-      first_line: transaction.address.first_line,
+      first_line: transaction.address.firstLine,
     } as unknown as JSON,
     payment_details: {
-      bank_name:
-        transaction.TransactionPayment?.bank_name ||
-        transaction.TransactionPayment?.mobile_network,
-      account_number:
-        transaction.TransactionPayment?.card_last4 ||
-        transaction.TransactionPayment?.phone_suffix,
-      accepted_methods: [transaction.TransactionPayment?.payment_provider],
+      bank_name: transaction.TransactionPayment[0].bank_name ||
+        transaction.TransactionPayment[0].mobile_network,
+      account_number: transaction.TransactionPayment[0].card_last4 ||
+        transaction.TransactionPayment[0].phone_suffix,
+      accepted_methods: [transaction.TransactionPayment[0].payment_provider],
     } as unknown as JSON,
     currency: transaction.currency_code,
     amount: Number(transaction.grand_total),
@@ -89,6 +88,7 @@ export async function fetchInvoiceDetails(transactionId: string) {
     height: 841.89, // A4 height in points
     token: "",
     size: "a4",
+    due_date: ""
   };
 
   return invoiceDetails;

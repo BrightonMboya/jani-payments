@@ -11,12 +11,12 @@ const app = CreateAPP();
 configureOpenAPI(app);
 
 const routes = [
-  products,
-  prices,
-  discounts,
-  customers,
+  // products,
+  // prices,
+  // discounts,
+  // customers,
   addresses,
-  subscriptions,
+  // subscriptions,
 ] as const;
 
 routes.forEach((route) => {

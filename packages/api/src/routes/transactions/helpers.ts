@@ -1,14 +1,5 @@
-import {
-  CollectionMode,
-  PaymentMethod,
-  PaymentProvider,
-  PaymentStatus,
-  TransactionStatus,
-  Discount_type,
-} from "@repo/db/types";
 import { z } from "zod";
-import { jsonSchema } from "~/lib/utils/zod-helpers";
-import { type Prisma } from "@repo/db/types";
+import { Json, jsonSchema } from "~/lib/utils/zod-helpers";
 import { PricesResponseSchema, transformPrices } from "../prices/helpers";
 import { CustomersResponseSchema } from "../customers/helpers";
 import { AddressResponseSchema } from "../addresses/addresses.routes";
@@ -16,44 +7,50 @@ import { DiscountResponseSchema } from "../discounts/discounts.routes";
 import { transformDiscount } from "../discounts/helpers";
 import { ProductsResponseSchema } from "../products/helpers";
 import { HTTPException } from "hono/http-exception";
+import * as schema from "@repo/db/db/schema.ts";
+import { InferSelectModel } from "drizzle-orm";
 
-export type Transaction = Prisma.TransactionsGetPayload<{
-  include: {
-    transactionItems: {
-      select: {
-        price: {
-          include: {
-            Products: {
-              omit: {
-                project_id: true;
-              };
-            };
-          };
-        };
-        // price_id: true;
-        quantity: true;
-      };
-    };
-    // price: true;
-    address: true;
-    discount: {
-      omit: {
-        projectId: true;
-      };
-      include: {
-        discount_prices: {
-          select: {
-            price_id: true;
-          };
-        };
-      };
-    };
-    customer: true;
-    TransactionPayment: true;
-  };
-}>;
+// Infer basic schemas
+const PaymentMethod = z.enum(schema.paymentMethod.enumValues).Values;
+const transactionPayment = schema.TransactionPayment.$inferSelect;
+const addressSchema = schema.addresses.$inferSelect;
+
+// Type for Product excluding project_id
+type Product = Omit<InferSelectModel<typeof schema.Products>, "project_id">;
+
+// Type for Price with nested Product
+type Price = InferSelectModel<typeof schema.Prices> & {
+  Products: Product;
+};
+
+// Type for Transaction Item with nested Price
+type TransactionItem = InferSelectModel<typeof schema.TransactionItems> & {
+  price: Price;
+  quantity: number;
+};
+
+// Type for Discount with nested Discount Prices
+type DiscountPrice = Pick<
+  InferSelectModel<typeof schema.DiscountPrices>,
+  "price_id"
+>;
+
+type Discount = Omit<InferSelectModel<typeof schema.Discounts>, "projectId"> & {
+  discount_prices: DiscountPrice[];
+};
+
+// Type for Transaction including nested relations
+export type Transaction = InferSelectModel<typeof schema.Transactions> & {
+  transactionItems: TransactionItem[];
+  address: InferSelectModel<typeof schema.addresses>;
+  discount: Discount | null;
+  // customer: InferSelectModel<typeof schema.Customers>;
+  customer: typeof schema.Customers.$inferSelect;
+  TransactionPayment: InferSelectModel<typeof schema.TransactionPayment>;
+};
 
 // Payment method specific details schemas
+
 const mobileMoneyDetailsSchema = z.object({
   network: z.string(),
   phone_suffix: z.string(),
@@ -77,8 +74,8 @@ const bankTransferDetailsSchema = z.object({
 
 // Payment Details Schema
 const BasePaymentSchema = z.object({
-  payment_method: z.nativeEnum(PaymentMethod),
-  payment_provider: z.nativeEnum(PaymentProvider),
+  payment_method: z.enum(schema.paymentMethod.enumValues),
+  payment_provider: z.enum(schema.paymentProvider.enumValues),
   amount: z.number().positive(),
   currency_code: z.string().length(3), // ISO 4217 currency code
 });
@@ -112,25 +109,25 @@ const PaymentDetailsSchema = z.discriminatedUnion("payment_method", [
 
 const PaymentResponseSchema = z.object({
   id: z.string(),
-  status: z.nativeEnum(PaymentStatus),
+  status: z.enum(schema.paymentStatus.enumValues),
   // amount: z.number(),
-  payment_method: z.nativeEnum(PaymentMethod),
-  provider: z.nativeEnum(PaymentProvider),
+  payment_method: z.enum(schema.paymentMethod.enumValues),
+  provider: z.enum(schema.paymentProvider.enumValues),
   created_at: z.date(),
   updated_at: z.date().nullish(),
   provider_reference: z.string().nullable(),
   provider_metadata: jsonSchema.nullable(),
   method_details: z.discriminatedUnion("payment_method", [
     z.object({
-      payment_method: z.literal(PaymentMethod.MOBILE_MONEY),
+      payment_method: z.literal("MOBILE_MONEY"),
       details: mobileMoneyDetailsSchema,
     }),
     z.object({
-      payment_method: z.literal(PaymentMethod.CARD),
+      payment_method: z.literal("CARD"),
       details: cardDetailsSchema,
     }),
     z.object({
-      payment_method: z.literal(PaymentMethod.BANK_TRANSFER),
+      payment_method: z.literal("BANK_TRANSFER"),
       details: bankTransferDetailsSchema,
     }),
   ]),
@@ -144,7 +141,7 @@ export const createTransactionSchema = z.object({
       quantity: z.number(),
     })
   ),
-  status: z.nativeEnum(TransactionStatus),
+  status: z.enum(schema.transactionStatus.enumValues),
   customer_id: z.string(),
   address_id: z.string(),
   //   product_id: z.string(),
@@ -156,7 +153,7 @@ export const createTransactionSchema = z.object({
   // optional fields
   subscription_id: z.string().nullish(),
   discount_id: z.string().nullish(),
-  collection_mode: z.nativeEnum(CollectionMode).nullish(),
+  collection_mode: z.enum(schema.collectionMode.enumValues).nullish(),
   custom_data: jsonSchema.nullish(),
   current_billing_period: z
     .object({
@@ -178,7 +175,7 @@ export const createTransactionSchema = z.object({
 export type ICreateTransactionSchema = typeof createTransactionSchema;
 
 export const updateTransactionSchema = z.object({
-  status: z.nativeEnum(TransactionStatus),
+  status: z.enum(schema.transactionStatus.enumValues),
 });
 
 export const transformedTransactionSchema = createTransactionSchema
@@ -199,29 +196,39 @@ export const transformedTransactionSchema = createTransactionSchema
       })
     ),
     payments: PaymentResponseSchema,
-    created_at: z.date(),
-    updated_at: z.date().nullish(),
-    customer: CustomersResponseSchema,
+    created_at: z.string().date(),
+    updated_at: z.string().date().nullish(),
+    customer: {
+      id: z.string(),
+      name: z.string(),
+      status: z.enum(schema.entityStatus.enumValues),
+      //@ts-ignore fy ts
+      description: z.string().nullable(),
+      customData: z.any(),
+      email: z.string(),
+      createdAt: z.string(),
+      updatedAt: z.string(),
+    },
     address: AddressResponseSchema,
     discount: DiscountResponseSchema.nullish(),
     invoice_id: z.string(),
   });
 
 // helper fn to transform payment data
-function transformPayment(payment: Transaction["TransactionPayment"]) {
+function transformPayment(payment: typeof transactionPayment) {
   if (!payment) {
     throw new Error("Payment data is required");
   }
   const methodDetails = getPaymentMethodDetails(payment);
   return {
     id: payment?.id!,
-    status: payment?.status as PaymentStatus,
+    status: payment?.status,
     amount: Number(payment?.amount),
     currency_code: payment?.currency_code,
     payment_method: payment?.payment_method,
     provider: payment?.payment_provider,
-    created_at: payment?.created_at,
-    updated_at: payment?.updated_at,
+    created_at: new Date(payment?.created_at),
+    updated_at: payment?.updated_at ? new Date(payment?.updated_at) : undefined,
     error_message: payment?.error_message,
     provider_reference: payment?.provider_reference,
     provider_metadata: payment?.provider_metadata as any,
@@ -230,7 +237,7 @@ function transformPayment(payment: Transaction["TransactionPayment"]) {
 }
 
 function getPaymentMethodDetails(
-  payment: NonNullable<Transaction["TransactionPayment"]>
+  payment: NonNullable<typeof transactionPayment>
 ) {
   switch (payment?.payment_method) {
     case PaymentMethod.MOBILE_MONEY:
@@ -281,29 +288,34 @@ export function transformTransaction(
     subscription_id: input.subscription_id,
     discount_id: input.discount_id,
     collection_mode: input.collection_mode,
-    custom_data: input.custom_data as any,
+    custom_data: input.custom_data as Json,
     invoice_id: input.invoice_id,
     current_billing_period: {
-      starts_at: input.current_period_starts!.toISOString(),
-      ends_at: input.current_period_ends!.toISOString(),
+      starts_at: input.current_period_starts!.toString(),
+      ends_at: input.current_period_ends!.toString(),
     },
     items: input.transactionItems.map((item) => {
       return {
         price: transformPrices({
           ...item.price,
-          amount: Number(item.price.amount),
-          custom_data: item.price.custom_data! as any,
+          amount: item.price.amount,
+          customData: item.price.customData as Json,
         }),
-        quantity: Number(item.quantity),
+        quantity: item.quantity,
         product: {
           ...item.price.Products!,
-          custom_data: item.price.Products?.custom_data as any,
+          custom_data: item.price.Products?.customData,
         },
       };
     }),
     //
     payments: transformPayment(input.TransactionPayment),
-    discount: input.discount && transformDiscount(input.discount),
+    discount:
+      input.discount &&
+      transformDiscount({
+        ...input.discount,
+        custom_data: input.discount.custom_data as Json,
+      }),
     details: {
       total: {
         subtotal: Number(input.subtotal),
@@ -317,11 +329,17 @@ export function transformTransaction(
       custom_data: input.custom_data as any,
     },
     customer: {
-      ...input.customer,
-      custom_data: input.custom_data as any,
+      id: input.customer.id,
+      name: input.customer.name,
+      status: input.customer.status,
+      description: input.customer.description ?? null,
+      customData: input.customer.customData as Json,
+      email: input.customer.email,
+      createdAt: new Date(input.customer.createdAt).toISOString(), // formatted as string
+      updatedAt: input.customer.updatedAt.toString()!,
     },
-    created_at: input.created_at,
-    updated_at: input.updated_at,
+    created_at: new Date(input.created_at).toISOString(),
+    updated_at: new Date(input.updated_at!).toISOString(),
   };
 }
 
@@ -392,9 +410,9 @@ export const listTransactionQueryParams = z.object({
     .optional(),
 
   // Enum filters
-  collection_mode: z.nativeEnum(CollectionMode).optional(),
+  collection_mode: z.enum(schema.collectionMode.enumValues).optional(),
   // origin: z.nativeEnum(TransactionOrigin).array().optional(),
-  status: z.nativeEnum(TransactionStatus).array().optional(),
+  status: z.enum(schema.transactionStatus.enumValues).array().optional(),
 
   // Sorting
   order_by: z
@@ -423,50 +441,17 @@ export type IListTransactionQueryParams = z.infer<
   typeof listTransactionQueryParams
 >;
 
-export const GetTransactionInclude = {
-  transactionItems: {
-    select: {
-      price: {
-        include: {
-          Products: {
-            omit: {
-              project_id: true,
-            },
-          },
-        },
-      },
-      // price_id: true;
-      quantity: true,
-    },
-  },
-  // price: true,
-  address: true,
-  discount: {
-    omit: {
-      projectId: true,
-    },
-    include: {
-      discount_prices: {
-        select: {
-          price_id: true,
-        },
-      },
-    },
-  },
-  customer: true,
-  TransactionPayment: true,
-};
-
 export const transactionIdSchema = z.object({
   transaction_id: z.string(),
 });
 
+const discountTypes = z.enum(schema.discountType.enumValues);
 export function calculateDiscountAmount(
   discount: {
-    type: Discount_type;
-    amount: Prisma.Decimal;
+    type: z.infer<typeof discountTypes>;
+    amount: number;
     currency_code: string;
-    max_recurring_intervals?: Prisma.Decimal | null;
+    max_recurring_intervals?: number | null;
     usage_limit?: number | null;
   },
   subtotal: number,

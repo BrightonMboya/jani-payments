@@ -2,12 +2,12 @@ import { z, createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
 import { jsonSchema } from "~/lib/utils/zod-helpers";
-import { AddressesModel } from "@repo/db/zod/addresses.ts";
+import { addressInsertSchema, addressSelectSchema } from "@repo/db/types";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
 import { CreateAddressSchema, UpdateAddressSchema } from "./helpers";
 
-export const AddressResponseSchema = AddressesModel.extend({
-  custom_data: jsonSchema
+export const AddressResponseSchema = addressInsertSchema.extend({
+  custom_data: jsonSchema,
 });
 
 const tags = ["addresses"];
@@ -22,7 +22,7 @@ export const list = createRoute({
     params: z.object({
       customer_id: z.string(),
     }),
-    headers: z.object({
+    cookies: z.object({
       organization_Id: z.string().describe("organization_Id"),
     }),
   },
@@ -44,7 +44,7 @@ export const create = createRoute({
     params: z.object({
       customer_id: z.string(),
     }),
-    headers: z.object({
+    cookies: z.object({
       organization_Id: z.string().describe("organization_Id"),
     }),
     body: {
@@ -79,12 +79,12 @@ export const get_address = createRoute({
     params: z.object({
       address_id: z.string(),
     }),
-    headers: z.object({
+    cookies: z.object({
       organization_Id: z.string().describe("organization_Id"),
     }),
   },
   responses: {
-    [HttpStatusCodes.OK]: jsonContent(AddressResponseSchema, "Get an Address"),
+    [HttpStatusCodes.OK]: jsonContent(addressSelectSchema, "Get an Address"),
     [HttpStatusCodes.NOT_FOUND]: jsonContent(ErrorSchema, "Address not found"),
   },
 });
@@ -100,7 +100,7 @@ export const update_address = createRoute({
       customer_id: z.string(),
       address_id: z.string(),
     }),
-    headers: z.object({
+    cookies: z.object({
       organization_Id: z.string().describe("organization_Id"),
     }),
     body: {

@@ -1,58 +1,62 @@
 import { jsonSchema } from "~/lib/utils/zod-helpers";
 import { z } from "@hono/zod-openapi";
-import { PricesModel } from "@repo/db/zod/prices.ts";
+import { pricesInsertSchema } from "@repo/db/types";
+
 import { BillingInterval, Entity_Status, PriceType } from "@repo/db/types";
 
 export const CreatePricesSchema = z.object({
   //   id: z.string(),
   product_id: z.string(),
   description: z.string().nullish(),
-  type: z.nativeEnum(PriceType),
+  type: z.enum(PriceType),
   name: z.string(),
   billing_cycle: z.object({
-    interval: z.nativeEnum(BillingInterval),
+    interval: z.enum(BillingInterval),
     frequency: z.number(),
   }),
   trial_period: z.object({
-    interval: z.nativeEnum(BillingInterval),
+    interval: z.enum(BillingInterval),
     frequency: z.number(),
   }),
   unit_price: z.object({
     amount: z.number(),
     currency_code: z.string(),
   }),
-  status: z.nativeEnum(Entity_Status),
+  status: z.enum(Entity_Status),
   custom_data: jsonSchema.nullish(),
 });
 
-export const PricesResponseSchema = CreatePricesSchema.extend({
+// this is a bad pattern but idgaf
+const BasePriceSchema = CreatePricesSchema.extend({
   id: z.string(),
-  created_at: z.date(),
-  updated_at: z.date(),
+  created_at: z.string(),
+  updated_at: z.string(),
 });
 
-export const UpdatePricesSchema = PricesResponseSchema.partial().strict();
+export const PricesResponseSchema = BasePriceSchema.array();
 
-export const transformPrices = (price: z.infer<typeof PricesModel>) => ({
+export const UpdatePricesSchema = BasePriceSchema.partial().strict();
+
+export const transformPrices = (price: z.infer<typeof pricesInsertSchema>) => ({
   id: price.id,
   product_id: price.product_id,
   description: price.description,
   type: price.type,
   name: price.name,
   billing_cycle: {
-    interval: price.billing_cycle_interval,
-    frequency: price.billing_cycle_frequency,
+    interval: price.billingCycleInterval,
+    frequency: price.billingCycleFrequency,
   },
   trial_period: {
-    interval: price.trial_period_interval,
-    frequency: price.trial_period_frequency,
+    interval: price.trialPeriodInterval,
+    frequency: price.trialPeriodFrequency,
   },
   unit_price: {
     amount: Number(price.amount),
-    currency_code: price.currency_code,
+    currency_code: price.currencyCode,
   },
   status: price.status,
-  custom_data: price.custom_data,
-  created_at: price.created_at,
-  updated_at: price.updated_at,
+  custom_data: price.customData,
+  created_at: price.createdAt,
+  updated_at: price.updatedAt,
 });

@@ -1,10 +1,11 @@
 import { getCookie } from "hono/cookie";
 import { getToken } from "next-auth/jwt";
 import { type Context, type Next } from "hono";
-import { PrismaClient } from "@repo/db/types";
+import { db } from "@repo/db";
 import { createHash } from "crypto";
 import * as HttpStatusCodes from "~/lib/http-status-code";
-
+import * as schema from "@repo/db/db/schema.ts";
+import { eq } from "drizzle-orm";
 const withAuth = async (c: Context, next: Next) => {
   try {
     // Skip auth for public routes
@@ -24,7 +25,6 @@ const withAuth = async (c: Context, next: Next) => {
     // console.log(allCookies, "all cookies")
     const project_id = getCookie(c, "organization_Id");
 
-
     if (!authHeader) {
       return c.json(
         { error: "Unauthorized", message: "No Valid Bearer token provided" },
@@ -37,15 +37,22 @@ const withAuth = async (c: Context, next: Next) => {
         .update(apiKey)
         .digest("hex");
 
-      const db: PrismaClient = c.get("db");
-      const apiKeyRecord = await db.api_keys.findFirst({
-        where: {
-          key: hashedProvidedKey,
-        },
-        include: {
-          User: true,
-        },
-      });
+      const apiKeyRecord = await db
+        .select({
+          key: schema.apiKeys.key,
+          prefix: schema.apiKeys.prefix,
+          userId: schema.apiKeys.userId,
+          projectId: schema.apiKeys.project_id,
+          user: {
+            email: schema.user.email,
+            defaultWorkspace: schema.user.defaultWorkspace,
+          },
+        })
+        .from(schema.apiKeys)
+        .leftJoin(schema.user, eq(schema.apiKeys.userId, schema.user.id))
+        .where(eq(schema.apiKeys.key, hashedProvidedKey))
+        .limit(1)
+        .then((results) => results[0] || null);
 
       if (!apiKeyRecord) {
         return c.json(
@@ -54,7 +61,7 @@ const withAuth = async (c: Context, next: Next) => {
         );
       }
 
-      if (!project_id || apiKeyRecord.project_id !== project_id) {
+      if (!project_id || apiKeyRecord.projectId !== project_id) {
         return c.json(
           { error: "Invalid Organization Id" },
           HttpStatusCodes.BAD_REQUEST
@@ -63,14 +70,14 @@ const withAuth = async (c: Context, next: Next) => {
 
       c.set("user", {
         id: apiKeyRecord.userId,
-        user: apiKeyRecord.User,
-        email: apiKeyRecord.User.email,
-        defaultWorkSpace: apiKeyRecord.User.defaultWorkspace,
+        user: apiKeyRecord.user,
+        email: apiKeyRecord.user?.email,
+        defaultWorkSpace: apiKeyRecord.user?.defaultWorkspace,
         authMethod: "apiKey",
       });
       // set the project_id which comes as organization_id from the cookie
 
-      c.set("project_id", project_id);
+      c.set("organization_Id", project_id);
 
       return next();
     }

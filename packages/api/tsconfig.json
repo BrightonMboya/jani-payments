@@ -11,11 +11,10 @@
     "paths": {
       "~/*": ["./src/*"]
     },
-    "types": ["@cloudflare/workers-types/2023-07-01", "react", "react-dom"],
+    "types": ["react", "react-dom"],
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "allowJs": true,
-    "esModuleInterop": true,
-
+    "esModuleInterop": true
   }
 }

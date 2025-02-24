@@ -9,6 +9,8 @@
     "build": "turbo build"
   },
   "dependencies": {
+    "drizzle-orm": "^0.39.3",
+    "drizzle-zod": "^0.7.0",
     "eslint": "^8.40.0",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
@@ -16,8 +18,5 @@
     "sst": "3.7.7",
     "turbo": "^1.9.6",
     "typescript": "^5.0.4"
-  },
-  "devDependencies": {
-    "@cloudflare/workers-types": "4.20250109.0"
   }
 }

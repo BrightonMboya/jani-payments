@@ -1,5 +1,4 @@
 import type { Context } from "hono";
-import { Prisma, PrismaClient } from "@repo/db/types";
 import type { APPRouteHandler } from "~/lib/types";
 import type {
   ListRoute,
@@ -16,64 +15,61 @@ import {
 } from "./helpers";
 import { z } from "zod";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
+import { db } from "@repo/db";
+import * as schema from "@repo/db/db/schema.ts";
+import { and, eq } from "drizzle-orm";
 
 export const list: APPRouteHandler<ListRoute> = async (c: Context) => {
-  const db: PrismaClient = c.get("db");
   const project_id = c.get("organization_Id");
-  const products = (await db.products.findMany({
-    where: {
-      project_id,
-    },
-    select: {
-      id: true,
-      name: true,
-      description: true,
-      status: true,
-      createdAt: true,
-      updatedAt: true,
-      custom_data: true,
-    },
-  })) as z.infer<typeof ProductsResponseSchema>[];
+  const products = await db
+    .select({
+      id: schema.Products.id,
+      name: schema.Products.name,
+      description: schema.Products.description,
+      status: schema.Products.status,
+      createdAt: schema.Products.createdAt,
+      updatedAt: schema.Products.updatedAt,
+      custom_data: schema.Products.customData,
+    })
+    .from(schema.Products)
+    .where(eq(schema.Products.projectId, project_id));
   return c.json(products, HttpStatusCodes.OK);
 };
 
 export const create: APPRouteHandler<CreateRoute> = async (c: Context) => {
-  const db: PrismaClient = c.get("db");
-
   const raw_input = await c.req.json();
   const input = CreateProductsSchema.parse(raw_input);
-  const products = (await db.products.create({
-    data: {
-      id: `pro_${crypto.randomUUID()}`,
-      description: input.description,
-      name: input.name,
-      project_id: c.get("organization_Id"),
-      custom_data: input.custom_data as any,
-      updatedAt: new Date(),
-      createdAt: new Date(),
-    },
-    omit: {
-      project_id: true,
-    },
-  })) as z.infer<typeof ProductsResponseSchema>;
+  type ProductInsert = typeof schema.Products.$inferInsert;
+  const insertData: ProductInsert = {
+    id: `pro_${crypto.randomUUID()}`,
+    description: input.description,
+    name: input.name,
+    projectId: c.get("organization_Id"),
+    customData: input.custom_data as any,
+    updatedAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+  };
+  const products = await db
+    .insert(schema.Products)
+    .values(insertData)
+    .returning();
   return c.json(products, HttpStatusCodes.OK);
 };
 
 export const get_product: APPRouteHandler<GetProductRoute> = async (
   c: Context
 ) => {
-  const db: PrismaClient = c.get("db");
   // @ts-expect-error
   const { product_id } = c.req.valid("param");
-  const product = await db.products.findUnique({
-    where: {
-      id: product_id,
-      project_id: c.get("organization_Id"),
-    },
-    omit: {
-      project_id: true,
-    },
-  });
+  const product = await db
+    .select()
+    .from(schema.Products)
+    .where(
+      and(
+        eq(schema.Products.id, product_id),
+        eq(schema.Products.projectId, c.get("organization_Id"))
+      )
+    );
 
   if (!product) {
     return c.json(
@@ -84,29 +80,28 @@ export const get_product: APPRouteHandler<GetProductRoute> = async (
       HttpStatusCodes.NOT_FOUND
     );
   }
-  return c.json(
-    product as z.infer<typeof ProductsResponseSchema>,
-    HttpStatusCodes.OK
-  );
+  return c.json(product, HttpStatusCodes.OK);
 };
 
 export const update_product: APPRouteHandler<UpdateProductRoute> = async (
   c: Context
 ) => {
-  const db: PrismaClient = c.get("db");
   // @ts-ignore
   const { product_id } = c.req.valid("param");
   const raw_input = await c.req.json();
   const input = UpdateProductsSchema.parse(raw_input);
-
-  const product = await db.products.update({
-    where: { id: product_id, project_id: c.get("organization_Id") },
-    data: {
+  const product = await db
+    .update(schema.Products)
+    .set({
       ...input,
-      updatedAt: new Date(),
-      custom_data: input.custom_data as any,
-    },
-  });
+      updatedAt: new Date().toISOString(),
+    })
+    .where(
+      and(
+        eq(schema.Products.id, product_id),
+        eq(schema.Products.projectId, c.get("organization_Id"))
+      )
+    ).returning()
 
   if (!product) {
     return c.json(
@@ -119,7 +114,7 @@ export const update_product: APPRouteHandler<UpdateProductRoute> = async (
   }
 
   return c.json(
-    product as z.infer<typeof ProductsResponseSchema>,
+    product,
     HttpStatusCodes.OK
   );
 };

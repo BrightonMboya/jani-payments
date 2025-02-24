@@ -1,107 +1,134 @@
 import { type Context } from "hono";
 import { APPRouteHandler } from "~/lib/types";
 import { ListTransaction } from "../transaction.routes";
-import { Prisma, PrismaClient } from "@repo/db/types";
 import {
   DateOperator,
-  GetTransactionInclude,
   IListTransactionQueryParams,
   ListTransactionsResponse,
   transformTransaction,
 } from "../helpers";
 import { z } from "zod";
 import * as HttpStatusCodes from "~/lib/http-status-code";
+import {
+  eq,
+  inArray,
+  sql,
+  and,
+  lt,
+  lte,
+  gt,
+  gte,
+  isNull,
+} from "drizzle-orm";
+import { db } from "@repo/db";
+import * as schema from "@repo/db/db/schema.ts";
 
 const list_transaction: APPRouteHandler<ListTransaction> = async (
   c: Context
 ) => {
   const query = c.req.query() as unknown as IListTransactionQueryParams;
-  const db: PrismaClient = c.get("db");
-  let prismaQuery: Prisma.TransactionsFindManyArgs = {
-    where: {},
-    // cursor: undefined,
-    take: Number(query.per_page),
-    // skip: undefined,
-    include: GetTransactionInclude,
-    orderBy: query.order_by
-      ? {
-          [query.order_by.field]: query.order_by.direction.toLowerCase(),
-        }
-      : { created_at: "desc" },
-  } satisfies Prisma.TransactionsFindManyArgs;
 
-  // Handle cursor-based pagination
-  if (query.after) {
-    prismaQuery.cursor = { id: query.after };
-    prismaQuery.skip = 1; // Skip the cursor
-  }
+  // Build the where conditions
+  const whereConditions = [];
 
-  // Add filters to where clause
-  const where: Prisma.TransactionsWhereInput = {};
-
-  // Handle array filters
+  // Array filters
   if (query.customer_id) {
-    where.customer_id = { in: query.customer_id };
+    whereConditions.push(
+      inArray(schema.Transactions.customer_id, query.customer_id)
+    );
   }
 
   if (query.id) {
-    where.id = { in: query.id };
+    whereConditions.push(inArray(schema.Transactions.id, query.id));
   }
 
   if (query.subscription_id) {
-    where.subscription_id =
-      query.subscription_id === "null" ? null : { in: query.subscription_id };
+    if (query.subscription_id === "null") {
+      whereConditions.push(isNull(schema.Transactions.subscription_id));
+    } else {
+      whereConditions.push(
+        inArray(schema.Transactions.subscription_id, query.subscription_id)
+      );
+    }
   }
 
   if (query.status) {
-    where.status = { in: query.status };
+    whereConditions.push(inArray(schema.Transactions.status, query.status));
   }
 
   if (query.collection_mode) {
-    where.collection_mode = query.collection_mode;
+    whereConditions.push(
+      eq(schema.Transactions.collection_mode, query.collection_mode)
+    );
   }
 
-  // Handle date filters
-  const addDateFilter = (field: string, value: any) => {
+  // Date filters
+  const addDateFilter = (field: any, value: any) => {
     if (!value) return;
 
     if (typeof value === "string") {
-      (where[field as keyof Prisma.TransactionsWhereInput] as Date) = new Date(
-        value
-      );
+      whereConditions.push(eq(field, new Date(value)));
     } else {
       const operator = value.operator.toLowerCase();
       const date = new Date(value.value);
 
-      (where as any)[field] = {
-        [operator === DateOperator.LT
-          ? "lt"
+      whereConditions.push(
+        operator === DateOperator.LT
+          ? lt(field, date)
           : operator === DateOperator.LTE
-          ? "lte"
+          ? lte(field, date)
           : operator === DateOperator.GT
-          ? "gt"
-          : "gte"]: date,
-      };
+          ? gt(field, date)
+          : gte(field, date)
+      );
     }
   };
 
-  addDateFilter("created_at", query.created_at);
-  addDateFilter("updated_at", query.updated_at);
+  addDateFilter(schema.Transactions.created_at, query.created_at);
+  addDateFilter(schema.Transactions.updated_at, query.updated_at);
 
-  prismaQuery.where = where;
+  // Construct the order by clause
+  const orderBy = query.order_by
+    ? {
+        field: query.order_by.field,
+        direction: query.order_by.direction.toLowerCase() as "asc" | "desc",
+      }
+    : { field: "created_at", direction: "desc" };
 
-  const [transactions, total] = await Promise.all([
-    db.transactions.findMany(prismaQuery),
-    db.transactions.count({ where }),
-  ]);
+  // Handle pagination
+  const limit = Number(query.per_page);
+  const cursorCondition = query.after
+    ? lt(schema.Transactions.id, query.after)
+    : undefined;
 
-  const transformedTransactions = transactions.map((txn) =>
-    //   @ts-expect-error  trust me the defn here is correct
-    transformTransaction(txn)
+  if (cursorCondition) {
+    whereConditions.push(cursorCondition);
+  }
+
+  const whereClause = whereConditions.length
+    ? and(...whereConditions)
+    : undefined;
+
+  // Execute the query using Drizzle
+  const transactionsList = await db
+    .select()
+    .from(schema.Transactions)
+    .where(whereClause)
+    .orderBy(sql`${orderBy.field} ${orderBy.direction}`)
+    .limit(limit);
+
+  const total = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(schema.Transactions)
+    .where(whereClause)
+    .then((res) => res[0].count);
+
+  const transformedTransactions = transactionsList.map((txn) =>
+    transformTransaction(txn as any)
   );
 
   // Get the last ID for pagination
-  const lastTransaction = transactions[transactions.length - 1];
+  const lastTransaction = transactionsList[transactionsList.length - 1];
   const nextCursor = lastTransaction?.id;
 
   return c.json(
@@ -109,7 +136,7 @@ const list_transaction: APPRouteHandler<ListTransaction> = async (
       data: transformedTransactions,
       meta: {
         total,
-        per_page: Number(query.per_page),
+        per_page: limit,
         next_cursor: nextCursor,
       },
     } satisfies z.infer<typeof ListTransactionsResponse>,
