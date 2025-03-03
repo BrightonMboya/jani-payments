@@ -14,6 +14,14 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "Database": {
+      "database": string
+      "host": string
+      "password": string
+      "port": number
+      "type": "sst.aws.Postgres"
+      "username": string
+    }
     "DeadLetterQueu": {
       "type": "sst.aws.Queue"
       "url": string
@@ -30,6 +38,14 @@ declare module "sst" {
     "checkout": {
       "type": "sst.aws.StaticSite"
       "url": string
+    }
+    "replication-bucket": {
+      "name": string
+      "type": "sst.aws.Bucket"
+    }
+    "vpc": {
+      "bastion": string
+      "type": "sst.aws.Vpc"
     }
   }
 }

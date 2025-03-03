@@ -2,10 +2,11 @@ import GitHub from "next-auth/providers/github";
 import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 import { env } from "~/env";
-import { db } from "@repo/db";
 import { JWT } from "next-auth/jwt";
 import { User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
+import { db, schema } from "@repo/db";
+import { eq } from "drizzle-orm";
 
 export default {
   providers: [
@@ -24,9 +25,13 @@ export default {
   callbacks: {
     signIn: async ({ user, account, profile }) => {
       if (account?.provider === "google" || account?.provider === "github") {
-        const userExists = await db.user.findUnique({
-          where: { email: user.email! },
-          select: { id: true, name: true, image: true },
+        const userExists = await db.query.user.findFirst({
+          where: eq(schema.user.email, user.email),
+          columns: {
+            id: true,
+            name: true,
+            image: true,
+          },
         });
         if (!userExists || !profile) {
           return true;
@@ -36,7 +41,6 @@ export default {
         if (userExists && profile) {
           const profilePic =
             profile[account.provider === "google" ? "picture" : "avatar_url"];
-  
         }
       }
       return true;
@@ -56,8 +60,8 @@ export default {
 
       // refresh the user's data if they update their name / email
       if (trigger === "update") {
-        const refreshedUser = await db.user.findUnique({
-          where: { id: token.sub },
+        const refreshedUser = await db.query.user.findFirst({
+          where: eq(schema.user.id, token.sub),
         });
         if (refreshedUser) {
           token.user = refreshedUser;

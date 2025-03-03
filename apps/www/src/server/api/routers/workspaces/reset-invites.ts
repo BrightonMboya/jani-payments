@@ -1,7 +1,8 @@
 import { nanoid } from "~/utils/functions/nanoid";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 import { z } from "zod";
-
+import { eq } from "drizzle-orm";
+import { schema } from "@repo/db";
 export const resetInviteLink = createTRPCRouter({
   resetInviteLink: protectedProcedure
     .input(
@@ -10,23 +11,17 @@ export const resetInviteLink = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const workspace = await ctx.db.project.findUnique({
-        where: {
-          slug: input.workspaceSlug,
-        },
-        select: {
+      const workspace = await ctx.db.query.Project.findFirst({
+        where: eq(schema.Project.slug, input.workspaceSlug),
+        columns: {
           id: true,
         },
       });
-      const updatedInvite = await ctx.db.project.update({
-        where: {
-          id: workspace?.id,
-        },
-        data: {
-          inviteCode: nanoid(24),
-        },
-      });
 
-      return updatedInvite;
+      return await ctx.db
+        .update(schema.Project)
+        .set({ inviteCode: nanoid(24) })
+        .where(eq(schema.Project.id, workspace?.id))
+        .returning();
     }),
 });

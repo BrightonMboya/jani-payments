@@ -2,9 +2,9 @@ import { constructMetadata } from "~/utils/functions/constructMetadata";
 import Image from "next/legacy/image";
 import LoginPage from "~/components/auth/LoginPage";
 
-export const metadata = constructMetadata({
-  title: `Sign in to ${process.env.NEXT_PUBLIC_APP_NAME}`,
-});
+// export const metadata = constructMetadata({
+//   title: `Sign in to ${process.env.NEXT_PUBLIC_APP_NAME}`,
+// });
 
 export default function Page() {
   return (

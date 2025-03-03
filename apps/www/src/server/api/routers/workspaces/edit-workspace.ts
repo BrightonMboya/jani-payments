@@ -1,7 +1,8 @@
-
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { db, schema } from "@repo/db";
+import { eq, and } from "drizzle-orm";
 
 export const editWorkspace = createTRPCRouter({
   changeWorkspaceName: protectedProcedure
@@ -13,18 +14,14 @@ export const editWorkspace = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const res = await ctx.db.project.update({
-        where: {
-          slug: input.workspaceId,
-        },
-        data: {
+      const res = await db
+        .update(schema.Project)
+        .set({
           name: input.updatedName,
-          //   slug: input.slug,
-        },
-        include: {
-          users: true,
-        },
-      });
+        })
+        .where(eq(schema.Project.slug, input.workspaceId))
+        .returning();
+
       return res;
     }),
 
@@ -37,17 +34,14 @@ export const editWorkspace = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        const res = await ctx.db.project.update({
-          where: {
-            slug: input.workspaceId,
-          },
-          data: {
+       const res = await db
+          .update(schema.Project)
+          .set({
             slug: input.updatedSlug,
-          },
-          include: {
-            users: true,
-          },
-        });
+          })
+          .where(eq(schema.Project.slug, input.workspaceId))
+          .returning();
+      
         return res;
       } catch (error) {
         // @ts-ignore

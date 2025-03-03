@@ -5,6 +5,8 @@ import { hashToken } from "~/utils/functions/hashToken";
 import { randomBytes } from "crypto";
 import { sendEmail } from "~/emails";
 import WorkspaceInvite from "~/emails/workspace-invite";
+import { and, eq, count } from "drizzle-orm";
+import { schema } from "@repo/db";
 
 export const invites = createTRPCRouter({
   sendInvite: protectedProcedure
@@ -20,24 +22,38 @@ export const invites = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const [alreadyInWorkspace, workspaceUserCount, workspaceInviteCount] =
         await Promise.all([
-          ctx.db.projectUsers.findFirst({
-            where: {
-              projectId: input.workspaceId,
-              user: {
-                email: input.email,
-              },
-            },
-          }),
-          ctx.db.projectUsers.count({
-            where: {
-              projectId: input.workspaceId,
-            },
-          }),
-          ctx.db.projectInvite.count({
-            where: {
-              projectId: input.workspaceId,
-            },
-          }),
+          await ctx.db
+            .select()
+            .from(schema.ProjectUsers)
+            .innerJoin(
+              schema.user,
+              eq(schema.ProjectUsers.userId, schema.user.id),
+            )
+            .where(
+              and(
+                eq(schema.ProjectUsers.projectId, input.workspaceId),
+                eq(schema.user.email, input.email),
+              ),
+            )
+            .limit(1)
+            .then((results) => results[0] || null),
+          // ctx.db.projectUsers.findFirst({
+          //   where: {
+          //     projectId: input.workspaceId,
+          //     user: {
+          //       email: input.email,
+          //     },
+          //   },
+          // }),
+          ctx.db
+            .select({ count: count() })
+            .from(schema.ProjectUsers)
+            .where(eq(schema.ProjectUsers.projectId, input.workspaceId)),
+
+          ctx.db
+            .select({ count: count() })
+            .from(schema.projectInvite)
+            .where(eq(schema.projectInvite.projectId, input.workspaceId)),
         ]);
 
       if (alreadyInWorkspace) {
@@ -61,12 +77,10 @@ export const invites = createTRPCRouter({
       // for which prisma.projectInvite.create() will throw a unique constraint error
 
       try {
-        await ctx.db.projectInvite.create({
-          data: {
-            email: input.email,
-            expires,
-            projectId: input.workspaceId,
-          },
+        await ctx.db.insert(schema.projectInvite).values({
+          email: input.email,
+          expires: expires.toISOString(),
+          projectId: input.workspaceId,
         });
       } catch (error) {
         if (error?.code === "P2002") {
@@ -77,13 +91,12 @@ export const invites = createTRPCRouter({
         }
       }
 
-      await ctx.db.verificationToken.create({
-        data: {
-          identifier: input.email,
-          token: await hashToken(token, { secret: true }),
-          expires,
-        },
+      await ctx.db.insert(schema.verificationTokens).values({
+        identifier: input.email,
+        token: await hashToken(token, { secret: true }),
+        expires
       });
+      
 
       const params = new URLSearchParams({
         callbackUrl:

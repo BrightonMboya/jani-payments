@@ -6,7 +6,6 @@ export default $config({
   app(input) {
     return {
       name: "jani-payments",
-    //   architecture: "arm64",
       removal: input?.stage === "production" ? "retain" : "remove",
       protect: ["production"].includes(input?.stage),
       home: "aws",
@@ -26,12 +25,5 @@ export default $config({
       if (result.outputs) Object.assign(infra, result.outputs);
     }
     return infra;
-    // const api = await import("./infra/api");
-    // const bus = await import("./infra/bus");
-    // return {
-    //   // api
-    //   api: api.api.url,
-    //   bus: bus.bus,
-    // };
   },
 });

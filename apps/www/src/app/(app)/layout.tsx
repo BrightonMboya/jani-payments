@@ -4,14 +4,14 @@ import { Toaster } from "~/components/ui/Toaster";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "~/server/auth";
+import { type ReactNode } from "react";
 
 import { redirect } from "next/navigation";
-
 
 export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const session = await auth();
 

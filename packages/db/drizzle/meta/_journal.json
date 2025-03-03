@@ -8,6 +8,13 @@
       "when": 1739863985851,
       "tag": "0000_giant_gamora",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1741007280918,
+      "tag": "0001_tiny_redwing",
+      "breakpoints": true
     }
   ]
 }

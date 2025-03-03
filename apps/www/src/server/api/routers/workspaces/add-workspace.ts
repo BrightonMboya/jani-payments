@@ -8,7 +8,8 @@ import { nanoid } from "~/utils/functions/nanoid";
 import { waitUntil } from "@vercel/functions";
 import { TRPCClientError } from "@trpc/client";
 import { WorkspaceSchema } from "./schema";
-
+import { schema, db } from "@repo/db";
+import { eq } from "drizzle-orm";
 
 export const addWorkSpace = createTRPCRouter({
   addWorkSpace: publicProcedure
@@ -22,16 +23,14 @@ export const addWorkSpace = createTRPCRouter({
       // ) {
       //    throw new TRPCClientError("Project already in use")
       // }
-      const project = await ctx.db.project.findUnique({
-        where: {
-          slug: input.slug,
-        },
-        select: {
+      const project = await db.query.Project.findFirst({
+        where: eq(schema.Project.slug, input.slug),
+        columns: {
           slug: true,
         },
       });
       if (project) {
-        throw new TRPCClientError("Project already in use")
+        throw new TRPCClientError("Project already in use");
       } else {
         // // lets check if the person can create more than one workspaces
         // const freeWorkspaces = await ctx.db.project.count({
@@ -46,59 +45,71 @@ export const addWorkSpace = createTRPCRouter({
         //   },
         // });
 
-
         // if (freeWorkspaces >= 1) {
         //   throw new TRPCClientError(
         //     "You can only create up to 1 free workspace. Additional workspaces require a paid plan",
         //   );
         // }
+        try {
+          const workspaceResponse = await db.transaction(async (tx) => {
+            const newProject = await tx
+              .insert(schema.Project)
+              .values({
+                id: crypto.randomUUID(),
+                name: input.name,
+                slug: input.slug,
+                billingCycleStart: 2,
+                inviteCode: nanoid(24),
+                updatedAt: new Date().toISOString(),
+              })
+              .returning({ id: schema.Project.id });
 
+            await tx.insert(schema.ProjectUsers).values({
+              id: crypto.randomUUID(),
+              projectId: newProject[0].id,
+              userId: ctx.session.user.id,
+              role: "owner",
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            });
 
-
-        const workspaceResponse = await ctx.db.project.create({
-          data: {
-            name: input.name,
-            slug: input.slug,
-            users: {
-              create: {
-                userId: ctx.session?.user?.id!,
-                role: "owner",
+            return await tx.query.Project.findFirst({
+              where: eq(schema.Project.id, newProject[0].id),
+              with: {
+                users: {
+                  columns: {
+                    userId: true,
+                  },
+                },
               },
-            },
-            billingCycleStart: new Date().getDate(),
-            inviteCode: nanoid(24),
-          },
-          include: {
-            users: {
-              where: {
-                userId: ctx?.session?.user?.id,
-              },
-              select: {
+              columns: {
                 role: true,
               },
-            },
-          },
-        });
-        waitUntil(
-          (async () => {
-            // @ts-ignore
-            if (ctx?.session?.user["defaultWorkspace"] === null) {
-              await ctx.db.user.update({
-                where: {
-                  id: ctx.session.user.id,
-                },
-                data: {
-                  defaultWorkspace: workspaceResponse.slug,
-                },
-              });
-            }
-          })(),
-        );
+            });
+          });
 
-        return WorkspaceSchema.parse({
-          ...workspaceResponse,
-          id: `ws_${workspaceResponse.id}`,
-        });
+          waitUntil(
+            (async () => {
+              // @ts-ignore
+              if (ctx?.session?.user["defaultWorkspace"] === null) {
+                await ctx.db
+                  .update(schema.user)
+                  .set({
+                    defaultWorkspace: workspaceResponse.slug,
+                  })
+                  .where(eq(schema.user.id, ctx.session.user.id));
+              }
+            })(),
+          );
+
+          // return WorkspaceSchema.parse({
+          //   ...workspaceResponse,
+          //   id: `ws_${workspaceResponse.id}`,
+          // });
+          return workspaceResponse;
+        } catch (cause) {
+          console.log(cause);
+        }
       }
       // } catch (cause) {
       //   console.log(cause);
