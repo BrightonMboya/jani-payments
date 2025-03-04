@@ -12,6 +12,7 @@
     "drizzle-orm": "^0.40.0",
     "drizzle-zod": "^0.7.0",
     "eslint": "^8.40.0",
+    "hono": "^4.6.14",
     "next-auth": "5.0.0-beta.25",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",

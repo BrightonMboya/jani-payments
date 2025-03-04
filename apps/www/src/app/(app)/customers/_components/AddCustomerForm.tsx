@@ -15,10 +15,15 @@ import Input from "~/components/ui/input";
 import Button from "~/components/ui/button";
 import { z } from "zod";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
+import { Plus, Minus } from "lucide-react";
 
 const addCustomerSchema = z.object({
   email_address: z.string(),
   name: z.string(),
+  description: z.string().optional(),
+  custom_data: z
+    .array(z.object({ key: z.string(), value: z.string() }))
+    .optional(),
 });
 
 const AddCustomerForm = () => {
@@ -27,8 +32,22 @@ const AddCustomerForm = () => {
     defaultValues: {
       email_address: "",
       name: "",
+      custom_data: [],
     },
   });
+
+  const addCustomData = () => {
+    const currentData = form.getValues("custom_data") || [];
+    form.setValue("custom_data", [...currentData, { key: "", value: "" }]);
+  };
+
+  const removeCustomData = (index: number) => {
+    const currentData = form.getValues("custom_data") || [];
+    form.setValue(
+      "custom_data",
+      currentData.filter((_, i) => i !== index),
+    );
+  };
 
   function onSubmit(values: z.infer<typeof addCustomerSchema>) {
     // Do something with the form values.
@@ -82,6 +101,73 @@ const AddCustomerForm = () => {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description (optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter a description for this customer"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="custom_data"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <div className="flex items-center space-x-3">
+                      <p> Custom Data (key-value pairs)</p>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={addCustomData}
+                        className=" h-7 w-7"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </FormLabel>
+                  <FormControl>
+                    <div>
+                      {field.value?.map((item, index) => (
+                        <div key={index} className="flex space-x-2">
+                          <Input
+                            placeholder="Key"
+                            {...form.register(`custom_data.${index}.key`)}
+                          />
+                          <Input
+                            placeholder="Value"
+                            {...form.register(`custom_data.${index}.value`)}
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => removeCustomData(index)}
+                            className="h-10 w-10"
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <Button type="submit">Save</Button>
           </form>
         </Form>

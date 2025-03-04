@@ -35,6 +35,7 @@
     "@react-email/components": "^0.0.28",
     "@react-email/render": "^1.0.2",
     "@repo/db": "workspace:*",
+    "@repo/api": "workspace:*",
     "@sentry/nextjs": "^8.42.0",
     "@sindresorhus/slugify": "github:sindresorhus/slugify",
     "@t3-oss/env-nextjs": "^0.10.1",

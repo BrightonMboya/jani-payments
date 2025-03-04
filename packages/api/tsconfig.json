@@ -8,10 +8,13 @@
     "strict": true,
     "skipLibCheck": true,
     "lib": ["ESNext"],
+    "types": ["react", "react-dom"],
     "paths": {
       "~/*": ["./src/*"]
     },
-    "types": ["react", "react-dom"],
+    "composite": true, // enable project compilations
+    "declaration": true, // generates the .d.ts files
+    "declarationDir": "true", // generates a source map for the .d.ts files
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "allowJs": true,

@@ -69,6 +69,11 @@ export const get_address: APPRouteHandler<GetAddress> = async (c: Context) => {
     .select()
     .from(schema.addresses)
     .where(eq(schema.addresses.id, address_id));
+  // const address = await db.addresses.findUnique({
+  //   where: {
+  //     id: address_id,
+  //   },
+  // });
 
   if (!address) {
     const errorResponse: z.infer<typeof ErrorSchema> = {
@@ -77,7 +82,8 @@ export const get_address: APPRouteHandler<GetAddress> = async (c: Context) => {
     };
     return c.json(errorResponse, HttpStatusCodes.NOT_FOUND);
   }
-  return c.json(address, HttpStatusCodes.OK);
+  const res = AddressResponseSchema.parse(address);
+  return c.json(res, HttpStatusCodes.OK);
 };
 
 export const update_address: APPRouteHandler<UpdateAddress> = async (

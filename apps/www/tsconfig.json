@@ -3,8 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"],
-      "@repo/db/*": ["packages/db/*"]
+      "~/*": ["./src/*"]
     },
     "plugins": [
       {
@@ -12,14 +11,10 @@
       }
     ],
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "noEmit": true,
     "incremental": true,
     "module": "esnext",
@@ -30,6 +25,7 @@
     "jsx": "preserve"
   },
   "exclude": [],
+  "references": [{ "path": "../../packages/api/tsconfig.json" }],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
