@@ -1,12 +1,9 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-// import withDB from "../middleware/with-db";
 import withAuth from "../middleware/with-auth";
 import notFound from "~/middleware/not-found";
 import onError from "~/middleware/on-error";
 import { cors } from "hono/cors";
 import { APPBindings } from "./types";
-import { pinoLogger } from "~/middleware/pino-logger";
-
 
 export function CreateRouter() {
   return new OpenAPIHono<APPBindings>({
@@ -21,16 +18,13 @@ export default function CreateAPP() {
   app.use(
     "/*",
     cors({
-      origin: [
-        "http://localhost:3000",
-      ],
+      origin: ["http://localhost:3000"],
       maxAge: 600,
       credentials: true,
       allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       allowHeaders: ["Content-Type", "Authorization"],
     })
   );
-  // app.use(withDB);
   app.use(withAuth);
   // app.use(pinoLogger());
   app.notFound(notFound);

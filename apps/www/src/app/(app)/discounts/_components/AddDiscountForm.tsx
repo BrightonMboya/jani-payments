@@ -12,6 +12,12 @@ const AddDiscountForm = () => {
   const [status, setStatus] = useState("active");
   const [duration, setDuration] = useState("unlimited");
   const [redemptionLimit, setRedemptionLimit] = useState("unlimited");
+  const [discountCode, setDiscountCode] = useState("");
+
+  const generateRandomCode = () => {
+    const randomCode = Math.random().toString(36).substring(2, 10); // Generates an 8-character random string
+    setDiscountCode(randomCode);
+  };
 
   return (
     <Sheet>
@@ -38,8 +44,13 @@ const AddDiscountForm = () => {
                     type="text"
                     className="flex-1 rounded-lg border p-2"
                     placeholder="e.g. SUMMER2024"
+                    value={discountCode}
+                    readOnly
                   />
-                  <Button className="rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200">
+                  <Button
+                    className="rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    onClick={generateRandomCode}
+                  >
                     Generate
                   </Button>
                 </div>

@@ -11,7 +11,11 @@ import transactions from "./routes/transactions/transaction.index";
 // import checkout from "./routes/checkouts/checkouts.index";
 import { handle } from "hono/aws-lambda";
 
-const app = CreateAPP()
+const app = CreateAPP();
+
+configureOpenAPI(app);
+
+const _app = app
   .route("/", products)
   .route("/", prices)
   .route("/", discounts)
@@ -21,16 +25,11 @@ const app = CreateAPP()
   .route("/", transactions)
   .route("/", keys);
 
-  
-configureOpenAPI(app);
-
-
-
 // app.get("/", (c) => {
 //   return c.text("Hello Hono!");
 // });
 
-export type AppType = typeof app;
+export type AppType = typeof _app;
 export default app;
 export const handler = handle(app);
 export const ts = app.fetch;
