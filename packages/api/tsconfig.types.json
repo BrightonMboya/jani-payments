@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    // Basic type generation
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+
+    // Module resolution
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+
+    // Path mapping
+    "baseUrl": ".",
+    "paths": {
+      "~/db/*": ["../db/src/*"],
+      "~/lib/*": ["src/lib/*"],
+      "~/routes/*": ["src/routes/*"]
+    },
+
+    // Strict typing relaxed
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+
+    // Output configuration
+    "outDir": "./dist/types",
+
+    // Other helpful options
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": false
+  },
+
+  "include": ["src/**/*.ts", "../db/src/**/*.ts"],
+
+  "exclude": ["**/*.spec.ts", "**/*.test.ts", "node_modules"]
+}

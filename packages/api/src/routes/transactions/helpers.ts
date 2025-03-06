@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Json, jsonSchema } from "~/lib/utils/zod-helpers";
 import { PricesResponseSchema, transformPrices } from "../prices/helpers";
-import { CustomersResponseSchema } from "../customers/helpers";
+
 import { AddressResponseSchema } from "../addresses/addresses.routes";
 import { DiscountResponseSchema } from "../discounts/discounts.routes";
 import { transformDiscount } from "../discounts/helpers";
@@ -13,7 +13,7 @@ import { InferSelectModel } from "drizzle-orm";
 // Infer basic schemas
 const PaymentMethod = z.enum(schema.paymentMethod.enumValues).Values;
 const transactionPayment = schema.TransactionPayment.$inferSelect;
-const addressSchema = schema.addresses.$inferSelect;
+
 
 // Type for Product excluding project_id
 type Product = Omit<InferSelectModel<typeof schema.Products>, "project_id">;

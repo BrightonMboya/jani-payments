@@ -24,6 +24,7 @@ const addCustomerSchema = z.object({
   custom_data: z
     .array(z.object({ key: z.string(), value: z.string() }))
     .optional(),
+  phone_number: z.string().optional(),
 });
 
 const AddCustomerForm = () => {
@@ -33,6 +34,7 @@ const AddCustomerForm = () => {
       email_address: "",
       name: "",
       custom_data: [],
+      phone_number: "",
     },
   });
 
@@ -77,6 +79,20 @@ const AddCustomerForm = () => {
                       placeholder="Enter an email address for this customer"
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="phone_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter phone number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -132,7 +148,7 @@ const AddCustomerForm = () => {
                         variant="ghost"
                         size="icon"
                         onClick={addCustomData}
-                        className=" h-7 w-7"
+                        className="h-7 w-7"
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
