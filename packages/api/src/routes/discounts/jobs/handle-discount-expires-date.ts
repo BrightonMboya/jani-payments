@@ -7,7 +7,7 @@ import { DateTime } from "luxon";
 import * as schema from "@repo/db/db/schema.ts";
 import { gte, eq, and, lt } from "drizzle-orm";
 
-export async function handler() {
+export async function Handle_Discount_Expires_Date() {
   const now = DateTime.now();
   const startOfToday = now.startOf("day").toJSDate();
   const endOfToday = now.endOf("day").toJSDate();

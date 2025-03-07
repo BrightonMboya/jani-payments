@@ -9,7 +9,7 @@ import { DateTime } from "luxon";
 import { and, gte, lt } from "drizzle-orm";
 import * as schema from "@repo/db/db/schema.ts";
 
-export async function handler() {
+export async function TrialManagement() {
   const today = DateTime.now();
   const startOfToday = today.startOf("day").toJSDate();
   const endOfToday = today.endOf("day").toJSDate();

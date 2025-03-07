@@ -31,12 +31,20 @@ declare module "sst" {
       "type": "sst.aws.Function"
       "url": string
     }
+    "MyRouter": {
+      "type": "sst.aws.Router"
+      "url": string
+    }
     "busDlq": {
       "type": "sst.aws.Queue"
       "url": string
     }
     "checkout": {
       "type": "sst.aws.StaticSite"
+      "url": string
+    }
+    "dashboard": {
+      "type": "sst.aws.Nextjs"
       "url": string
     }
     "replication-bucket": {

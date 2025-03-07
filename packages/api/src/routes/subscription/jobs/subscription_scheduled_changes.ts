@@ -8,7 +8,7 @@ import { DateTime } from "luxon";
 import { and, eq, gte, inArray, lt } from "drizzle-orm";
 import * as schema from "@repo/db/db/schema.ts";
 
-export async function handler() {
+export async function Subscription_Scheduled_Changes() {
   const now = DateTime.now();
   const startOfToday = now.startOf("day").toJSDate();
   const endOfToday = now.endOf("day").toJSDate();

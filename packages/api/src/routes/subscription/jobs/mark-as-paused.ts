@@ -8,7 +8,7 @@ import { db } from "@repo/db";
 import * as schema from "@repo/db/db/schema.ts";
 import { gte, and, lt } from "drizzle-orm";
 
-export async function handler() {
+export async function MarkAsPaused() {
   const today = DateTime.now();
   const startOfToday = today.startOf("day").toJSDate();
   const endOfToday = today.endOf("day").toJSDate();
