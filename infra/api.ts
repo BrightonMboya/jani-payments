@@ -13,8 +13,8 @@ export const api = new sst.aws.Function("Hono", {
   link: [secrets.DATABASE_URL, bus],
 });
 
-new sst.aws.Router("MyRouter", {
-  routes: {
-    "/*": api.url,
-  },
-});
+// new sst.aws.Router("MyRouter", {
+//   routes: {
+//     "/*": api.url,
+//   },
+// });

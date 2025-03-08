@@ -14,29 +14,9 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
-    "Database": {
-      "database": string
-      "host": string
-      "password": string
-      "port": number
-      "type": "sst.aws.Postgres"
-      "username": string
-    }
-    "DeadLetterQueu": {
-      "type": "sst.aws.Queue"
-      "url": string
-    }
     "Hono": {
       "name": string
       "type": "sst.aws.Function"
-      "url": string
-    }
-    "MyRouter": {
-      "type": "sst.aws.Router"
-      "url": string
-    }
-    "busDlq": {
-      "type": "sst.aws.Queue"
       "url": string
     }
     "checkout": {
@@ -46,14 +26,6 @@ declare module "sst" {
     "dashboard": {
       "type": "sst.aws.Nextjs"
       "url": string
-    }
-    "replication-bucket": {
-      "name": string
-      "type": "sst.aws.Bucket"
-    }
-    "vpc": {
-      "bastion": string
-      "type": "sst.aws.Vpc"
     }
   }
 }

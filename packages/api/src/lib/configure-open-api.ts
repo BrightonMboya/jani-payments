@@ -3,17 +3,23 @@ import type { AppOpenAPI } from "./types";
 import packageJSON from "../../package.json";
 
 export default async function configureOpenAPI(app: AppOpenAPI) {
-  app.doc("/doc", {
-    openapi: "3.0.0",
-    info: {
-      version: packageJSON.version,
-      title: "JANI Payments",
-    },
-    security: [{ Bearer: [], organization_Id: [] }],
-    // servers: [{
-    //   url: "billing.jani-ai.com"
-    // }]
-  });
+  try {
+    app.doc("/doc", {
+      openapi: "3.0.0",
+      info: {
+        version: packageJSON.version,
+        title: "Open Billing",
+      },
+      security: [{ Bearer: [], organization_Id: [] }],
+      // servers: [{
+      //   url: "billing.jani-ai.com"
+      // }]
+    });
+
+    console.log("Done configuring");
+  } catch (cause) {
+    console.log(cause);
+  }
   app.openAPIRegistry.registerComponent("securitySchemes", "Bearer", {
     type: "http",
     scheme: "bearer",

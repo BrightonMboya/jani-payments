@@ -1,21 +1,22 @@
 {
   "name": "@repo/api",
   "version": "1.0.0",
+  "type": "module",
   "main": "./src/index.ts",
   "scripts": {
-    "build": "tsc",
-    "build:types": "tsc -p tsconfig.types.json",
+    "dev": "tsx watch src/index.ts",
+    "build": "esbuild --bundle --outfile=./dist/index.js --platform=node --target=node20 ./src/index.ts",
     "zip": "zip -j lambda.zip dist/index.js",
     "update": "aws lambda update-function-code --zip-file fileb://lambda.zip --function-name hello",
     "deploy": "run-s build zip update"
   },
   "dependencies": {
     "@hono/valibot-validator": "^0.5.2",
-    "@hono/zod-openapi": "^0.18.3",
+    "@hono/zod-openapi": "^0.19.2",
     "@react-pdf/renderer": "^3.1.14",
     "@react-pdf/types": "^2.7.0",
     "@repo/db": "workspace:*",
-    "@scalar/hono-api-reference": "^0.5.172",
+    "@scalar/hono-api-reference": "^0.5.183",
     "hono-pino": "^0.7.0",
     "luxon": "^3.5.0",
     "nanoid": "^5.0.9",
@@ -25,6 +26,7 @@
     "pino-pretty": "^13.0.0",
     "react": "18",
     "react-dom": "18",
+    "tsx": "^3.12.7",
     "zod": "^3.24.1"
   },
   "devDependencies": {

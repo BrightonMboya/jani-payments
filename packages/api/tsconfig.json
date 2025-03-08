@@ -12,10 +12,10 @@
     "paths": {
       "~/*": ["./src/*"]
     },
-    "composite": true, // enable project compilations
-    "declaration": true, // generates the .d.ts files
-    "declarationDir": "true", // generates a source map for the .d.ts files
-    "outDir": "./dist",
+    // "composite": true, // enable project compilations
+    // "declaration": true, // generates the .d.ts files
+    // "declarationDir": "true", // generates a source map for the .d.ts files
+    // "outDir": "./dist",
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "allowJs": true,
