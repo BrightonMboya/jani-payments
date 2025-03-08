@@ -11,11 +11,6 @@ import transactions from "./routes/transactions/transaction.index";
 // import checkout from "./routes/checkouts/checkouts.index";
 import { handle } from "hono/aws-lambda";
 
-import { OpenAPIHono } from "@hono/zod-openapi";
-import { createRoute } from "@hono/zod-openapi";
-
-import { z } from "@hono/zod-openapi";
-
 const app = CreateAPP();
 
 
@@ -26,8 +21,8 @@ const routes = [
   discounts,
   addresses,
   subscriptions,
+  transactions,
   keys,
-  // transactions,
 ] as const;
 
 configureOpenAPI(app);
@@ -36,10 +31,10 @@ configureOpenAPI(app);
 routes.forEach((route) => {
   app.route("/", route);
 });
-// app.route("/", keys);
 
 
-// export type AppType = (typeof routes)[number];
+
+export type AppType = (typeof routes)[number];
 export default app;
 
 export const handler = handle(app);

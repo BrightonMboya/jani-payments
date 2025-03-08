@@ -1,10 +1,7 @@
 import { Context } from "hono";
 import { APPRouteHandler } from "~/lib/types";
 import { CreateTransaction } from "../transaction.routes";
-import {
-  createTransactionSchema,
-  transformTransaction,
-} from "../helpers";
+import { createTransactionSchema, transformTransaction } from "../helpers";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import { Resource } from "sst";
 import { bus } from "sst/aws/bus";
@@ -92,38 +89,35 @@ const create_transaction: APPRouteHandler<CreateTransaction> = async (
 
     // finally return the txn with the related records
     return await tx.query.Transactions.findFirst({
-        where: and(
-          eq(schema.Transactions.id, transaction_id),
-          eq(schema.Transactions.project_id, c.get("organization_Id"))
-        ),
-        with: {
-          transactionItems: {
-            with: {
-              price: {
-                with: {
-                  Products: true,
-                },
+      where: and(
+        eq(schema.Transactions.id, transaction_id),
+        eq(schema.Transactions.project_id, c.get("organization_Id"))
+      ),
+      with: {
+        transactionItems: {
+          with: {
+            price: {
+              with: {
+                Products: true,
               },
             },
           },
-          address: true,
-          discount: {
-            with: {
-              discount_prices: {
-                columns: {
-                  price_id: true,
-                },
-              },
-            },
-          },
-          customer: true,
-          TransactionPayment: true,
         },
-      });
-  })
-
-
-
+        address: true,
+        discount: {
+          with: {
+            discount_prices: {
+              columns: {
+                price_id: true,
+              },
+            },
+          },
+        },
+        customer: true,
+        TransactionPayment: true,
+      },
+    });
+  });
 
   bus.publish(Resource.Bus, TransactionEvent.Created, {
     subscription_id: input.subscription_id!,

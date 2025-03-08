@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@hono/zod-openapi";
 import { Json, jsonSchema } from "~/lib/utils/zod-helpers";
 import { PricesResponseSchema, transformPrices } from "../prices/helpers";
 
@@ -13,7 +13,6 @@ import { InferSelectModel } from "drizzle-orm";
 // Infer basic schemas
 const PaymentMethod = z.enum(schema.paymentMethod.enumValues).Values;
 const transactionPayment = schema.TransactionPayment.$inferSelect;
-
 
 // Type for Product excluding project_id
 type Product = Omit<InferSelectModel<typeof schema.Products>, "project_id">;
@@ -144,7 +143,7 @@ export const createTransactionSchema = z.object({
   status: z.enum(schema.transactionStatus.enumValues),
   customer_id: z.string(),
   address_id: z.string(),
-  //   product_id: z.string(),
+  product_id: z.string(),
   currency_code: z.string(),
 
   //payment details
@@ -198,7 +197,7 @@ export const transformedTransactionSchema = createTransactionSchema
     payments: PaymentResponseSchema,
     created_at: z.string().date(),
     updated_at: z.string().date().nullish(),
-    customer: {
+    customer: z.object({
       id: z.string(),
       name: z.string(),
       status: z.enum(schema.entityStatus.enumValues),
@@ -208,7 +207,7 @@ export const transformedTransactionSchema = createTransactionSchema
       email: z.string(),
       createdAt: z.string(),
       updatedAt: z.string(),
-    },
+    }),
     address: AddressResponseSchema,
     discount: DiscountResponseSchema.nullish(),
     invoice_id: z.string(),
