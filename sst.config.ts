@@ -2,6 +2,7 @@
 
 import { readdirSync } from "fs";
 
+
 export default $config({
   app(input) {
     return {
@@ -19,6 +20,7 @@ export default $config({
   async run() {
     // this imports all the infra defn on the infra directory and then returns it.
     // good trick for not needing to update this file whenever you change stuff there
+
     const infra = {};
     for (const value of readdirSync("./infra")) {
       const result = await import("./infra/" + value);

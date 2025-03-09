@@ -13,7 +13,6 @@ import { handle } from "hono/aws-lambda";
 
 const app = CreateAPP();
 
-
 const routes = [
   products,
   prices,
@@ -27,11 +26,9 @@ const routes = [
 
 configureOpenAPI(app);
 
-
 routes.forEach((route) => {
   app.route("/", route);
 });
-
 
 
 export type AppType = (typeof routes)[number];

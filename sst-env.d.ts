@@ -27,6 +27,10 @@ declare module "sst" {
       "type": "sst.aws.Nextjs"
       "url": string
     }
+    "router": {
+      "type": "sst.aws.Router"
+      "url": string
+    }
   }
 }
 /// <reference path="sst-env.d.ts" />

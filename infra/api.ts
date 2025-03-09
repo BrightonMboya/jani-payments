@@ -1,6 +1,8 @@
 /// <reference path="../.sst/platform/config.d.ts" />
 import { secrets } from "./secrets";
 import { bus } from "./bus";
+import { domain } from "./dns";
+
 
 export const api = new sst.aws.Function("Hono", {
   url: true,
@@ -13,8 +15,11 @@ export const api = new sst.aws.Function("Hono", {
   link: [secrets.DATABASE_URL, bus],
 });
 
-// new sst.aws.Router("MyRouter", {
-//   routes: {
-//     "/*": api.url,
-//   },
-// });
+
+export const router = new sst.aws.Router("router", {
+  // domain: "openbilling.org",
+  domain: domain,
+  routes: {
+    "/*": api.url
+  },
+});
