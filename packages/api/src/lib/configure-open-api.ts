@@ -10,9 +10,11 @@ export default async function configureOpenAPI(app: AppOpenAPI) {
       title: "Open Billing",
     },
     security: [{ Bearer: [], organization_Id: [] }],
-    // servers: [{
-    //   url: "billing.jani-ai.com"
-    // }]
+    servers: [
+      {
+        url: "api.openbilling.org",
+      },
+    ],
   });
 
   app.openAPIRegistry.registerComponent("securitySchemes", "Bearer", {

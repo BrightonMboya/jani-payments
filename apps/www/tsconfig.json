@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
     },
     "plugins": [
       {
@@ -25,7 +25,6 @@
     "jsx": "preserve"
   },
   "exclude": [],
-  "references": [{ "path": "../../packages/api/tsconfig.json" }],
   "include": [
     "next-env.d.ts",
     "**/*.ts",

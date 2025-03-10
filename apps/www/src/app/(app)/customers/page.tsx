@@ -7,8 +7,15 @@ import {
   BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
 import AddCustomerForm from "./_components/AddCustomerForm";
+// import { billing } from "~/utils/billing";
+import { getBillingInstance } from "~/utils/billing";
 
-const Page = () => {
+const Page = async () => {
+  // const billing = await getBillingInstance();
+  // const res = await billing.prices.list();
+
+  // console.log(res, "this is the res");
+
   return (
     <>
       {/* <Breadcrumb>
@@ -30,7 +37,7 @@ const Page = () => {
             Create and share products to start making sales. Your customers will
             be displayed here.
           </p>
-          <AddCustomerForm/>
+          <AddCustomerForm />
         </div>
       </section>
     </>

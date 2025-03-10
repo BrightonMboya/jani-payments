@@ -6,36 +6,29 @@ import { createHash } from "crypto";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import * as schema from "@repo/db/db/schema.ts";
 import { eq } from "drizzle-orm";
+import { Resource } from "sst";
+
 const withAuth = async (c: Context, next: Next) => {
   try {
-    // Skip auth for public routes
-    if (
-      c.req.path.startsWith("/reference") ||
-      c.req.path.startsWith("/doc") ||
-      c.req.path.startsWith("/api-keys")
-    ) {
+    if (c.req.path.startsWith("/reference") || c.req.path.startsWith("/doc")) {
       return next();
     }
 
-    // Check for Bearer token first
     const authHeader = c.req.header("Authorization");
-
-    // const allCookies = getCookie(c);
-    // console.log(allCookies, "all cookies")
-    const project_id = getCookie(c, "organization_Id");
-
-    if (!authHeader) {
+    if (!authHeader?.startsWith("Bearer ")) {
       return c.json(
-        { error: "Unauthorized", message: "No Valid Bearer token provided" },
+        { error: "Unauthorized", message: "Invalid authorization format" },
         401
       );
     }
-    if (authHeader?.startsWith("Bearer ")) {
-      const apiKey = authHeader.slice(7);
-      const hashedProvidedKey = createHash("sha256")
-        .update(apiKey)
-        .digest("hex");
 
+    const token = authHeader.slice(7);
+
+    // SDK API Key Authentication (shorter token)
+    if (token.length < 50) {
+      const hashedProvidedKey = createHash("sha256")
+        .update(token)
+        .digest("hex");
       const apiKeyRecord = await db
         .select({
           key: schema.apiKeys.key,
@@ -60,13 +53,6 @@ const withAuth = async (c: Context, next: Next) => {
         );
       }
 
-      if (!project_id || apiKeyRecord.projectId !== project_id) {
-        return c.json(
-          { error: "Invalid Organization Id" },
-          HttpStatusCodes.BAD_REQUEST
-        );
-      }
-
       c.set("user", {
         id: apiKeyRecord.userId,
         user: apiKeyRecord.user,
@@ -74,46 +60,35 @@ const withAuth = async (c: Context, next: Next) => {
         defaultWorkSpace: apiKeyRecord.user?.defaultWorkspace,
         authMethod: "apiKey",
       });
-      // set the project_id which comes as organization_id from the cookie
-
-      c.set("organization_Id", project_id);
-
+      c.set("organization_Id", apiKeyRecord.projectId);
       return next();
     }
 
-    // If no Bearer token, check for session cookie
-    const sessionToken = getCookie(c, "authjs.session-token");
-    if (!sessionToken) {
-      return c.json(
-        {
-          error: "Unauthorized",
-          message: "No valid authentication method found",
-        },
-        401
-      );
-    }
-
-    // Verify the JWT token
-    const token = await getToken({
+    // Dashboard Session Token Authentication (longer token)
+    const token_data = await getToken({
       req: c.req.raw,
-      secret: c.env.NEXTAUTH_SECRET,
+      secret: Resource.NEXTAUTH_SECRET.value,
     });
 
-    if (!token) {
+    if (!token_data) {
+      return c.json({ error: "Invalid session token" }, 401);
+    }
+
+    const project_id = getCookie(c, "organization_Id");
+    if (!project_id) {
       return c.json(
-        { error: "Invalid session", code: "AUTH_SESSION_INVALID" },
-        401
+        { error: "No organization ID found in cookies" },
+        HttpStatusCodes.BAD_REQUEST
       );
     }
 
-    // Set session user data
     c.set("user", {
-      id: token.sub,
-      user: token.user,
-      email: token.email,
+      id: token_data.sub,
+      user: token_data.user,
+      email: token_data.email,
       authMethod: "session",
     });
-
+    c.set("organization_Id", project_id);
     return next();
   } catch (error) {
     console.error(error);

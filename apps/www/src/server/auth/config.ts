@@ -1,12 +1,30 @@
 import GitHub from "next-auth/providers/github";
-import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 import { env } from "~/env";
 import { JWT } from "next-auth/jwt";
-import { User } from "next-auth";
+// import { User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
 import { db, schema } from "@repo/db";
 import { eq } from "drizzle-orm";
+import { NextAuthConfig, User as NextAuthUser } from "next-auth";
+import { cookies } from "next/headers";
+
+// Extend the User interface with organization_Id
+declare module "next-auth" {
+  interface User {
+    organization_Id?: string;
+  }
+
+  interface Session {
+    user: User;
+  }
+
+  interface JWT {
+    user?: User;
+  }
+}
+
+// import { serialize } from "cookie"; // For setting cookies
 
 export default {
   providers: [
@@ -25,66 +43,65 @@ export default {
   callbacks: {
     signIn: async ({ user, account, profile }) => {
       if (account?.provider === "google" || account?.provider === "github") {
-        const userExists = await db.query.user.findFirst({
-          where: eq(schema.user.email, user.email),
-          columns: {
-            id: true,
-            name: true,
-            image: true,
-          },
+        const existingUser = await db.query.user.findFirst({
+          where: eq(schema.user.email, user.email!),
+          columns: { id: true },
         });
-        if (!userExists || !profile) {
-          return true;
-        }
-        // if the user already exists via email,
-        // update the user with their name and image
-        if (userExists && profile) {
-          const profilePic =
-            profile[account.provider === "google" ? "picture" : "avatar_url"];
+
+        if (existingUser) {
+          // Get the user's first project (organization)
+          const userProject = await db.query.ProjectUsers.findFirst({
+            where: eq(schema.ProjectUsers.userId, existingUser.id),
+            columns: { projectId: true },
+          });
+
+          if (userProject) {
+            const cookieStore = await cookies();
+            cookieStore.set("organization_Id", userProject.projectId);
+            user.organization_Id = userProject.projectId; // Store organization ID
+          }
         }
       }
       return true;
     },
-    jwt: async ({
-      token,
-      user,
-      trigger,
-    }: {
-      token: JWT;
-      user: User | AdapterUser;
-      trigger?: "signIn" | "update" | "signUp";
-    }) => {
+    jwt: async ({ token, user }) => {
       if (user) {
         token.user = user;
       }
 
-      // refresh the user's data if they update their name / email
-      if (trigger === "update") {
-        const refreshedUser = await db.query.user.findFirst({
-          where: eq(schema.user.id, token.sub),
+      // Ensure organization_Id is stored in JWT
+      if (!token.user?.organization_Id) {
+        const userProject = await db.query.ProjectUsers.findFirst({
+          where: eq(schema.ProjectUsers.userId, token.sub!),
+          columns: { projectId: true },
         });
-        if (refreshedUser) {
-          token.user = refreshedUser;
-        } else {
-          return {};
+
+        if (userProject) {
+          // Cast token.user to include organization_Id
+          token.user = {
+            ...(token.user || {}),
+            organization_Id: userProject.projectId,
+          };
         }
       }
 
       return token;
     },
-    session: async ({ session, token, user }) => {
+    session: async ({ session, token }) => {
       session.user = {
         id: token.sub,
-        // @ts-ignore
-        ...(token || session).user,
+        ...(token.user || {}),
       };
-      // const scope = Sentry.getCurrentScope()
 
-      // scope.setUser({
-      //   id: user.id,
-      //   email: user.email,
-      // })
+      // Attach organization_Id to session
+      session.user.organization_Id = token.user?.organization_Id;
+
       return session;
+    },
+  },
+  events: {
+    signOut: async ({}) => {
+      const cookieStore = await cookies();
     },
   },
 } satisfies NextAuthConfig;

@@ -203,7 +203,7 @@ export const transformedTransactionSchema = createTransactionSchema
       status: z.enum(schema.entityStatus.enumValues),
       //@ts-ignore fy ts
       description: z.string().nullable(),
-      customData: z.any(),
+      custom_data: z.any(),
       email: z.string(),
       createdAt: z.string(),
       updatedAt: z.string(),
@@ -298,12 +298,12 @@ export function transformTransaction(
         price: transformPrices({
           ...item.price,
           amount: item.price.amount,
-          customData: item.price.customData as Json,
+          custom_data: item.price.custom_data as Json,
         }),
         quantity: item.quantity,
         product: {
           ...item.price.Products!,
-          custom_data: item.price.Products?.customData,
+          custom_data: item.price.Products?.custom_data,
         },
       };
     }),
@@ -332,7 +332,7 @@ export function transformTransaction(
       name: input.customer.name,
       status: input.customer.status,
       description: input.customer.description ?? null,
-      customData: input.customer.customData as Json,
+      custom_data: input.customer.custom_data as Json,
       email: input.customer.email,
       createdAt: new Date(input.customer.createdAt).toISOString(), // formatted as string
       updatedAt: input.customer.updatedAt.toString()!,

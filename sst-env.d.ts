@@ -19,6 +19,10 @@ declare module "sst" {
       "type": "sst.aws.Function"
       "url": string
     }
+    "NEXTAUTH_SECRET": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "checkout": {
       "type": "sst.aws.StaticSite"
       "url": string

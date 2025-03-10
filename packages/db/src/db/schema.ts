@@ -236,7 +236,7 @@ export const Products = pgTable("Products", {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: timestamp({ precision: 3, mode: "string" }).notNull(),
-  customData: jsonb("custom_data"),
+  custom_data: jsonb("custom_data"),
   projectId: text("project_id").notNull(),
 });
 
@@ -319,7 +319,7 @@ export const Prices = pgTable("Prices", {
   trialPeriodInterval: billingInterval("trial_period_interval").notNull(),
   amount: numeric({ precision: 65, scale: 30 }).notNull(),
   currencyCode: text("currency_code").notNull(),
-  customData: jsonb("custom_data"),
+  custom_data: jsonb("custom_data"),
   status: entityStatus().notNull(),
   createdAt: timestamp("created_at", {
     precision: 3,
@@ -433,7 +433,7 @@ export const Customers = pgTable("Customers", {
   name: text().notNull(),
   status: entityStatus().default("active").notNull(),
   description: text(),
-  customData: jsonb("custom_data"),
+  custom_data: jsonb("custom_data"),
   createdAt: timestamp("created_at", {
     precision: 3,
     mode: "string",

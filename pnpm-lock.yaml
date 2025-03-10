@@ -246,6 +246,9 @@ importers:
       next:
         specifier: ^15.0.1
         version: 15.2.0(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      open-billing:
+        specifier: ^0.1.1
+        version: 0.1.1(zod@3.24.2)
       postmark:
         specifier: ^4.0.5
         version: 4.0.5
@@ -4546,6 +4549,11 @@ packages:
 
   once@1.4.0:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
+
+  open-billing@0.1.1:
+    resolution: {integrity: sha512-hqibr4yOJ1du74dVv1UyUKmDENiyCxwW/FJP4y+nxW55cdaOx0B7KBMr2TZLOqcQRkCnJBS8RoJjEbp0v8cpGw==}
+    peerDependencies:
+      zod: '>= 3'
 
   openapi3-ts@4.4.0:
     resolution: {integrity: sha512-9asTNB9IkKEzWMcHmVZE7Ts3kC9G7AFHfs8i7caD8HbI76gEjdkId4z/AkP83xdZsH7PLAnnbl47qZkXuxpArw==}
@@ -10158,6 +10166,10 @@ snapshots:
   once@1.4.0:
     dependencies:
       wrappy: 1.0.2
+
+  open-billing@0.1.1(zod@3.24.2):
+    dependencies:
+      zod: 3.24.2
 
   openapi3-ts@4.4.0:
     dependencies:
