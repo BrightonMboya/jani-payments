@@ -2,9 +2,7 @@
 import { Button } from "../../Auth-Button";
 import { Modal } from "~/components/ui/modal";
 import { CopyButton } from "~/components/ui/copy-button";
-
-
-import { APP_DOMAIN } from "~/utils";
+import { APP_DOMAIN } from "~/utils/constants";
 import {
   Dispatch,
   SetStateAction,

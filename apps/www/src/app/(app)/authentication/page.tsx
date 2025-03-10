@@ -8,29 +8,29 @@ import { API_KEYS_TABLE } from "./_components/data-table";
 export default function () {
   const { data: session } = useSession();
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["fetch-api-keys"],
-    queryFn: async () => {
-      const res = await fetch(
-        `${env.NEXT_PUBLIC_API_URL}/api-keys/${session?.user?.id}`,
-        {
-          method: "GET",
-        },
-      );
-      return res.json()
-    },
-  });
-  console.log(data, typeof(data));
+  // const { data, isLoading, isError, error } = useQuery({
+  //   queryKey: ["fetch-api-keys"],
+  //   queryFn: async () => {
+  //     const res = await fetch(
+  //       `${env.NEXT_PUBLIC_API_URL}/api-keys/${session?.user?.id}`,
+  //       {
+  //         method: "GET",
+  //       },
+  //     );
+  //     return res.json()
+  //   },
+  // })
 
   return (
     <>
-    {!isLoading && data.keys.length === 0 && (
+    <p>pee pooo</p>
+    {/* {!isLoading && data.keys.length === 0 && (
       <section className="rounded-md border-[1px] shadow-lg">
         <ClientTokens />
       </section>
     )}
 
-      {!isLoading && data.keys.length !==0 && <API_KEYS_TABLE data={data} />}
+      {!isLoading && data.keys.length !==0 && <API_KEYS_TABLE data={data} />} */}
     </>
   );
 }

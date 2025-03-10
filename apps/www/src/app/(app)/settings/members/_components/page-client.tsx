@@ -1,18 +1,17 @@
 "use client";
-
-import { useInviteCodeModal } from "~/components/auth/workspaces/modals/invite-code-modal";
-import { useInviteTeammateModal } from "~/components/auth/workspaces/modals/invite-team-modal";
-import { Link as LinkIcon } from "~/components/ui/icons";
-import { Avatar, Badge } from "~/components/ui";
-import { Button } from "~/components/auth/Auth-Button";
+import { useInviteCodeModal } from "~/components/ui/auth/workspaces/modals/invite-code-modal";
+import LinkIcon from "~/components/ui/icons/link";
+import { useInviteTeammateModal } from "~/components/ui/auth/workspaces/modals/invite-team-modal";
+import { Avatar } from "~/components/ui/avatar";
+import { Badge } from "~/components/ui/badge";
+import { Button } from "~/components/ui/auth/Auth-Button";
 import { useState } from "react";
 import { api } from "~/trpc/react";
 import { useParams } from "next/navigation";
-import { TooltipProvider } from "~/components/ui";
 import { format } from "date-fns";
 import UserPlaceholder from "./UserPlaceholder";
 import UserCard from "./UserCard";
-import { useToast } from "~/utils/hooks";
+import { useToast } from "~/utils/hooks/useToast";
 
 const tabs: Array<"Members" | "Invitations"> = ["Members", "Invitations"];
 

@@ -11,7 +11,7 @@ import AddCustomerForm from "./_components/AddCustomerForm";
 const Page = () => {
   return (
     <>
-      <Breadcrumb>
+      {/* <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem className="hidden md:block">
             <BreadcrumbLink href="#">Store</BreadcrumbLink>
@@ -21,7 +21,7 @@ const Page = () => {
             <BreadcrumbPage>Customers</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
-      </Breadcrumb>
+      </Breadcrumb> */}
 
       <section className="flex h-full flex-col items-center justify-center text-center">
         <div>

@@ -1,5 +1,7 @@
 import { UserProps } from "~/utils/types";
-import { Avatar, BlurImage, Logo, Modal } from "~/components/ui";
+import { Avatar } from "~/components/ui/avatar";
+import { Modal } from "~/components/ui/modal";
+import { BlurImage } from "~/components/ui/blur-image";
 import { Button } from "../../Auth-Button";
 import { useMediaQuery } from "~/utils/hooks/useMediaQuery";
 import { useSession } from "next-auth/react";
@@ -53,7 +55,8 @@ function RemoveTeammateModal({
             height={20}
           />
         ) : (
-          <Logo />
+          <p>Logo</p>
+          // <Logo />
         )}
         <h3 className="text-lg font-medium">
           {invite

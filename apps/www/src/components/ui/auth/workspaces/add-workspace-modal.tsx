@@ -1,10 +1,11 @@
 "use client";
-
-import { AlertCircleFill, LoadingSpinner } from "~/components/ui";
-import { useMediaQuery, useRouterStuff } from "~/utils/hooks";
-import { InfoTooltip, Modal } from "~/components/ui";
+import LoadingSpinner from "../../icons/LoadingSpinner";
+import AlertCircleFill from "../../icons/AlertCircleFill";
+import { useRouterStuff } from "~/utils/hooks/useRouterStuff";
+import { useMediaQuery } from "~/utils/hooks/useMediaQuery";
+import { Modal } from "../../modal";
+import { InfoTooltip, TooltipProvider } from "../../InfoTooltip";
 import slugify from "@sindresorhus/slugify";
-import va from "@vercel/analytics";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Dispatch,
@@ -14,10 +15,9 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useToast } from "~/utils/hooks";
-import Button from "~/components/ui/Button";
-import { TooltipProvider } from "~/components/ui";
-import { Input } from "~/components/ui";
+import { useToast } from "~/utils/hooks/useToast";
+import Button from "~/components/ui/button";
+import Input from "../../input";
 import { api } from "~/trpc/react";
 
 function AddWorkspaceModalHelper({
@@ -103,7 +103,6 @@ function AddWorkspaceModalHelper({
       >
         <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 px-4 py-4 pt-8 sm:px-16">
           <h3 className="text-lg font-medium">Create a new workspace</h3>
-         
         </div>
 
         <form

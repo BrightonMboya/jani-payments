@@ -1,22 +1,23 @@
-"use client"
-import { useRemoveTeammateModal } from "~/components/auth/workspaces/modals/use-remove-team-modal";
-import { CheckCircleFill, ThreeDots } from "~/components/ui/icons";
-import {
-  Avatar,
-  Copy,
-  IconMenu,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "~/components/ui";
-import { cn, timeAgo } from "~/utils";
+"use client";
+import ThreeDots from "~/components/ui/icons/three-dots";
+import CheckCircleFill from "~/components/ui/icons/check-circle-fill";
+import { useRemoveTeammateModal } from "~/components/ui/auth/workspaces/modals/use-remove-team-modal";
+import Copy from "~/components/ui/icons/copy";
+import { IconMenu } from "~/components/ui/icon-menu";
 import { UserMinus } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useToast } from "~/utils/hooks";
+import { Avatar } from "~/components/ui/avatar";
+import { cn } from "~/utils/utils";
+import { timeAgo } from "~/utils/functions/timeAgo";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "~/components/ui/popover";
 import { useState } from "react";
-import { Button } from "~/components/auth/Auth-Button";
-import { useEditRoleModal } from "~/components/auth/workspaces/modals/edit-role-modal";
-
+import { Button } from "~/components/ui/auth/Auth-Button";
+import { useToast } from "~/utils/hooks/useToast";
+import { useEditRoleModal } from "~/components/ui/auth/workspaces/modals/edit-role-modal";
 
 const UserCard = ({
   user,

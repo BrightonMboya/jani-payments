@@ -12,7 +12,7 @@ export const checkout = new sst.aws.StaticSite("checkout", {
 
 
 // this is the cient dashboard
-export const dashboard = new sst.aws.Nextjs("dashboard", {
-  path: "apps/www",
-  domain: domain,
-})
+// export const dashboard = new sst.aws.Nextjs("dashboard", {
+//   path: "apps/www",
+//   domain: domain,
+// })
