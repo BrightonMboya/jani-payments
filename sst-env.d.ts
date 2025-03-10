@@ -14,23 +14,6 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
-    "Hono": {
-      "name": string
-      "type": "sst.aws.Function"
-      "url": string
-    }
-    "checkout": {
-      "type": "sst.aws.StaticSite"
-      "url": string
-    }
-    "dashboard": {
-      "type": "sst.aws.Nextjs"
-      "url": string
-    }
-    "router": {
-      "type": "sst.aws.Router"
-      "url": string
-    }
   }
 }
 /// <reference path="sst-env.d.ts" />

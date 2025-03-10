@@ -12,8 +12,7 @@ const withAuth = async (c: Context, next: Next) => {
     if (
       c.req.path.startsWith("/reference") ||
       c.req.path.startsWith("/doc") ||
-      c.req.path.startsWith("/api-keys") ||
-      c.req.path.startsWith("/")
+      c.req.path.startsWith("/api-keys")
     ) {
       return next();
     }

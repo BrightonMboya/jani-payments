@@ -25,8 +25,8 @@ export default function CreateAPP() {
   //     allowHeaders: ["Content-Type", "Authorization"],
   //   })
   // );
-  // app.use(withAuth);
-  // // app.use(pinoLogger());
+  app.use(withAuth);
+  // app.use(pinoLogger());
   // app.notFound(notFound);
   // app.onError(onError);
   return app;

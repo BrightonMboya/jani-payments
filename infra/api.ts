@@ -18,7 +18,7 @@ export const api = new sst.aws.Function("Hono", {
 
 export const router = new sst.aws.Router("router", {
   // domain: "openbilling.org",
-  domain: domain,
+  domain: "api." + domain,
   routes: {
     "/*": api.url
   },
