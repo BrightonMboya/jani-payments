@@ -1,11 +1,8 @@
 import "~/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
-import { type Metadata } from "next";
 import { type ReactNode } from "react";
-import { TRPCReactProvider } from "~/trpc/react";
-import ModalProvider from "~/components/auth/workspaces/workspace-modal-provider";
-import { TooltipProvider } from "~/components/ui/InfoTooltip";
+import Providers from "./providers";
 
 // export const metadata: Metadata = {
 //   title: "Jani Payments",
@@ -19,11 +16,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <TRPCReactProvider>
-          <TooltipProvider>
-            <ModalProvider>{children}</ModalProvider>
-          </TooltipProvider>
-        </TRPCReactProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

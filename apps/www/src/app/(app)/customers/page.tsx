@@ -7,18 +7,28 @@ import {
   BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
 import AddCustomerForm from "./_components/AddCustomerForm";
-// import { billing } from "~/utils/billing";
 import { getBillingInstance } from "~/utils/billing";
+import { useQuery } from "@tanstack/react-query";
+import { getQueryClient } from "~/utils/get-query-client";
 
 const Page = async () => {
-  // const billing = await getBillingInstance();
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery({
+    queryKey: ["fetchCustomers"],
+    queryFn: async () => {
+      const billing = await getBillingInstance();
+      const res = await billing.prices.list();
+      return res;
+    },
+  });
+
   // const res = await billing.prices.list();
 
   // console.log(res, "this is the res");
 
   return (
     <>
-      {/* <Breadcrumb>
+      <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem className="hidden md:block">
             <BreadcrumbLink href="#">Store</BreadcrumbLink>
@@ -28,7 +38,7 @@ const Page = async () => {
             <BreadcrumbPage>Customers</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
-      </Breadcrumb> */}
+      </Breadcrumb>
 
       <section className="flex h-full flex-col items-center justify-center text-center">
         <div>
