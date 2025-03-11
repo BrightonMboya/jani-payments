@@ -99,9 +99,5 @@ export default {
       return session;
     },
   },
-  events: {
-    signOut: async ({}) => {
-      const cookieStore = await cookies();
-    },
-  },
+  events: {},
 } satisfies NextAuthConfig;

@@ -33,6 +33,7 @@ import {
   SelectContent,
   SelectValue,
 } from "~/components/ui/select";
+import { getBillingInstance } from "~/utils/billing";
 
 const addProductSchema = z.object({
   productName: z.string().min(5, {
@@ -42,7 +43,7 @@ const addProductSchema = z.object({
   description: z.string(),
   productImageUrl: z.string().optional(),
   pricingType: z.enum(["one_time", "monthly", "yearly"]),
-  priceAmount: z.number().positive(),
+  priceAmount: z.coerce.number().positive(),
   currency: z.string().length(3),
   custom_data: z
     .array(z.object({ key: z.string(), value: z.string() }))
@@ -60,7 +61,7 @@ const AddProductForm = () => {
       description: "",
       productImageUrl: "",
       pricingType: "one_time",
-      priceAmount: 0,
+      // priceAmount: ,
       currency: "USD",
       custom_data: [],
     },
@@ -82,21 +83,29 @@ const AddProductForm = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const addProducts = async (data: IAddProductSchema) => {
-    const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/products`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+    const billing = await getBillingInstance();
+    const res = await billing.products.create({
+      name: data.productName,
+      description: data.description,
+      customData: data.custom_data,
     });
-    if (!res.ok) {
-      const error = await res.json();
-      toast({
-        description: `Failed to Add New Products ${error.message}`,
-        variant: "destructive",
-      });
-    }
+    const prices = await billing.prices.create({})
+    console.log(data);
+    // const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/products`, {
+    //   method: "POST",
+    //   credentials: "include",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // });
+    // if (!res.ok) {
+    //   const error = await res.json();
+    //   toast({
+    //     description: `Failed to Add New Products ${error.message}`,
+    //     variant: "destructive",
+    //   });
+    // }
   };
   const mutation = useMutation({
     mutationKey: ["addProducts"],

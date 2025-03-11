@@ -15,6 +15,7 @@ const withAuth = async (c: Context, next: Next) => {
     }
 
     const authHeader = c.req.header("Authorization");
+    console.log(authHeader, "huuh")
     if (!authHeader?.startsWith("Bearer ")) {
       return c.json(
         { error: "Unauthorized", message: "Invalid authorization format" },

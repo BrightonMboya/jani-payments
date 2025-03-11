@@ -123,6 +123,7 @@ export const update_price: APPRouteHandler<UpdatePrice> = async (
 ) => {
   // @ts-expect-error
   const { price_id } = c.req.valid("param");
+  console.log("have reached the hadnler")
   // const raw_input = await c.req.json();
   const input = UpdatePricesSchema.parse(await c.req.json());
   const price = await db

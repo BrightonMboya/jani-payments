@@ -1,5 +1,4 @@
-"use client";
-
+// "use client";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,50 +8,57 @@ import {
   BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
 import AddProductForm from "./_components/AddProduct";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { env } from "~/env";
+import { HydrationBoundary, dehydrate, useQuery } from "@tanstack/react-query";
+import { getQueryClient } from "~/utils/get-query-client";
+import { getBillingInstance } from "~/utils/billing";
+import EmptyProducts from "./EmptyProducts";
+import ProductsTable from "./_components/ProductsTable";
+import { Suspense } from "react";
+import LoadingSpinner from "~/components/ui/icons/LoadingSpinner";
 
-const Page = () => {
-  const session = useSession();
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["getProducts"],
+const Page = async () => {
+  const queryClient = getQueryClient();
+  const products = await queryClient.fetchQuery({
+    queryKey: ["fetchPrices"],
     queryFn: async () => {
-      const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/products`, {
-        method: "GET",
-        credentials: "include"
-      });
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json(); // Return the JSON data
+      const billing = await getBillingInstance();
+      const res = await billing.products.list();
+      return res;
     },
   });
-  console.log(data, "[]][]");
+
+  // const {data, isPending, error} = useQuery({
+  //   queryKey: ["fetchPrices"],
+  //   queryFn: async () => {
+  //     const billing = await getBillingInstance();
+  //     const res = await billing.products.list();
+  //     console.log(res, ">>>>>")
+  //     return res;
+  //   },
+  // });
+
   return (
     <>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem className="hidden md:block">
-            <BreadcrumbLink href="#">Store</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator className="hidden md:block" />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Products</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-
-      <section className="flex h-full flex-col items-center justify-center text-center">
-        <div>
-          <h3 className="text-xl font-semibold">Create Your first Product</h3>
-          <p className="w-[90%] pt-3">
-            Adding products to your store is easy peasy. Create products in
-            minutes and start making sales.
-          </p>
-          <AddProductForm />
-        </div>
-      </section>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem className="hidden md:block">
+              <BreadcrumbLink href="#">Store</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator className="hidden md:block" />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Products</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Suspense fallback={<LoadingSpinner />}>
+          {products.length === 0 && products !== undefined ? (
+            <EmptyProducts />
+          ) : (
+            <ProductsTable />
+          )}
+        </Suspense>
+      </HydrationBoundary>
     </>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 import { QueryClientProvider } from "@tanstack/react-query";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { getQueryClient } from "~/utils/get-query-client";
 import ModalProvider from "~/components/auth/workspaces/workspace-modal-provider";
 import { TooltipProvider } from "~/components/ui/InfoTooltip";
@@ -17,7 +17,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           <ModalProvider>{children}</ModalProvider>
         </TooltipProvider>
       </TRPCReactProvider>
-      {/* <ReactQueryDevtools /> */}
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 }

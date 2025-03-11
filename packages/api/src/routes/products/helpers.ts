@@ -6,7 +6,7 @@ export const ProductsResponseSchema = productsInsertSchema
     custom_data: jsonSchema,
   })
   .omit({
-    customData: true,
+    custom_data: true,
     projectId: true,
   });
 

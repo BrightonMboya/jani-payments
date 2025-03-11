@@ -29,7 +29,7 @@ export const list: APPRouteHandler<ListRoute> = async (c: Context) => {
       status: schema.Products.status,
       createdAt: schema.Products.createdAt,
       updatedAt: schema.Products.updatedAt,
-      custom_data: schema.Products.customData,
+      custom_data: schema.Products.custom_data,
     })
     .from(schema.Products)
     .where(eq(schema.Products.projectId, project_id));
@@ -101,7 +101,8 @@ export const update_product: APPRouteHandler<UpdateProductRoute> = async (
         eq(schema.Products.id, product_id),
         eq(schema.Products.projectId, c.get("organization_Id"))
       )
-    ).returning()
+    )
+    .returning();
 
   if (!product) {
     return c.json(
@@ -113,8 +114,5 @@ export const update_product: APPRouteHandler<UpdateProductRoute> = async (
     );
   }
 
-  return c.json(
-    product,
-    HttpStatusCodes.OK
-  );
+  return c.json(product, HttpStatusCodes.OK);
 };
