@@ -5,11 +5,13 @@ import type {
   CreateRoute,
   GetProductRoute,
   UpdateProductRoute,
+  CreateProductsWithPrices,
 } from "./products.routes";
 import * as HttpsStatusPhrases from "~/lib/http-status-phrases";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import {
   CreateProductsSchema,
+  CreateProductsWithPricesSchema,
   ProductsResponseSchema,
   UpdateProductsSchema,
 } from "./helpers";
@@ -18,6 +20,8 @@ import { ErrorSchema } from "~/lib/utils/zod-helpers";
 import { db } from "@repo/db";
 import * as schema from "@repo/db/db/schema.ts";
 import { and, eq } from "drizzle-orm";
+import { IProductsInsertSchema, productsInsertSchema } from "@repo/db/types";
+import { transformPrices } from "../prices/helpers";
 
 export const list: APPRouteHandler<ListRoute> = async (c: Context) => {
   const project_id = c.get("organization_Id");
@@ -37,15 +41,15 @@ export const list: APPRouteHandler<ListRoute> = async (c: Context) => {
 };
 
 export const create: APPRouteHandler<CreateRoute> = async (c: Context) => {
-  const raw_input = await c.req.json();
-  const input = CreateProductsSchema.parse(raw_input);
+  const input = await c.req.json();
+  // const input = productsInsertSchema.parse(raw_input);
   type ProductInsert = typeof schema.Products.$inferInsert;
   const insertData: ProductInsert = {
     id: `pro_${crypto.randomUUID()}`,
     description: input.description,
     name: input.name,
     projectId: c.get("organization_Id"),
-    customData: input.custom_data as any,
+    custom_data: input.custom_data as any,
     updatedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
   };
@@ -54,6 +58,65 @@ export const create: APPRouteHandler<CreateRoute> = async (c: Context) => {
     .values(insertData)
     .returning();
   return c.json(products, HttpStatusCodes.OK);
+};
+
+export const createProductsWithPrices: APPRouteHandler<
+  CreateProductsWithPrices
+> = async (c: Context) => {
+  const raw_input = await c.req.json();
+  const input = CreateProductsWithPricesSchema.parse(raw_input);
+
+  const productWithPrices = await db.transaction(async (tx) => {
+    // insert the product details first
+    const product = await tx
+      .insert(schema.Products)
+      .values({
+        id: `pro_${crypto.randomUUID()}`,
+        description: input.description!,
+        name: input.name,
+        projectId: c.get("organization_Id"),
+        custom_data: input.custom_data as any,
+        updatedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+      })
+      .returning();
+    // then insert into prices
+    const price = await tx
+      .insert(schema.Prices)
+      .values({
+        id: `pri_${crypto.randomUUID()}`,
+        type: input.type || "standard",
+        description: input.description,
+        name: input.name,
+        billingCycleFrequency: input.billing_cycle.frequency,
+        billingCycleInterval: input.billing_cycle.interval,
+        trialPeriodFrequency: input.trial_period.frequency,
+        trialPeriodInterval: input.trial_period.interval,
+        amount: input.unit_price.amount.toString(),
+        currencyCode: input.unit_price.currency_code,
+        custom_data: input.custom_data as any,
+        status: input.status || "active",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        product_id: product[0].id,
+        projectId: c.get("organization_Id"),
+      })
+      .returning();
+
+    const formattedPrice = price.map((p) =>
+      transformPrices({
+        ...p,
+        custom_data: p.custom_data as any,
+      })
+    );
+
+    return {
+      product: product[0],
+      price: formattedPrice,
+    };
+  });
+
+  return c.json(productWithPrices, HttpStatusCodes.OK);
 };
 
 export const get_product: APPRouteHandler<GetProductRoute> = async (

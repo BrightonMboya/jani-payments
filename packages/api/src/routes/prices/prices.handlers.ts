@@ -29,7 +29,7 @@ export const list: APPRouteHandler<ListPrices> = async (c: Context) => {
     prices.map((price) =>
       transformPrices({
         ...price,
-        customData: price.customData!,
+        custom_data: price.custom_data!,
       })
     )
   );
@@ -53,7 +53,7 @@ export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
       trialPeriodInterval: input.trial_period.interval,
       amount: input.unit_price.amount.toString(),
       currencyCode: input.unit_price.currency_code,
-      customData: input.custom_data as any,
+      custom_data: input.custom_data as any,
       status: input.status || "active",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -66,9 +66,9 @@ export const create: APPRouteHandler<CreatePrices> = async (c: Context) => {
     const formattedPrice = price.map((p) =>
       transformPrices({
         ...p,
-        customData: p.customData as any,
+        custom_data: p.custom_data as any,
       })
-    )
+    );
 
     return c.json(
       PricesResponseSchema.parse(formattedPrice),
@@ -123,14 +123,13 @@ export const update_price: APPRouteHandler<UpdatePrice> = async (
 ) => {
   // @ts-expect-error
   const { price_id } = c.req.valid("param");
-  console.log("have reached the hadnler")
   // const raw_input = await c.req.json();
   const input = UpdatePricesSchema.parse(await c.req.json());
   const price = await db
     .update(schema.Prices)
     .set({
       ...input,
-      customData: input.custom_data as any,
+      custom_data: input.custom_data as any,
       updatedAt: new Date().toISOString(),
     })
     .where(

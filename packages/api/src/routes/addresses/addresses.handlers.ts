@@ -16,6 +16,7 @@ import {
   addressInsertSchema,
   addressSelectSchema,
   UpdateAddressSchema,
+  IAddressInsertSchema,
 } from "@repo/db/types";
 import { eq, and } from "drizzle-orm";
 
@@ -43,8 +44,7 @@ export const create: APPRouteHandler<CreateAddresses> = async (c: Context) => {
   const raw_input = await c.req.json();
   const input = addressInsertSchema.parse(raw_input);
 
-  type AddressInsert = typeof schema.addresses.$inferInsert;
-  const insertData: AddressInsert = {
+  const insertData: IAddressInsertSchema = {
     customer_id: customer_id,
     description: input.description,
     status: "active",

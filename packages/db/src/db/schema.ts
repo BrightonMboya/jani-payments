@@ -198,7 +198,7 @@ export const user = pgTable("User", {
   id: text().primaryKey().$defaultFn(() => crypto.randomUUID()).notNull(),
   name: text(),
   email: text(),
-  emailVerified: timestamp({ precision: 3, mode: "string" }),
+  emailVerified: timestamp({ precision: 3 }),
   image: text(),
   source: text(),
   defaultWorkspace: text(),
@@ -299,9 +299,9 @@ export const authenticators = pgTable(
 );
 
 export const session = pgTable("Session", {
-  sessionToken: text().notNull(),
+  sessionToken: text().primaryKey(),
   userId: text().notNull(),
-  expires: timestamp({ precision: 3, mode: "string" }).notNull(),
+  expires: timestamp({ precision: 3 }).notNull(),
   createdAt: timestamp({ precision: 3, mode: "string" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

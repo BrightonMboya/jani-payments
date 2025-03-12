@@ -3,7 +3,6 @@ import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
 import { discountInsertSchema } from "@repo/db/types";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
-import { jsonSchema } from "~/lib/utils/zod-helpers";
 import { CreateDiscountSchema, UpdateDiscountSchema } from "./helpers";
 
 const tags = ["discounts"];

@@ -18,6 +18,7 @@ export const list = createRoute({
   tags,
   operationId: "addresses:list",
   "x-speakeasy-name-override": "list",
+  "x-speakeasy-group": "customers.addresses",
   request: {
     params: z.object({
       customer_id: z.string(),
@@ -40,6 +41,7 @@ export const create = createRoute({
   operationId: "addresses:create",
   tags,
   "x-speakeasy-name-override": "create",
+  "x-speakeasy-group": "customers.addresses",
   request: {
     params: z.object({
       customer_id: z.string(),
@@ -74,6 +76,7 @@ export const get_address = createRoute({
   tags,
   operationId: "addresses:get",
   "x-speakeasy-name-override": "get",
+  "x-speakeasy-group": "customers.addresses",
 
   request: {
     params: z.object({
@@ -95,6 +98,7 @@ export const update_address = createRoute({
   tags,
   operationId: "addresses:update",
   "x-speakeasy-name-override": "update",
+  "x-speakeasy-group": "customers.addresses",
   request: {
     params: z.object({
       customer_id: z.string(),

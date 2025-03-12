@@ -3,10 +3,12 @@ import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
 import {
   CreateProductsSchema,
+  CreateProductsWithPricesSchema,
   ProductsResponseSchema,
   UpdateProductsSchema,
 } from "./helpers";
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
+import { PricesResponseSchema } from "../prices/helpers";
 
 export const tags = ["products"];
 
@@ -44,6 +46,33 @@ export const create = createRoute({
     [HttpStatusCodes.OK]: jsonContent(
       ProductsResponseSchema,
       "Creating Product endpoint"
+    ),
+  },
+});
+
+export const createProductWithPrices = createRoute({
+  path: "/products",
+  method: "post",
+  tags,
+  operationId: "products:createWithPrices",
+  "x-speakeasy-name-override": "createWithPrices",
+  request: {
+    body: {
+      required: true,
+      content: {
+        "application/json": {
+          schema: CreateProductsWithPricesSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    [HttpStatusCodes.OK]: jsonContent(
+      z.object({
+        product: ProductsResponseSchema,
+        price: PricesResponseSchema
+      }),
+      "Creating a product with Prices"
     ),
   },
 });
@@ -104,3 +133,4 @@ export type ListRoute = typeof list;
 export type CreateRoute = typeof create;
 export type GetProductRoute = typeof get_product;
 export type UpdateProductRoute = typeof update_product;
+export type CreateProductsWithPrices = typeof createProductWithPrices;

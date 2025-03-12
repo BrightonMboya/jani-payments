@@ -5,6 +5,8 @@ import { customerInsertSchema } from "@repo/db/types";
 import { jsonSchema, ErrorSchema } from "~/lib/utils/zod-helpers";
 import { CreateCustomerSchema, UpdateCustomerSchema } from "./helpers";
 
+
+
 export const CustomersResponseSchema = customerInsertSchema
   .extend({
     custom_data: jsonSchema,
@@ -25,6 +27,7 @@ export const list = createRoute({
   operationId: "customers:list",
   tags,
   "x-speakeasy-name-override": "list",
+  "x-speakeasy-group": "customers",
   request: {
     cookies: z.object({
       organization_Id: z.string().describe("organization_Id"),
@@ -44,6 +47,7 @@ export const create = createRoute({
   tags,
   operationId: "customers:create",
   "x-speakeasy-name-override": "create",
+  "x-speakeasy-group": "customers",
   request: {
     cookies: z.object({
       organization_Id: z.string().describe("organization_Id"),
@@ -75,6 +79,7 @@ export const get_customer = createRoute({
   tags,
   operationId: "customers:get",
   "x-speakeasy-name-override": "get",
+  "x-speakeasy-group": "customers",
   request: {
     params: z.object({
       customer_id: z.string(),
@@ -98,6 +103,7 @@ export const update_customer = createRoute({
   tags,
   operationId: "customers:update",
   "x-speakeasy-name-override": "update",
+  "x-speakeasy-group": "customers",
   request: {
     params: z.object({
       customer_id: z.string(),

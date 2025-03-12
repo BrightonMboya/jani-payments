@@ -8,6 +8,7 @@ import { z } from "zod";
 
 export const addressSelectSchema = createSelectSchema(schema.addresses);
 export const addressInsertSchema = createInsertSchema(schema.addresses);
+export type IAddressInsertSchema = z.infer<typeof addressInsertSchema>;
 export const UpdateAddressSchema = createUpdateSchema(schema.addresses)
   .partial()
   .strict();
@@ -18,6 +19,7 @@ export const customerUpdateSchema = createUpdateSchema(schema.Customers);
 
 export const productsSelectSchema = createSelectSchema(schema.Products);
 export const productsInsertSchema = createInsertSchema(schema.Products);
+export type IProductsInsertSchema = z.infer<typeof productsInsertSchema>;
 export const productsUpdateSchema = createUpdateSchema(schema.Products);
 
 export const pricesSelectSchema = createSelectSchema(schema.Prices);
@@ -34,7 +36,9 @@ export const SubscriptionItemsStatus =
   schema.subscriptionItemsStatus.enumValues;
 export const SubscriptionsStatus = schema.subscriptionsStatus;
 
-export const SubChangesSelectSchema = createSelectSchema(schema.Subscription_Scheduled_Changes)
+export const SubChangesSelectSchema = createSelectSchema(
+  schema.Subscription_Scheduled_Changes
+);
 
 export const Entity_Status = schema.entityStatus.enumValues;
 export const PriceType = schema.priceType.enumValues;

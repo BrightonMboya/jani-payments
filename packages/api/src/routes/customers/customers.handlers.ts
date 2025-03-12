@@ -21,7 +21,7 @@ const CustomersDefaultSelect = {
   name: schema.Customers.name,
   status: schema.Customers.status,
   description: schema.Customers.description,
-  custom_data: schema.Customers.customData,
+  custom_data: schema.Customers.custom_data,
   created_at: schema.Customers.createdAt,
   updated_at: schema.Customers.updatedAt,
 };
@@ -38,14 +38,13 @@ export const list: APPRouteHandler<ListCustomers> = async (c: Context) => {
 export const create: APPRouteHandler<CreateCustomers> = async (c: Context) => {
   const input = await c.req.json();
   type CustomerInsert = typeof schema.Customers.$inferInsert;
-  console.log("About to insert");
   const insertData: CustomerInsert = {
     id: `cus_${crypto.randomUUID()}`,
     email: input.email,
     name: input.name,
     status: input.status,
     description: input.description,
-    customData: input.custom_data,
+    custom_data: input.custom_data,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     projectId: c.get("organization_Id"),
@@ -97,7 +96,7 @@ export const update_customer: APPRouteHandler<UpdateCustomer> = async (
       name: input.name,
       status: input.status,
       description: input.description,
-      customData: input.customData,
+      custom_data: input.custom_data,
       updatedAt: new Date().toISOString(),
     })
     .where(

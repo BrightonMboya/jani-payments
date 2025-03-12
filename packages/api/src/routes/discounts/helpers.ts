@@ -44,13 +44,13 @@ export const transformDiscount = (
 });
 
 const BaseDiscountSchema = discountInsertSchema
-  .omit({
-    projectId: true,
-    id: true,
-    created_at: true,
-    updated_at: true,
-    times_used: true,
-  })
+  // .omit({
+  //   projectId: true,
+  //   id: true,
+  //   created_at: true,
+  //   updated_at: true,
+  //   times_used: true,
+  // })
   .extend({
     amount: z
       .number()
@@ -76,6 +76,8 @@ export const CreateDiscountSchema = BaseDiscountSchema.strict().refine(
     path: ["amount"],
   }
 );
+
+type x = typeof CreateDiscountSchema;
 
 export const UpdateDiscountSchema = BaseDiscountSchema.omit({ price_ids: true })
   .extend({

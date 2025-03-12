@@ -41,7 +41,7 @@ export const transformPrices = (price: z.infer<typeof pricesInsertSchema>) => ({
   id: price.id,
   product_id: price.product_id,
   description: price.description,
-  type: price.type,
+  type: price.type!,
   name: price.name,
   billing_cycle: {
     interval: price.billingCycleInterval,
@@ -56,7 +56,7 @@ export const transformPrices = (price: z.infer<typeof pricesInsertSchema>) => ({
     currency_code: price.currencyCode,
   },
   status: price.status,
-  custom_data: price.customData,
+  custom_data: price.custom_data,
   created_at: price.createdAt,
   updated_at: price.updatedAt,
 });

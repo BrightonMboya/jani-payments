@@ -1,5 +1,3 @@
-import { AddressesModel } from "@repo/db/zod/addresses.ts";
-import { jsonSchema } from "~/lib/utils/zod-helpers";
 import { z } from "zod";
 
 export const CreateAddressSchema = z.object({
