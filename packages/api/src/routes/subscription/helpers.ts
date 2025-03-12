@@ -21,7 +21,7 @@ type Price = {
   trialPeriodInterval: string;
   amount: string;
   currencyCode: string;
-  customData: any;
+  custom_data: any;
   status: string;
   createdAt: string;
   updatedAt: string;

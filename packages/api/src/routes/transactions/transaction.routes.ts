@@ -50,6 +50,13 @@ export const list_transaction = createRoute({
   request: {
     query: listTransactionQueryParams,
   },
+  parameters: [
+    {
+      name: "customer_id",
+      in: "query",
+      schema: { type: "string", nullable: true },
+    },
+  ],
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       ListTransactionsResponse,

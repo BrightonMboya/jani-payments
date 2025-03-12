@@ -8,7 +8,7 @@ import {
   pauseSubscriptionSchema,
   transformedSubscriptionSchema,
   updateSubscriptionSchema,
-  resumeSubscriptionSchema
+  resumeSubscriptionSchema,
 } from "./helpers";
 
 import { ErrorSchema } from "~/lib/utils/zod-helpers";
@@ -46,6 +46,13 @@ export const list_subscriptions = createRoute({
   tags,
   operationId: "subscription:list",
   "x-speakeasy-name-override": "list",
+  parameters: [
+    {
+      name: "customer_Id",
+      in: "query",
+      schema: { type: "string", nullable: true },
+    },
+  ],
   responses: {
     [HttpsStatusCodes.OK]: jsonContent(
       z.array(transformedSubscriptionSchema),
@@ -210,7 +217,6 @@ export const update_subscription = createRoute({
     [HttpsStatusCodes.BAD_REQUEST]: jsonContent(ErrorSchema, "Bad Request"),
   },
 });
-
 
 export const get_subscription = createRoute({
   path: "/subscription/{subscription_id}",

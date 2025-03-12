@@ -5,13 +5,20 @@ import { transformSubscription } from "../helpers";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import * as schema from "@repo/db/db/schema.ts";
 import { db } from "@repo/db";
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, and } from "drizzle-orm";
 
 const list_subscriptions: APPRouteHandler<ListSubscription> = async (
   c: Context
 ) => {
+  const customer_id = c.req.query("customer_Id");
+  const whereConditions = [
+    eq(schema.Subscriptions.project_id, c.get("organization_Id")),
+  ];
+  if (customer_id) {
+    whereConditions.push(eq(schema.Subscriptions.customer_id, customer_id));
+  }
   const subscriptions = await db.query.Subscriptions.findMany({
-    where: eq(schema.Subscriptions.project_id, c.get("organization_Id")),
+    where: and(...whereConditions),
     with: {
       BillingDetails: true,
       discount: {
