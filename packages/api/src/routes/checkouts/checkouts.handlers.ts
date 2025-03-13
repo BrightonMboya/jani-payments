@@ -1,7 +1,11 @@
 import { type Context } from "hono";
 import { APPRouteHandler } from "~/lib/types";
-import { CreateCheckout } from "./checkouts.routes";
-import { createCheckoutSchema, formatCheckoutSession } from "./helpers";
+import { CreateCheckout, GetCheckout, ListCheckout } from "./checkouts.routes";
+import {
+  createCheckoutSchema,
+  formatCheckoutSession,
+  IFormattedCheckout,
+} from "./helpers";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import { calculateTransactionTotals } from "../transactions/fns";
 import * as schema from "@repo/db/db/schema.ts";
@@ -13,6 +17,8 @@ import {
   PaymentMethod,
   PaymentProviders,
 } from "@repo/db/types";
+import { ErrorSchema } from "~/lib/utils/zod-helpers";
+import { z } from "zod";
 
 export const create: APPRouteHandler<CreateCheckout> = async (c: Context) => {
   try {
@@ -25,7 +31,7 @@ export const create: APPRouteHandler<CreateCheckout> = async (c: Context) => {
         {
           error: "No Price Ids found",
           message: "At least one item is required.",
-        },
+        } satisfies z.infer<typeof ErrorSchema>,
         HttpStatusCodes.BAD_REQUEST
       );
     }
@@ -44,7 +50,7 @@ export const create: APPRouteHandler<CreateCheckout> = async (c: Context) => {
         {
           error: "Active Subscription already present",
           message: "Customer already has an active subscription.",
-        },
+        } satisfies z.infer<typeof ErrorSchema>,
         HttpStatusCodes.BAD_REQUEST
       );
     }
@@ -54,7 +60,7 @@ export const create: APPRouteHandler<CreateCheckout> = async (c: Context) => {
       return c.json({
         error: "Invalid Payment Method",
         message: "The configured payment method is not supported",
-      });
+      } satisfies z.infer<typeof ErrorSchema>);
     }
     if (
       !PaymentProviders.includes(input.payment_provider as IPaymentProviders)
@@ -63,7 +69,7 @@ export const create: APPRouteHandler<CreateCheckout> = async (c: Context) => {
         {
           error: "Invalid Payment Provider",
           message: "The configured payment provider is not supported",
-        },
+        } satisfies z.infer<typeof ErrorSchema>,
         HttpStatusCodes.BAD_REQUEST
       );
     }
@@ -114,6 +120,62 @@ export const create: APPRouteHandler<CreateCheckout> = async (c: Context) => {
     return c.json(formattedCheckout, HttpStatusCodes.OK);
   } catch (error) {
     console.error("Checkout Creation Error:", error);
-    return c.json({ error: error, message: error?.message }, 400);
+    return c.json(
+      {
+        error: "Failed to create the checkout session",
+        message: error?.message,
+      } satisfies z.infer<typeof ErrorSchema>,
+      400
+    );
   }
+};
+
+export const get: APPRouteHandler<GetCheckout> = async (c: Context) => {
+  const checkout_Id = c.req.param("customer_Id");
+  const organization_Id = c.get("organization_Id");
+  const checkout = await db.query.Checkouts.findFirst({
+    where: and(
+      eq(schema.Checkouts.id, checkout_Id),
+      eq(schema.Checkouts.project_id, organization_Id)
+    ),
+    with: {
+      checkoutItems: true,
+    },
+  });
+
+  if (!checkout) {
+    return c.json(
+      {
+        error: "Not Found",
+        message: "No checkout session found with the specified id",
+      } satisfies z.infer<typeof ErrorSchema>,
+      HttpStatusCodes.NOT_FOUND
+    );
+  }
+  const formattedCheckout = formatCheckoutSession({
+    ...checkout,
+    items: checkout.checkoutItems,
+    custom_data: checkout.custom_data as any,
+  });
+
+  return c.json(formattedCheckout as IFormattedCheckout, HttpStatusCodes.OK);
+};
+
+export const list: APPRouteHandler<ListCheckout> = async (c: Context) => {
+  const organization_Id = c.get("organization_Id");
+  const checkoutSessions = await db.query.Checkouts.findMany({
+    where: eq(schema.Checkouts.project_id, organization_Id),
+    with: {
+      checkoutItems: true,
+    },
+  });
+  const formattedSessions = checkoutSessions.map((session) => {
+    formatCheckoutSession({
+      ...session,
+      items: session.checkoutItems,
+      custom_data: session.custom_data as any,
+    });
+  });
+
+  return c.json(formattedSessions, HttpStatusCodes.OK);
 };

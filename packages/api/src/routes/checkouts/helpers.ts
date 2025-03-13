@@ -25,7 +25,11 @@ export type IFormattedCheckout = ICheckoutInsert & {
   items: ICheckoutItemsInsert[];
 };
 
-export function formatCheckoutSession(checkout: IFormattedCheckout) {
+type Boo = ICheckoutInsert & {
+  items: Pick<ICheckoutItemsInsert, "price_id" | "quantity">[];
+};
+
+export function formatCheckoutSession(checkout: IFormattedCheckout): Boo {
   return {
     items: checkout.items.map((item) => {
       return {
@@ -33,50 +37,42 @@ export function formatCheckoutSession(checkout: IFormattedCheckout) {
         quantity: item.quantity,
       };
     }),
-    custom_data: checkout.custom_data,
+    id: checkout.id,
+    project_id: checkout.project_id,
+    custom_data: checkout.custom_data as any,
     success_url: checkout.success_url,
     customer_id: checkout.customer_id,
-    created_at: checkout.created_at,
-    discount_id: checkout.discount_id,
+    created_at: checkout.created_at!,
+    discount_id: checkout.discount_id || null,
     payment_method: checkout.payment_method,
     payment_provider: checkout.payment_provider,
+    discount_ammount: checkout.discount_ammount,
     total: checkout.total,
     grand_total: checkout.grand_total,
     expires_at: checkout.expires_at,
   };
 }
 
-// export const createCheckoutResponseSchema: IFormattedCheckout =
-//   createCheckoutSchema.extend({
-//     id: z.string(),
-//     total: z.number(),
-//     discount_amount: z.number(),
-//     grandTotal: z.number(),
-//     created_at: z.date(),
-//     expires_at: z.date(),
-//   });
-
-
-  export const createCheckoutResponseSchema = z.object({
-    id: z.string(), // Checkout ID
-    customer_id: z.string(),
-    project_id: z.string(),
-    total: z.number(),
-    discount_amount: z.number(),
-    grand_total: z.number(),
-    created_at: z.date(),
-    expires_at: z.date(),
-    success_url: z.string(),
-    payment_method: z.enum(PaymentMethod),
-    payment_provider: z.enum(PaymentProviders),
-    discount_id: z.string().optional(),
-    custom_data: z.any().optional(),
-    items: z.array(
-      z.object({
-        id: z.string(),
-        checkoutId: z.string(),
-        price_id: z.string(),
-        quantity: z.number(),
-      })
-    ),
-  });
+export const createCheckoutResponseSchema = z.object({
+  id: z.string(), // Checkout ID
+  customer_id: z.string(),
+  project_id: z.string(),
+  total: z.string(),
+  discount_ammount: z.string(),
+  grand_total: z.string(),
+  created_at: z.date().optional(),
+  expires_at: z.date(),
+  success_url: z.string(),
+  payment_method: z.enum(PaymentMethod),
+  payment_provider: z.enum(PaymentProviders),
+  discount_id: z.string().nullable().optional(),
+  custom_data: z.any().optional(),
+  items: z.array(
+    z.object({
+      id: z.string(),
+      checkoutId: z.string(),
+      price_id: z.string(),
+      quantity: z.number(),
+    })
+  ),
+});
