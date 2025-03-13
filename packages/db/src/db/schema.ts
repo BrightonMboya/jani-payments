@@ -16,7 +16,6 @@ import {
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
-
 export const billingInterval = pgEnum("BillingInterval", [
   "day",
   "week",
@@ -185,17 +184,25 @@ export const Checkouts = pgTable("Checkouts", {
   created_at: timestamp("created_at", { precision: 3, mode: "string" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
+  expires_at: timestamp("expires_at", { precision: 3, mode: "date" }).notNull(),
   discount_id: text("discount_id"),
   discount_ammount: numeric("discount_ammount", {
     precision: 65,
     scale: 30,
   }).notNull(),
+  success_url: text().notNull(),
+  payment_method: paymentMethod("payment_method").notNull(),
+  payment_provider: paymentProvider("payment_provider").notNull(),
+  custom_data: jsonb("custom_data"),
   grand_total: numeric("grand_total", { precision: 65, scale: 30 }).notNull(),
   total: numeric({ precision: 65, scale: 30 }).notNull(),
 });
 
 export const user = pgTable("User", {
-  id: text().primaryKey().$defaultFn(() => crypto.randomUUID()).notNull(),
+  id: text()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID())
+    .notNull(),
   name: text(),
   email: text(),
   emailVerified: timestamp({ precision: 3 }),

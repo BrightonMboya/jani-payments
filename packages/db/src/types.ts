@@ -4,7 +4,7 @@ import {
   createInsertSchema,
   createUpdateSchema,
 } from "drizzle-zod";
-import { z } from "zod";
+import { number, z } from "zod";
 
 export const addressSelectSchema = createSelectSchema(schema.addresses);
 export const addressInsertSchema = createInsertSchema(schema.addresses);
@@ -42,3 +42,17 @@ export const SubChangesSelectSchema = createSelectSchema(
 
 export const Entity_Status = schema.entityStatus.enumValues;
 export const PriceType = schema.priceType.enumValues;
+
+export type IPaymentProviders =
+  (typeof schema.paymentProvider.enumValues)[number];
+export const PaymentProviders = schema.paymentProvider.enumValues;
+
+export type IPaymentMethod = (typeof schema.paymentMethod.enumValues)[number];
+export const PaymentMethod = schema.paymentMethod.enumValues;
+
+export const CheckoutInsertSchema = createInsertSchema(schema.Checkouts);
+export const CheckoutItemsInsertSchema = createInsertSchema(
+  schema.CheckoutItems
+);
+export type ICheckoutInsert = z.infer<typeof CheckoutInsertSchema>;
+export type ICheckoutItemsInsert = z.infer<typeof CheckoutItemsInsertSchema>;

@@ -23,9 +23,6 @@ export const list = createRoute({
     params: z.object({
       customer_id: z.string(),
     }),
-    cookies: z.object({
-      organization_Id: z.string().describe("organization_Id"),
-    }),
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
@@ -46,9 +43,7 @@ export const create = createRoute({
     params: z.object({
       customer_id: z.string(),
     }),
-    cookies: z.object({
-      organization_Id: z.string().describe("organization_Id"),
-    }),
+
     body: {
       content: {
         "application/json": {
@@ -82,9 +77,6 @@ export const get_address = createRoute({
     params: z.object({
       address_id: z.string(),
     }),
-    cookies: z.object({
-      organization_Id: z.string().describe("organization_Id"),
-    }),
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(addressSelectSchema, "Get an Address"),
@@ -103,9 +95,6 @@ export const update_address = createRoute({
     params: z.object({
       customer_id: z.string(),
       address_id: z.string(),
-    }),
-    cookies: z.object({
-      organization_Id: z.string().describe("organization_Id"),
     }),
     body: {
       content: {

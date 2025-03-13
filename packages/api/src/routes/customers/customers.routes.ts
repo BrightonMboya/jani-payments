@@ -28,11 +28,6 @@ export const list = createRoute({
   tags,
   "x-speakeasy-name-override": "list",
   "x-speakeasy-group": "customers",
-  request: {
-    cookies: z.object({
-      organization_Id: z.string().describe("organization_Id"),
-    }),
-  },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       z.array(CustomersResponseSchema),
@@ -49,9 +44,7 @@ export const create = createRoute({
   "x-speakeasy-name-override": "create",
   "x-speakeasy-group": "customers",
   request: {
-    cookies: z.object({
-      organization_Id: z.string().describe("organization_Id"),
-    }),
+   
     body: {
       content: {
         "application/json": {
@@ -84,9 +77,7 @@ export const get_customer = createRoute({
     params: z.object({
       customer_id: z.string(),
     }),
-    cookies: z.object({
-      organization_Id: z.string().describe("organization_Id"),
-    }),
+   
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
@@ -108,9 +99,7 @@ export const update_customer = createRoute({
     params: z.object({
       customer_id: z.string(),
     }),
-    cookies: z.object({
-      organization_Id: z.string().describe("organization_Id"),
-    }),
+    
     body: {
       content: {
         "application/json": {
