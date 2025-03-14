@@ -5,22 +5,37 @@ import { useState } from "react";
 import InvalidCheckout from "~/components/InvalidCheckoutId";
 import ProductInfo from "../components/ProductInfo";
 import { db, schema } from "@repo/db";
-import { createServerFn } from "@tanstack/react-start";
+import { eq } from "drizzle-orm";
 
 export const Route = createFileRoute("/")({
   component: CheckoutPage,
-  loader: async () => getCheckoutData(),
-});
-
-const getCheckoutData = createServerFn({
-  method: "GET",
-}).handler(async () => {
-  try {
-    const prices = await db.query.Checkouts.findFirst();
+  loaderDeps: ({ search: { checkout_Id } }) => ({ checkout_Id }),
+  loader: async ({ deps: { checkout_Id } }) => {
+    const prices = await db.query.Checkouts.findFirst({
+      where: eq(schema.Checkouts.id, checkout_Id),
+      with: {
+        checkoutItems: {
+          with: {
+            price: {
+              columns: {
+                name: true,
+                currencyCode: true,
+              },
+              with: {
+                Products: {
+                  columns: {
+                    name: true,
+                    description: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
     return prices;
-  } catch (cause) {
-    console.log(cause);
-  }
+  },
 });
 
 // Sample data structure
@@ -62,7 +77,6 @@ function CheckoutPage() {
                             ? "bg-blue-50 text-blue-600"
                             : "bg-gray-50"
                         }`}>
-                        {/* <CreditCard className="mr-2 h-5 w-5" /> */}
                         Card
                       </button>
                       <button
