@@ -132,11 +132,11 @@ export const create: APPRouteHandler<CreateCheckout> = async (c: Context) => {
 
 export const get: APPRouteHandler<GetCheckout> = async (c: Context) => {
   const checkout_Id = c.req.param("customer_Id");
-  const organization_Id = c.get("organization_Id");
+  // const organization_Id = c.get("organization_Id");
   const checkout = await db.query.Checkouts.findFirst({
     where: and(
       eq(schema.Checkouts.id, checkout_Id),
-      eq(schema.Checkouts.project_id, organization_Id)
+      // eq(schema.Checkouts.project_id, organization_Id)
     ),
     with: {
       checkoutItems: true,

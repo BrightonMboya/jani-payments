@@ -10,7 +10,11 @@ import { Resource } from "sst";
 
 const withAuth = async (c: Context, next: Next) => {
   try {
-    if (c.req.path.startsWith("/reference") || c.req.path.startsWith("/doc")) {
+    if (
+      c.req.path.startsWith("/reference") ||
+      c.req.path.startsWith("/doc") ||
+      c.req.path.startsWith("/checkout")
+    ) {
       return next();
     }
 

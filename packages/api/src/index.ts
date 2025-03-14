@@ -8,7 +8,7 @@ import addresses from "./routes/addresses/addresses.index";
 import subscriptions from "./routes/subscription/subscription.index";
 import keys from "./routes/api-keys/keys.index";
 import transactions from "./routes/transactions/transaction.index";
-// import checkout from "./routes/checkouts/checkouts.index";
+import checkout from "./routes/checkouts/checkouts.index";
 import { handle } from "hono/aws-lambda";
 
 const app = CreateAPP();
@@ -19,6 +19,7 @@ const routes = [
   customers,
   discounts,
   addresses,
+  checkout,
   subscriptions,
   transactions,
   keys,
@@ -29,7 +30,6 @@ configureOpenAPI(app);
 routes.forEach((route) => {
   app.route("/", route);
 });
-
 
 export type AppType = (typeof routes)[number];
 export default app;
