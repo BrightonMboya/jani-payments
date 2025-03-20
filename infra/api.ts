@@ -12,11 +12,11 @@ export const api = new sst.aws.Function("Hono", {
   },
 
   link: [secrets.DATABASE_URL, bus, secrets.NEXTAUTH_SECRET],
-});
+}); 
 
 export const router = new sst.aws.Router("router", {
   // domain: "openbilling.org",
-  domain: "api." + domain,
+  domain: "tonero." + domain,
   routes: {
     "/*": api.url,
   },

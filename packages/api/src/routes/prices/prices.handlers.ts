@@ -157,3 +157,4 @@ export const update_price: APPRouteHandler<UpdatePrice> = async (
   );
   return c.json(PricesResponseSchema.parse(formattedPrice), HttpStatusCodes.OK);
 };
+

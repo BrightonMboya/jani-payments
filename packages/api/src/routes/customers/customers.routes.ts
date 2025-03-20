@@ -44,7 +44,6 @@ export const create = createRoute({
   "x-speakeasy-name-override": "create",
   "x-speakeasy-group": "customers",
   request: {
-   
     body: {
       content: {
         "application/json": {

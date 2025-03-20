@@ -4,6 +4,6 @@ import { CreateRouter } from "~/lib/create-app";
 
 const router = CreateRouter()
   .openapi(routes.create_keys, handlers.create)
-  .openapi(routes.paymentProviderKey, handlers.paymentProviderKey);
+  .openapi(routes.store_azam_credentials, handlers.StoreAzamCredentials);
 
 export default router;

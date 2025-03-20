@@ -393,9 +393,12 @@ export const apiKeys = pgTable("Api_keys", {
   createdAt: timestamp({ precision: 3, mode: "string" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  key: text().notNull(),
-  userId: text().notNull(),
+  key: text(),
+  userId: text(),
   project_id: text("project_id"),
+  AZAM_CLIENT_ID: text(),
+  AZAM_APP_NAME: text(),
+  AZAM_SECRET_KEY: text(),
 });
 
 export const verificationTokens = pgTable(
