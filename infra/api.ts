@@ -11,7 +11,7 @@ export const api = new sst.aws.Function("Hono", {
     DATABASE_URL: process.env.DATABASE_URL!,
   },
 
-  link: [secrets.DATABASE_URL, bus, secrets.NEXTAUTH_SECRET],
+  link: [secrets.DATABASE_URL, bus, secrets.NEXTAUTH_SECRET, secrets.ENCRYPTION_KEY],
 }); 
 
 export const router = new sst.aws.Router("router", {

@@ -1,6 +1,6 @@
 import { z } from "@hono/zod-openapi";
 import crypto from "crypto";
-
+import { Resource } from "sst";
 
 export const paymentProvider = z.enum([
   "PAYSTACK_API_KEY",
@@ -21,10 +21,14 @@ export const AzamCredentialsSchema = z.object({
   clientSecret: z.string(),
 });
 
+export const azamCredentialsResponseSchema = z.object({
+  appName: z.string().nullable(),
+  client_Id: z.string().nullable(),
+  encryptedKey: z.string().nullable(),
+});
 
 const algorithm = "aes-256-cbc";
-// const key = Buffer.from(process.env.ENCRYPTION_KEY!, "hex");
-const key = Buffer.from("Hello world", "hex")
+const key = Buffer.from(Resource.ENCRYPTION_KEY.value!, "hex");
 const iv = crypto.randomBytes(16);
 
 export function encrypt(text: string): string {
@@ -34,7 +38,7 @@ export function encrypt(text: string): string {
   return iv.toString("hex") + ":" + encrypted;
 }
 
-function decrypt(text: string): string {
+export function decrypt(text: string): string {
   const parts = text.split(":");
   const iv = Buffer.from(parts.shift()!, "hex");
   const encryptedText = Buffer.from(parts.join(":"), "hex");

@@ -38,8 +38,9 @@ export const list: APPRouteHandler<ListCustomers> = async (c: Context) => {
 export const create: APPRouteHandler<CreateCustomers> = async (c: Context) => {
   const input = await c.req.json();
   type CustomerInsert = typeof schema.Customers.$inferInsert;
+  console.log(input)
   const insertData: CustomerInsert = {
-    id: `cus_${crypto.randomUUID()}`,
+    id: input.id,
     email: input.email,
     name: input.name,
     status: input.status,
@@ -54,7 +55,6 @@ export const create: APPRouteHandler<CreateCustomers> = async (c: Context) => {
     .insert(schema.Customers)
     .values(insertData)
     .returning();
-  console.log("finished to insert");
 
   return c.json(customer, HtttpStatusCodes.OK);
 };

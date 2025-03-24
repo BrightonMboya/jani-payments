@@ -111,12 +111,11 @@ export const create: APPRouteHandler<CreateCheckout> = async (c: Context) => {
         items: checkoutItems,
       };
     });
-
     const formattedCheckout = formatCheckoutSession({
       ...checkout,
       custom_data: checkout.custom_data as any,
     });
-
+    console.log("I have returned the checkout which is formatted", formattedCheckout)
     return c.json(formattedCheckout, HttpStatusCodes.OK);
   } catch (error) {
     console.error("Checkout Creation Error:", error);

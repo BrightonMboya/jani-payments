@@ -9,14 +9,19 @@ const momoSchema = z.object({
   phoneNumber: z.string(),
 });
 
-export default function MomoPaymentForm() {
+interface IProps {
+  onSubmit: () => void;
+}
+
+export default function MomoPaymentForm({ onSubmit }: IProps) {
   const form = useForm<z.infer<typeof momoSchema>>({
     resolver: zodResolver(momoSchema),
   });
 
-  function onSubmit(values: z.infer<typeof momoSchema>) {
-    console.log(values);
-  }
+  // function onSubmit(values: z.infer<typeof momoSchema>) {
+  //   console.log(values);
+  // }
+
   return (
     <>
       <Form {...form}>
@@ -44,9 +49,11 @@ export default function MomoPaymentForm() {
               Mobile Money Provider
             </Label>
             <select className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-              <option>M-PESA</option>
-              <option>Airtel Money</option>
-              <option>MTN Mobile Money</option>
+              <option>Airtel</option>
+              <option>Tigo</option>
+              <option>Halopesa</option>
+              <option value="">Azampesa</option>
+              <option value="">Mpesa</option>
             </select>
           </div>
           <button

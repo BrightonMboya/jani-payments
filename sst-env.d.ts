@@ -14,6 +14,10 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "ENCRYPTION_KEY": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "Hono": {
       "name": string
       "type": "sst.aws.Function"
@@ -24,7 +28,7 @@ declare module "sst" {
       "value": string
     }
     "checkout": {
-      "type": "sst.aws.StaticSite"
+      "type": "sst.aws.TanstackStart"
       "url": string
     }
     "router": {

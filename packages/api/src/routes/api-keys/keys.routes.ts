@@ -2,6 +2,7 @@ import { z, createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "~/lib/http-status-code";
 import jsonContent from "~/lib/json-content";
 import {
+  azamCredentialsResponseSchema,
   AzamCredentialsSchema,
   paymentProvider,
   paymentProviderSchema,
@@ -23,9 +24,9 @@ export const create_keys = createRoute({
 });
 
 export const store_azam_credentials = createRoute({
-  path: "/storeCredentials/azam",
+  path: "/paymentCredentials/azam",
   method: "post",
-  tags: ["Application Keys"],
+  tags,
   operationId: "api-keys:storeAzamCredentials",
   "x-speakeasy-name-override": "paymentProviderKey",
   request: {
@@ -35,20 +36,30 @@ export const store_azam_credentials = createRoute({
           schema: AzamCredentialsSchema,
         },
       },
-      required: true
+      required: true,
     },
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      z.object({
-        appName: z.string(),
-        client_Id: z.string(),
-        encryptedKey: z.string(),
-      }),
+      z.array(azamCredentialsResponseSchema),
       "Records credentials for Azam Pay"
+    ),
+  },
+});
+
+export const fetch_azam_credentials = createRoute({
+  path: "/paymentCredentials/azam",
+  method: "get",
+  tags,
+  operationId: "api-keys:getAzamCredentials",
+  responses: {
+    [HttpStatusCodes.OK]: jsonContent(
+      azamCredentialsResponseSchema,
+      "Retrieves Azam Pay Credentials"
     ),
   },
 });
 
 export type CreateKeys = typeof create_keys;
 export type storeAzamCredentials = typeof store_azam_credentials;
+export type FetchAzamCredentials = typeof fetch_azam_credentials;

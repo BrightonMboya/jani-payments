@@ -69,8 +69,8 @@ export const createCheckoutResponseSchema = z.object({
   custom_data: z.any().optional(),
   items: z.array(
     z.object({
-      id: z.string(),
-      checkoutId: z.string(),
+      // id: z.string(),
+      // checkoutId: z.string(),
       price_id: z.string(),
       quantity: z.number(),
     })

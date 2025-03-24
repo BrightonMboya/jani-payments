@@ -33,7 +33,6 @@ export const CustomersResponseSchema = customerInsertSchema.extend({
 });
 
 export const CreateCustomerSchema = customerInsertSchema.omit({
-  id: true,
   projectId: true,
   createdAt: true,
   updatedAt: true,

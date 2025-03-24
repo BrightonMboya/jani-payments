@@ -387,7 +387,7 @@ export const Project = pgTable("Project", {
 });
 
 export const apiKeys = pgTable("Api_keys", {
-  id: text().notNull(),
+  id: text().notNull().primaryKey(),
   prefix: text(),
   description: text(),
   createdAt: timestamp({ precision: 3, mode: "string" })
