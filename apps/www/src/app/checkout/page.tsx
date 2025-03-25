@@ -5,14 +5,23 @@ import MomoPaymentForm from "./_components/MomoPaymentForm";
 import CardPaymentForm from "./_components/CardPaymentForm";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
+import LoadingSpinner from "~/components/ui/icons/LoadingSpinner";
 
 export default function CheckoutPage() {
   const searchParams = useSearchParams();
   const checkoutId = searchParams.get("checkout_Id");
-  const { data, isError, error } = api.checkouts.fetchCheckoutSession.useQuery({
-    checkout_Id: checkoutId!,
-  });
+  const { data, isError, error, isPending } =
+    api.checkouts.fetchCheckoutSession.useQuery({
+      checkout_Id: checkoutId!,
+    });
 
+  if (!data && isPending) {
+    return (
+      <div className="flex items-center justify-center h-screen w-screen">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   if (!data || data.expires_at.getDate() > Date.now()) {
     return <InvalidCheckout />;
