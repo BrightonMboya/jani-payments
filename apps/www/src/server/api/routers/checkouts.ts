@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { db, schema } from "@repo/db";
 import { decrypt } from "@repo/api/src/routes/api-keys/helpers";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const checkouts = createTRPCRouter({
@@ -98,7 +98,6 @@ export const checkouts = createTRPCRouter({
 
       // generate a toke first before charging
       const token = await generateToken();
-
 
       async function chargeMNO() {
         try {
