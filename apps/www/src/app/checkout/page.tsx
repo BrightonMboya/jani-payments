@@ -9,10 +9,9 @@ import { api } from "~/trpc/react";
 export default function CheckoutPage() {
   const searchParams = useSearchParams();
   const checkoutId = searchParams.get("checkout_Id");
-  const { data } = api.checkouts.fetchCheckoutSession.useQuery({
+  const { data, isError, error } = api.checkouts.fetchCheckoutSession.useQuery({
     checkout_Id: checkoutId!,
   });
-
 
 
   if (!data || data.expires_at.getDate() > Date.now()) {
@@ -51,7 +50,7 @@ export default function CheckoutPage() {
                   {data?.payment_method === "CARD" ? (
                     <CardPaymentForm />
                   ) : (
-                    <MomoPaymentForm />
+                    <MomoPaymentForm checkout_Id={checkoutId!} />
                   )}
 
                   {/* Terms */}
