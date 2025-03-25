@@ -17,7 +17,7 @@ export default function CheckoutPage() {
 
   if (!data && isPending) {
     return (
-      <div className="flex items-center justify-center h-screen w-screen">
+      <div className="flex h-screen w-screen items-center justify-center">
         <LoadingSpinner />
       </div>
     );
@@ -37,10 +37,12 @@ export default function CheckoutPage() {
                 {/* Left side - Product Info */}
                 {data.checkoutItems.map((item) => (
                   <ProductInfo
+                    key={item.id}
                     price={item.price.amount}
                     description={item.price.Products.description}
                     productName={item.price.Products.name}
                     currency={item.price.currencyCode}
+                    billingInterval={item.price.billingCycleInterval}
                   />
                 ))}
 

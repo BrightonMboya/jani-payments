@@ -22,6 +22,7 @@ export const checkouts = createTRPCRouter({
                   name: true,
                   currencyCode: true,
                   amount: true,
+                  billingCycleInterval: true,
                 },
                 with: {
                   Products: {
@@ -48,15 +49,18 @@ export const checkouts = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const project_Id = await db.query.Checkouts.findFirst({
+      const checkoutInfo = await db.query.Checkouts.findFirst({
         where: eq(schema.Checkouts.id, input.checkout_Id),
         columns: {
           project_id: true,
+          discount_ammount: true,
+          grand_total: true,
+          discount_id: true,
         },
       });
 
       const azamInfo = await db.query.apiKeys.findFirst({
-        where: eq(schema.apiKeys.project_id, project_Id?.project_id!),
+        where: eq(schema.apiKeys.project_id, checkoutInfo?.project_id!),
         columns: {
           AZAM_APP_NAME: true,
           AZAM_CLIENT_ID: true,
@@ -111,7 +115,7 @@ export const checkouts = createTRPCRouter({
               },
               body: JSON.stringify({
                 accountNumber: input.phoneNumber,
-                amount: 2000,
+                amount: checkoutInfo?.grand_total,
                 externalId: input.checkout_Id,
                 provider: input.mno,
                 currency: "TZS",
@@ -124,7 +128,6 @@ export const checkouts = createTRPCRouter({
           }
 
           const response = await res.json();
-          console.log(response);
           return response;
         } catch (error) {
           console.error("Error in charging phone Number", error);

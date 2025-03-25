@@ -19,26 +19,31 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { api } from "~/trpc/react";
+import LoadingSpinner from "~/components/ui/icons/LoadingSpinner";
 
 const momoSchema = z.object({
   phoneNumber: z.string(),
   mno: z.string(),
 });
 
-export default function MomoPaymentForm({checkout_Id}: {checkout_Id: string}) {
+export default function MomoPaymentForm({
+  checkout_Id,
+}: {
+  checkout_Id: string;
+}) {
   const form = useForm<z.infer<typeof momoSchema>>({
     resolver: zodResolver(momoSchema),
   });
 
-  const { mutateAsync } = api.checkouts.chargePhoneNo.useMutation();
+  const { mutateAsync, isPending } = api.checkouts.chargePhoneNo.useMutation();
   function onSubmit(values: z.infer<typeof momoSchema>) {
-    const res =  mutateAsync({
+    const res = mutateAsync({
       phoneNumber: values.phoneNumber,
       mno: values.mno,
-      checkout_Id: checkout_Id
+      checkout_Id: checkout_Id,
     });
     console.log(res, "this is it");
-    console.log(values)
+    console.log(values);
   }
 
   return (
@@ -99,7 +104,7 @@ export default function MomoPaymentForm({checkout_Id}: {checkout_Id: string}) {
             className="mt-6 w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             type="submit"
           >
-            Subscribe
+            {isPending ? <LoadingSpinner /> : "Subscribe"}
           </button>
         </form>
       </Form>
