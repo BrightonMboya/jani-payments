@@ -28,8 +28,8 @@ export const azamCredentialsResponseSchema = z.object({
 });
 
 const algorithm = "aes-256-cbc";
-// const key = Buffer.from(Resource.ENCRYPTION_KEY.value!, "hex");
-const key = Buffer.from(process.env.ENCRYPTION_KEY!, "hex");
+const key = Buffer.from(Resource.ENCRYPTION_KEY.value!, "hex");
+// const key = Buffer.from(process.env.ENCRYPTION_KEY!, "hex");
 const iv = crypto.randomBytes(16);
 
 export function encrypt(text: string): string {

@@ -6,8 +6,9 @@ import { useMediaQuery } from "~/utils/hooks/useMediaQuery";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { toast } from "sonner";
+import LoadingSpinner from "../ui/icons/LoadingSpinner";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -38,7 +39,7 @@ export default function LoginForm() {
   }, []);
 
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner />}>
       <div className="flex space-x-2">
         <Button
           variant="secondary"
@@ -179,6 +180,6 @@ export default function LoginForm() {
           </Link>
         </p>
       )}
-    </>
+    </Suspense>
   );
 }

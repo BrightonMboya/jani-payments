@@ -6,7 +6,7 @@ import Intro from "./Intro";
 import { AnimatePresence } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 
 export default function WelcomePageClient() {
   const { setShowAddWorkspaceModal, AddWorkspaceModal } =
@@ -15,7 +15,6 @@ export default function WelcomePageClient() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-
 
   useEffect(() => {
     if (searchParams.get("step") === "workspace") {
@@ -35,23 +34,25 @@ export default function WelcomePageClient() {
   }, [searchParams.get("step")]);
 
   return (
-    <div className="flex h-screen flex-col items-center">
-      <AddWorkspaceModal />
+    <Suspense>
+      <div className="flex h-screen flex-col items-center">
+        <AddWorkspaceModal />
 
-      <AnimatePresence mode="wait">
-        <Intro />
-        <>
-          <button
-            className="group fixed left-10 top-10 isolate z-[99] rounded-full p-2 transition-all hover:bg-gray-100"
-            onClick={() => router.back()}
-          >
-            <ArrowLeft
-              size={20}
-              className="text-gray-500 group-hover:text-gray-700 group-active:scale-90"
-            />
-          </button>
-        </>
-      </AnimatePresence>
-    </div>
+        <AnimatePresence mode="wait">
+          <Intro />
+          <>
+            <button
+              className="group fixed left-10 top-10 isolate z-[99] rounded-full p-2 transition-all hover:bg-gray-100"
+              onClick={() => router.back()}
+            >
+              <ArrowLeft
+                size={20}
+                className="text-gray-500 group-hover:text-gray-700 group-active:scale-90"
+              />
+            </button>
+          </>
+        </AnimatePresence>
+      </div>
+    </Suspense>
   );
 }

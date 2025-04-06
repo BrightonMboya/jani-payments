@@ -27,8 +27,8 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
-    "checkout": {
-      "type": "sst.aws.TanstackStart"
+    "dashboard": {
+      "type": "sst.aws.Nextjs"
       "url": string
     }
     "router": {

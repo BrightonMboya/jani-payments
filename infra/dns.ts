@@ -2,7 +2,7 @@ import { api } from "./api";
 
 export const domain =
   {
-    production: "openbilling.org",
+    production: "dev.openbilling.org",
     dev: "dev.openbilling.org",
   }[$app.stage] || $app.stage + ".openbilling.org";
 

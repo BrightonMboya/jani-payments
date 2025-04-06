@@ -9,10 +9,16 @@ export const api = new sst.aws.Function("Hono", {
   description: "The Billing Engine API",
   environment: {
     DATABASE_URL: process.env.DATABASE_URL!,
+    ENCRYPTION_KEY: process.env.ENCRYPTION_KEY!,
   },
 
-  link: [secrets.DATABASE_URL, bus, secrets.NEXTAUTH_SECRET, secrets.ENCRYPTION_KEY],
-}); 
+  link: [
+    secrets.DATABASE_URL,
+    bus,
+    secrets.NEXTAUTH_SECRET,
+    secrets.ENCRYPTION_KEY,
+  ],
+});
 
 export const router = new sst.aws.Router("router", {
   // domain: "openbilling.org",

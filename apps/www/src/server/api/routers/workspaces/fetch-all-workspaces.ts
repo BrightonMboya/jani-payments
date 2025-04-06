@@ -21,7 +21,7 @@ export const fetchAllWorkspaces = createTRPCRouter({
        schema.ProjectUsers,
        and(
          eq(schema.ProjectUsers.projectId, schema.Project.id),
-         eq(schema.ProjectUsers.userId, ctx.session?.user.id),
+         eq(schema.ProjectUsers.userId, ctx.session?.user.id!),
        ),
      );
 

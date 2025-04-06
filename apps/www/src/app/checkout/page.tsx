@@ -5,6 +5,7 @@ import MomoPaymentForm from "./_components/MomoPaymentForm";
 import CardPaymentForm from "./_components/CardPaymentForm";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
+import { Suspense } from "react";
 import LoadingSpinner from "~/components/ui/icons/LoadingSpinner";
 
 export default function CheckoutPage() {
@@ -28,7 +29,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <>
+    <Suspense>
       {data && (
         <div className="min-h-screen bg-gray-100 py-8 lg:py-0">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:max-w-none lg:px-0">
@@ -75,6 +76,6 @@ export default function CheckoutPage() {
           </div>
         </div>
       )}
-    </>
+    </Suspense>
   );
 }
