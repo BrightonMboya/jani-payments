@@ -5,15 +5,14 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  Suspense,
   createContext,
   useEffect,
 } from "react";
 import { api } from "~/trpc/react";
 
-
 export const ModalContext = createContext<{
   setShowAddWorkspaceModal: Dispatch<SetStateAction<boolean>>;
- 
 }>({
   setShowAddWorkspaceModal: () => {},
 });
@@ -23,10 +22,10 @@ export default function ModalProvider({ children }: { children: ReactNode }) {
 
   const { AddWorkspaceModal, setShowAddWorkspaceModal } =
     useAddWorkspaceModal();
-     const { data, isLoading } = api.workspace.fetchAllWorkspaces.useQuery();
-     const workspaces = data?.workspaces;
+  const { data, isLoading } = api.workspace.fetchAllWorkspaces.useQuery();
+  const workspaces = data?.workspaces;
 
-//   const { id, error } = useWorkspace();
+  //   const { id, error } = useWorkspace();
 
   // handle ?newWorkspace and ?newLink query params
   useEffect(() => {
@@ -35,37 +34,38 @@ export default function ModalProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-//   const { data: session, update } = useSession();
+  //   const { data: session, update } = useSession();
 
   // if user has workspaces but no defaultWorkspace, refresh to get defaultWorkspace
-//   useEffect(() => {
-//     if (
-//       workspaces &&
-//       workspaces.length > 0 &&
-//       session?.user &&
-//       !session.user["defaultWorkspace"]
-//     ) {
-//       fetch("/api/user", {
-//         method: "PATCH",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           defaultWorkspace: workspaces[0].slug,
-//         }),
-//       }).then(() => update());
-//     }
-//   }, [session]);
+  //   useEffect(() => {
+  //     if (
+  //       workspaces &&
+  //       workspaces.length > 0 &&
+  //       session?.user &&
+  //       !session.user["defaultWorkspace"]
+  //     ) {
+  //       fetch("/api/user", {
+  //         method: "PATCH",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           defaultWorkspace: workspaces[0].slug,
+  //         }),
+  //       }).then(() => update());
+  //     }
+  //   }, [session]);
 
   return (
-    <ModalContext.Provider
-      value={{
-        setShowAddWorkspaceModal,
-       
-      }}
-    >
-      <AddWorkspaceModal />
-      {children}
-    </ModalContext.Provider>
+    <Suspense>
+      <ModalContext.Provider
+        value={{
+          setShowAddWorkspaceModal,
+        }}
+      >
+        <AddWorkspaceModal />
+        {children}
+      </ModalContext.Provider>
+    </Suspense>
   );
 }

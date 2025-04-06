@@ -14,6 +14,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  Suspense,
 } from "react";
 import { useToast } from "~/utils/hooks/useToast";
 import Button from "~/components/ui/button";
@@ -57,7 +58,7 @@ function AddWorkspaceModalHelper({
 
   const { isMobile } = useMediaQuery();
 
-  const { isLoading, mutateAsync, isError } =
+  const { isPending, mutateAsync, isError } =
     api.workspace.addWorkSpace.useMutation({
       onError: (error) => {
         toast({
@@ -73,7 +74,7 @@ function AddWorkspaceModalHelper({
       //   setSlugError("Slug is already in use.");
       // }
       if (res) {
-        va.track("Created Workspace");
+        // va.track("Created Workspace");
         router.push(`/dashboard/${slug}/farmers`);
         toast({
           description: "Successfully created workspace!",
@@ -86,114 +87,116 @@ function AddWorkspaceModalHelper({
   };
 
   return (
-    <TooltipProvider>
-      <Modal
-        showModal={showAddWorkspaceModal}
-        setShowModal={setShowAddWorkspaceModal}
-        preventDefaultClose={welcomeFlow}
-        onClose={() => {
-          if (welcomeFlow) {
-            router.back();
-          } else if (searchParams.has("newWorkspace")) {
-            queryParams({
-              del: ["newWorkspace"],
-            });
-          }
-        }}
-      >
-        <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 px-4 py-4 pt-8 sm:px-16">
-          <h3 className="text-lg font-medium">Create a new workspace</h3>
-        </div>
-
-        <form
-          onSubmit={onSubmit}
-          className="flex flex-col space-y-6 bg-gray-50 px-4 py-8 text-left sm:px-16"
+    <Suspense fallback={<LoadingSpinner />}>
+      <TooltipProvider>
+        <Modal
+          showModal={showAddWorkspaceModal}
+          setShowModal={setShowAddWorkspaceModal}
+          preventDefaultClose={welcomeFlow}
+          onClose={() => {
+            if (welcomeFlow) {
+              router.back();
+            } else if (searchParams.has("newWorkspace")) {
+              queryParams({
+                del: ["newWorkspace"],
+              });
+            }
+          }}
         >
-          <div>
-            <label htmlFor="name" className="flex items-center space-x-2">
-              <p className="block text-sm font-medium text-gray-700">
-                Workspace Name
-              </p>
-              <InfoTooltip
-                content={`This is the name of your workspace on ${process.env.NEXT_PUBLIC_APP_NAME}.`}
-              />
-            </label>
-            <div className="mt-2 flex rounded-md shadow-sm">
-              <Input
-                name="name"
-                id="name"
-                type="text"
-                required
-                autoFocus={!isMobile}
-                autoComplete="off"
-                placeholder="Acme, Inc."
-                value={name}
-                onChange={(e) => {
-                  setData({ ...data, name: e.target.value });
-                }}
-                aria-invalid="true"
-              />
-            </div>
+          <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 px-4 py-4 pt-8 sm:px-16">
+            <h3 className="text-lg font-medium">Create a new workspace</h3>
           </div>
 
-          <div>
-            <label htmlFor="slug" className="flex items-center space-x-2">
-              <p className="block text-sm font-medium text-gray-700">
-                Workspace Slug
-              </p>
-              <InfoTooltip
-                content={`This is your workspace's unique slug on ${process.env.NEXT_PUBLIC_APP_NAME}.`}
-              />
-            </label>
-            <div className="relative mt-2 flex rounded-md shadow-sm">
-              <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-5 text-gray-500 sm:text-sm">
-                {process.env.NEXT_PUBLIC_APP_DOMAIN}
-              </span>
-              <Input
-                name="slug"
-                id="slug"
-                type="text"
-                required
-                autoComplete="off"
-                pattern="[a-zA-Z0-9\-]+"
-                className={`${
-                  slugError
-                    ? "border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500"
-                    : "border-gray-300 text-gray-900 placeholder-gray-400 focus:border-gray-500 focus:ring-gray-500"
-                } block w-full rounded-r-md focus:outline-none sm:text-sm`}
-                placeholder="acme"
-                value={slug}
-                minLength={3}
-                maxLength={48}
-                onChange={(e) => {
-                  setSlugError(null);
-                  setData({ ...data, slug: e.target.value });
-                }}
-                aria-invalid="true"
-              />
+          <form
+            onSubmit={onSubmit}
+            className="flex flex-col space-y-6 bg-gray-50 px-4 py-8 text-left sm:px-16"
+          >
+            <div>
+              <label htmlFor="name" className="flex items-center space-x-2">
+                <p className="block text-sm font-medium text-gray-700">
+                  Workspace Name
+                </p>
+                <InfoTooltip
+                  content={`This is the name of your workspace on ${process.env.NEXT_PUBLIC_APP_NAME}.`}
+                />
+              </label>
+              <div className="mt-2 flex rounded-md shadow-sm">
+                <Input
+                  name="name"
+                  id="name"
+                  type="text"
+                  required
+                  autoFocus={!isMobile}
+                  autoComplete="off"
+                  placeholder="Acme, Inc."
+                  value={name}
+                  onChange={(e) => {
+                    setData({ ...data, name: e.target.value });
+                  }}
+                  aria-invalid="true"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="slug" className="flex items-center space-x-2">
+                <p className="block text-sm font-medium text-gray-700">
+                  Workspace Slug
+                </p>
+                <InfoTooltip
+                  content={`This is your workspace's unique slug on ${process.env.NEXT_PUBLIC_APP_NAME}.`}
+                />
+              </label>
+              <div className="relative mt-2 flex rounded-md shadow-sm">
+                <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-5 text-gray-500 sm:text-sm">
+                  {process.env.NEXT_PUBLIC_APP_DOMAIN}
+                </span>
+                <Input
+                  name="slug"
+                  id="slug"
+                  type="text"
+                  required
+                  autoComplete="off"
+                  pattern="[a-zA-Z0-9\-]+"
+                  className={`${
+                    slugError
+                      ? "border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500"
+                      : "border-gray-300 text-gray-900 placeholder-gray-400 focus:border-gray-500 focus:ring-gray-500"
+                  } block w-full rounded-r-md focus:outline-none sm:text-sm`}
+                  placeholder="acme"
+                  value={slug}
+                  minLength={3}
+                  maxLength={48}
+                  onChange={(e) => {
+                    setSlugError(null);
+                    setData({ ...data, slug: e.target.value });
+                  }}
+                  aria-invalid="true"
+                />
+                {slugError && (
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                    <AlertCircleFill
+                      className="h-5 w-5 text-red-500"
+                      aria-hidden="true"
+                    />
+                  </div>
+                )}
+              </div>
               {slugError && (
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                  <AlertCircleFill
-                    className="h-5 w-5 text-red-500"
-                    aria-hidden="true"
-                  />
-                </div>
+                <p className="mt-2 text-sm text-red-600" id="slug-error">
+                  {slugError}
+                </p>
               )}
             </div>
-            {slugError && (
-              <p className="mt-2 text-sm text-red-600" id="slug-error">
-                {slugError}
-              </p>
-            )}
-          </div>
 
-          <Button type="button" onClick={onSubmit}>
-            {isLoading && <LoadingSpinner className="pr-3" />}
-            Create Workspace
-          </Button>
-        </form>
-      </Modal>
-    </TooltipProvider>
+            <Button type="button" onClick={onSubmit}>
+              {isPending && <LoadingSpinner className="pr-3" />}
+              Create Workspace
+            </Button>
+          </form>
+        </Modal>
+      </TooltipProvider>
+    </Suspense>
   );
 }
 

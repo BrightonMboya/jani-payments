@@ -23,7 +23,7 @@ export default function Page() {
   }, [workspace, data]);
 
   return (
-    <Suspense>
+    <Suspense fallback={<LoadingSpinner />}>
       <section className="h-screen w-screen bg-gray-50">
         <div className="flex h-[calc(100vh-16px)] items-center justify-center">
           <LoadingSpinner />

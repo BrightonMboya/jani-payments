@@ -18,6 +18,12 @@ export const dashboard = new sst.aws.Nextjs("dashboard", {
   environment: {
     DATABASE_URL: process.env.DATABASE_URL!,
     ENCRYPTION_KEY: process.env.ENCRYPTION_KEY!,
+    AUTH_SECRET: process.env.AUTH_SECRET!,
+    AUTH_GITHUB_CLIENT_ID: process.env.AUTH_GITHUB_CLIENT_ID!,
+    AUTH_GITHUB_CLIENT_SECRET: process.env.AUTH_GITHUB_CLIENT_SECRET!,
+    AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID!,
+    AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET!,
+    AUTH_TRUST_HOST: process.env.AUTH_TRUST_HOST!,
   },
   link: [secrets.DATABASE_URL, secrets.NEXTAUTH_SECRET, secrets.ENCRYPTION_KEY],
 });

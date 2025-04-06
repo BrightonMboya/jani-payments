@@ -1,11 +1,13 @@
 "use client";
 
-import { Github, Google } from "~/components/ui";
+import Google from "../../ui/icons/Google";
+import Github from "../../ui/icons/Github";
 import { Button } from "./Auth-Button";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import LoadingSpinner from "../icons/LoadingSpinner";
 
 export default function RegisterForm() {
   const searchParams = useSearchParams();
@@ -28,7 +30,7 @@ export default function RegisterForm() {
   }, []);
 
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner />}>
       <Button
         variant="secondary"
         text="Continue with Google"
@@ -61,6 +63,6 @@ export default function RegisterForm() {
           Sign in
         </Link>
       </p>
-    </>
+    </Suspense>
   );
 }

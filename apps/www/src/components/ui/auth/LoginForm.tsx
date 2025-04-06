@@ -1,12 +1,14 @@
 "use client";
 import { Button } from "./Auth-Button";
-import { Github, Google } from "../ui/icons";
+import Google from "../../ui/icons/Google";
+import Github from "../../ui/icons/Github";
 import { useMediaQuery } from "~/utils/hooks/useMediaQuery";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
 import { toast } from "sonner";
+import LoadingSpinner from "../icons/LoadingSpinner";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -37,7 +39,7 @@ export default function LoginForm() {
   }, []);
 
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner />}>
       <div className="flex space-x-2">
         <Button
           variant="secondary"
@@ -178,6 +180,6 @@ export default function LoginForm() {
           </Link>
         </p>
       )}
-    </>
+    </Suspense>
   );
 }

@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, Suspense } from "react";
+import LoadingSpinner from "~/components/ui/icons/LoadingSpinner";
 
 export default function WelcomePageClient() {
   const { setShowAddWorkspaceModal, AddWorkspaceModal } =
@@ -34,7 +35,7 @@ export default function WelcomePageClient() {
   }, [searchParams.get("step")]);
 
   return (
-    <Suspense>
+    <Suspense fallback={<LoadingSpinner />}>
       <div className="flex h-screen flex-col items-center">
         <AddWorkspaceModal />
 

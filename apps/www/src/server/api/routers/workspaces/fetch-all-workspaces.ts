@@ -14,6 +14,7 @@ export const fetchAllWorkspaces = createTRPCRouter({
        name: schema.Project.name,
        userRole: schema.ProjectUsers.role,
        plan: schema.Project.plan,
+       slug: schema.Project.slug,
       //  users: schema.user
      })
      .from(schema.Project)
